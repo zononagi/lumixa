@@ -40,7 +40,22 @@ export const IPC = {
   termResize: 'term:resize',
   termKill: 'term:kill',
   termData: 'term:data', // main -> renderer
-  termExit: 'term:exit' // main -> renderer
+  termExit: 'term:exit', // main -> renderer
+
+  // Git
+  gitStatus: 'git:status',
+  gitStage: 'git:stage',
+  gitUnstage: 'git:unstage',
+  gitStageAll: 'git:stageAll',
+  gitStagedDiff: 'git:stagedDiff',
+  gitCommit: 'git:commit',
+  gitPush: 'git:push',
+  gitPull: 'git:pull',
+  gitBranches: 'git:branches',
+  gitCheckout: 'git:checkout',
+
+  // Project context / memory
+  projectContext: 'project:context'
 } as const
 
 // ---------------------------------------------------------------------------
@@ -115,6 +130,35 @@ export interface TerminalDataEvent {
 export interface TerminalExitEvent {
   id: string
   code: number | null
+}
+
+// --- Git ---
+export interface GitFile {
+  path: string
+  /** Index (staged) status code, e.g. 'M', 'A', 'D', ' '. */
+  index: string
+  /** Working-tree status code. */
+  work: string
+  staged: boolean
+}
+
+export interface GitStatus {
+  isRepo: boolean
+  branch: string
+  ahead: number
+  behind: number
+  files: GitFile[]
+  error?: string
+}
+
+export interface GitBranches {
+  current: string
+  all: string[]
+}
+
+export interface GitResult {
+  ok: boolean
+  output: string
 }
 
 // Streaming event payloads (main -> renderer)

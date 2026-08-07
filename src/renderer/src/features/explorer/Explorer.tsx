@@ -2,16 +2,18 @@ import type { JSX } from 'react'
 import type { DirEntry } from '@shared/ipc'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { useEditorStore } from '@renderer/stores/editorStore'
+import { useT } from '@renderer/i18n'
 
 /** File tree. Lazy-loads directory children on expand; opens files into tabs. */
 export function Explorer(): JSX.Element {
   const { root, rootName, openFolder } = useWorkspaceStore()
+  const t = useT()
 
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <span>Explorer</span>
-        <button title="Open Folder" onClick={() => void openFolder()}>
+        <span>{t('explorer.title')}</span>
+        <button title={t('explorer.openFolder')} onClick={() => void openFolder()}>
           📂
         </button>
       </div>
@@ -25,9 +27,9 @@ export function Explorer(): JSX.Element {
         </div>
       ) : (
         <div className="empty-hint">
-          No folder is open.
+          {t('explorer.empty')}
           <br />
-          <button onClick={() => void openFolder()}>Open Folder</button>
+          <button onClick={() => void openFolder()}>{t('explorer.openFolder')}</button>
         </div>
       )}
     </div>

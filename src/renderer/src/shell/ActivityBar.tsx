@@ -1,7 +1,8 @@
 import type { JSX } from 'react'
 import { useUiStore } from '@renderer/stores/uiStore'
+import { useT } from '@renderer/i18n'
 
-export type LeftView = 'explorer' | 'settings'
+export type LeftView = 'explorer' | 'git' | 'settings'
 
 interface Props {
   active: LeftView
@@ -13,38 +14,46 @@ interface Props {
 /** Far-left icon rail. Switches the left panel and toggles feature panels. */
 export function ActivityBar({ active, onSelect, chatOpen, onToggleChat }: Props): JSX.Element {
   const { composerOpen, toggleComposer, terminalOpen, toggleTerminal } = useUiStore()
+  const t = useT()
   return (
     <div className="activitybar">
       <button
         className={active === 'explorer' ? 'active' : ''}
-        title="Explorer"
+        title={t('ab.explorer')}
         onClick={() => onSelect('explorer')}
       >
         🗂
       </button>
       <button
+        className={active === 'git' ? 'active' : ''}
+        title={t('ab.git')}
+        onClick={() => onSelect('git')}
+      >
+        ⑂
+      </button>
+      <button
         className={active === 'settings' ? 'active' : ''}
-        title="Settings"
+        title={t('ab.settings')}
         onClick={() => onSelect('settings')}
       >
         ⚙
       </button>
       <button
         className={composerOpen ? 'active' : ''}
-        title="Composer — multi-file AI edits"
+        title={t('ab.composer')}
         onClick={toggleComposer}
       >
         ✦
       </button>
       <button
         className={terminalOpen ? 'active' : ''}
-        title="Terminal (Ctrl+`)"
+        title={t('ab.terminal')}
         onClick={toggleTerminal}
       >
         ▣
       </button>
       <div style={{ flex: 1 }} />
-      <button className={chatOpen ? 'active' : ''} title="AI Chat" onClick={onToggleChat}>
+      <button className={chatOpen ? 'active' : ''} title={t('ab.chat')} onClick={onToggleChat}>
         ✨
       </button>
     </div>

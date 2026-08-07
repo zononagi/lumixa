@@ -12,7 +12,9 @@
     "start": "electron-vite preview",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web"
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "dist:win": "electron-vite build && electron-builder --win",
+    "pack:dir": "electron-vite build && electron-builder --win --dir"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.68.0",
@@ -26,6 +28,7 @@
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
     "electron": "^34.0.0",
+    "electron-builder": "^25.1.8",
     "electron-vite": "^3.0.0",
     "monaco-editor": "^0.52.2",
     "react": "^19.0.0",

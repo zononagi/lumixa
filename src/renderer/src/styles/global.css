@@ -622,3 +622,133 @@ button.primary:disabled {
   display: flex;
   justify-content: flex-end;
 }
+
+/* ---- Git / Source Control ---- */
+.git-branch {
+  color: var(--fg-muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.git-body {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.git-commitbox {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.git-commitbox textarea {
+  resize: vertical;
+  min-height: 48px;
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.git-commitbox textarea:focus {
+  border-color: var(--accent);
+}
+.git-commit-actions,
+.git-remote-actions {
+  display: flex;
+  gap: 6px;
+}
+.git-commit-actions button,
+.git-remote-actions button {
+  flex: 1;
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.git-commit-actions button.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.git-commit-actions button.ai:hover,
+.git-remote-actions button:hover {
+  background: #4a4a4a;
+}
+.git-commit-actions button:disabled {
+  opacity: 0.5;
+}
+.git-error {
+  color: var(--danger);
+  font-size: 11px;
+  white-space: pre-wrap;
+  max-height: 80px;
+  overflow: auto;
+}
+.git-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fg-muted);
+}
+.git-section button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  font-size: 11px;
+}
+.git-section button:hover {
+  color: #fff;
+}
+.git-list {
+  display: flex;
+  flex-direction: column;
+}
+.git-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+.git-row:hover {
+  background: #2a2d2e;
+}
+.git-code {
+  width: 14px;
+  text-align: center;
+  color: #e2c08d;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.git-code.staged {
+  color: #4ec9b0;
+}
+.git-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.git-row .spacer {
+  flex: 1;
+}
+.git-row button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  font-size: 15px;
+  line-height: 1;
+  padding: 0 4px;
+}
+.git-row button:hover {
+  color: #fff;
+}

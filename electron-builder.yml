@@ -1,0 +1,49 @@
+appId: com.lumixa.ide
+productName: Lumixa
+copyright: Copyright © 2025 Nagisa Dozono
+
+directories:
+  output: dist
+  buildResources: build
+
+# electron-vite emits to out/; package that plus production deps.
+files:
+  - out/**/*
+  - package.json
+  - resources/**
+  - '!**/*.map'
+
+# Bundle @anthropic-ai/sdk (used by the main process) from node_modules.
+npmRebuild: false
+asar: true
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+  # rcedit/signtool live in electron-builder's winCodeSign cache, whose macOS
+  # symlinks can't be extracted on Windows without Developer Mode/admin. Skipping
+  # exe editing keeps the build working everywhere. Installer + shortcuts still
+  # use build/icon.ico; enable this (and Developer Mode) to also stamp the exe.
+  signAndEditExecutable: false
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Lumixa
+
+# macOS target (for future cross-builds; ignored on Windows-only runs).
+mac:
+  target: dmg
+  icon: build/icon.png
+  category: public.app-category.developer-tools
+
+linux:
+  target: AppImage
+  icon: build/icon.png
+  category: Development

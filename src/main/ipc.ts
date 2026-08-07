@@ -17,6 +17,8 @@ import {
   listShells,
   writeTerminal
 } from './services/terminal'
+import * as git from './services/git'
+import { buildProjectContext } from './services/projectContext'
 
 /**
  * Registers every IPC handler on the main process. Called once after the main
@@ -144,4 +146,21 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   ipcMain.handle(IPC.termInput, (_e, id: string, data: string) => writeTerminal(id, data))
   ipcMain.handle(IPC.termKill, (_e, id: string) => killTerminal(id))
+
+  // --- Git ------------------------------------------------------------------
+  ipcMain.handle(IPC.gitStatus, (_e, cwd: string) => git.status(cwd))
+  ipcMain.handle(IPC.gitStage, (_e, cwd: string, path: string) => git.stage(cwd, path))
+  ipcMain.handle(IPC.gitUnstage, (_e, cwd: string, path: string) => git.unstage(cwd, path))
+  ipcMain.handle(IPC.gitStageAll, (_e, cwd: string) => git.stageAll(cwd))
+  ipcMain.handle(IPC.gitStagedDiff, (_e, cwd: string) => git.stagedDiff(cwd))
+  ipcMain.handle(IPC.gitCommit, (_e, cwd: string, message: string) => git.commit(cwd, message))
+  ipcMain.handle(IPC.gitPush, (_e, cwd: string) => git.push(cwd))
+  ipcMain.handle(IPC.gitPull, (_e, cwd: string) => git.pull(cwd))
+  ipcMain.handle(IPC.gitBranches, (_e, cwd: string) => git.branches(cwd))
+  ipcMain.handle(IPC.gitCheckout, (_e, cwd: string, branch: string, create: boolean) =>
+    git.checkout(cwd, branch, create)
+  )
+
+  // --- Project context / memory ---------------------------------------------
+  ipcMain.handle(IPC.projectContext, (_e, root: string) => buildProjectContext(root))
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState, type JSX } from 'react'
 import type { ProviderId } from '@shared/ipc'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
+import { useT, useI18nStore, LOCALES } from '@renderer/i18n'
 
 interface ProviderMeta {
   id: ProviderId
@@ -22,6 +23,8 @@ const PROVIDERS: ProviderMeta[] = [
 export function SettingsPanel(): JSX.Element {
   const { configured, refreshConfigured, saveKey, refreshModels, models, loadingModels } =
     useSettingsStore()
+  const t = useT()
+  const { locale, setLocale } = useI18nStore()
 
   useEffect(() => {
     void refreshConfigured()
@@ -30,15 +33,33 @@ export function SettingsPanel(): JSX.Element {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <span>Settings</span>
+        <span>{t('settings.title')}</span>
       </div>
       <div className="settings">
-        <h2>Providers</h2>
-        <p className="hint">
-          Bring your own API key. Keys are encrypted with your OS keychain (DPAPI /
-          Keychain) and never leave this machine. Providers without a key are hidden
-          from the model picker.
-        </p>
+        <div className="provider-row">
+          <label>{t('settings.language')}</label>
+          <select
+            value={locale}
+            onChange={(e) => setLocale(e.target.value as (typeof LOCALES)[number]['id'])}
+            style={{
+              width: '100%',
+              background: '#3c3c3c',
+              color: 'var(--fg)',
+              border: '1px solid #3c3c3c',
+              borderRadius: 4,
+              padding: '6px 8px'
+            }}
+          >
+            {LOCALES.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <h2>{t('settings.providers')}</h2>
+        <p className="hint">{t('settings.providersHint')}</p>
 
         {PROVIDERS.map((p) => (
           <ProviderRow
@@ -60,13 +81,13 @@ export function SettingsPanel(): JSX.Element {
                 display: 'inline-block'
               }}
             >
-              {loadingModels ? 'Refreshing…' : '↻ Refresh models'}
+              {loadingModels ? t('settings.refreshing') : t('settings.refresh')}
             </span>
           </button>
           <p className="hint" style={{ marginTop: 10 }}>
             {models.length > 0
-              ? `${models.length} model(s) available.`
-              : 'No models yet — add a key above, then refresh.'}
+              ? t('settings.modelsAvailable', { n: models.length })
+              : t('settings.noModels')}
           </p>
         </div>
       </div>
@@ -84,15 +105,19 @@ function ProviderRow({
   onSave: (key: string) => void
 }): JSX.Element {
   const [value, setValue] = useState('')
+  const t = useT()
 
   return (
     <div className="provider-row">
       <label>
         {meta.name}
         {!meta.available && (
-          <span style={{ color: 'var(--fg-muted)', fontWeight: 400 }}> — coming soon</span>
+          <span style={{ color: 'var(--fg-muted)', fontWeight: 400 }}>
+            {' — '}
+            {t('settings.comingSoon')}
+          </span>
         )}
-        {configured && <span className="ok">✓ configured</span>}
+        {configured && <span className="ok">{t('settings.configured')}</span>}
       </label>
       <div className="field">
         <input
@@ -109,7 +134,7 @@ function ProviderRow({
             setValue('')
           }}
         >
-          Save
+          {t('action.save')}
         </button>
       </div>
     </div>

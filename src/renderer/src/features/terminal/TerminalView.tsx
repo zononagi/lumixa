@@ -4,6 +4,7 @@ import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
 import { checkDanger } from '@renderer/lib/danger'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { useT } from '@renderer/i18n'
 
 /**
  * A single xterm.js terminal bound to a main-process shell.
@@ -24,6 +25,9 @@ export function TerminalView({
   const hostRef = useRef<HTMLDivElement>(null)
   const fitRef = useRef<FitAddon | null>(null)
   const cwd = useWorkspaceStore((s) => s.root)
+  const t = useT()
+  const tRef = useRef(t)
+  tRef.current = t
 
   useEffect(() => {
     const host = hostRef.current
@@ -42,7 +46,7 @@ export function TerminalView({
     term.open(host)
     fit.fit()
 
-    term.write('\x1b[90mLumixa terminal — commands run in a real shell.\x1b[0m\r\n')
+    term.write(`\x1b[90m${tRef.current('terminal.intro')}\x1b[0m\r\n`)
 
     let line = ''
 
@@ -59,10 +63,13 @@ export function TerminalView({
           const verdict = checkDanger(cmd)
           if (verdict.dangerous) {
             const ok = window.confirm(
-              `⚠️ Potentially destructive command:\n\n${cmd}\n\nReason: ${verdict.reason}\n\nRun it anyway?`
+              tRef.current('terminal.dangerConfirm', {
+                cmd,
+                reason: verdict.reason ?? ''
+              })
             )
             if (!ok) {
-              term.write('\r\n\x1b[33m(cancelled)\x1b[0m')
+              term.write(`\r\n\x1b[33m${tRef.current('terminal.cancelled')}\x1b[0m`)
               send('\n') // nudge a fresh prompt
               continue
             }

@@ -3,6 +3,7 @@ import Editor, { type OnMount } from '@monaco-editor/react'
 import type { editor as MonacoEditor } from 'monaco-editor'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { complete } from '@renderer/lib/ai'
+import { useT } from '@renderer/i18n'
 import { languageForFile } from './monacoSetup'
 
 const INLINE_SYSTEM = `You are Lumixa's inline code editor. The user selected a code snippet and gives an instruction.
@@ -24,6 +25,7 @@ export function EditorArea(): JSX.Element {
   const { tabs, activePath, setActive, closeTab, updateContent, saveActive } =
     useEditorStore()
   const active = tabs.find((t) => t.path === activePath)
+  const t = useT()
 
   const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null)
   const [inlineOpen, setInlineOpen] = useState(false)
@@ -123,7 +125,7 @@ export function EditorArea(): JSX.Element {
                   <span className="badge">Ctrl+K</span>
                   <input
                     autoFocus
-                    placeholder="Edit the selection with AI…"
+                    placeholder={t('editor.inlinePlaceholder')}
                     value={prompt}
                     disabled={busy}
                     onChange={(e) => setPrompt(e.target.value)}
@@ -133,16 +135,16 @@ export function EditorArea(): JSX.Element {
                     }}
                   />
                   <button disabled={busy || !prompt.trim()} onClick={() => void runInline()}>
-                    {busy ? '…' : 'Edit'}
+                    {busy ? '…' : t('editor.inlineEdit')}
                   </button>
                   <button onClick={() => setInlineOpen(false)}>Esc</button>
                 </>
               ) : (
                 <>
-                  <span className="badge ok">✓ Applied</span>
-                  <button onClick={() => setApplied(false)}>Keep</button>
+                  <span className="badge ok">{t('editor.applied')}</span>
+                  <button onClick={() => setApplied(false)}>{t('editor.keep')}</button>
                   <button className="danger" onClick={undoInline}>
-                    Undo
+                    {t('editor.undo')}
                   </button>
                 </>
               )}
@@ -169,7 +171,7 @@ export function EditorArea(): JSX.Element {
       ) : (
         <div className="editor-empty">
           <div style={{ fontSize: 28 }}>✨ Lumixa</div>
-          <div>Open a file from the Explorer, or ask the AI panel to get started.</div>
+          <div>{t('editor.empty')}</div>
         </div>
       )}
     </div>

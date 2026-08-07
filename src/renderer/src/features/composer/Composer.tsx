@@ -3,7 +3,9 @@ import { DiffEditor } from '@monaco-editor/react'
 import { useUiStore } from '@renderer/stores/uiStore'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
+import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { complete } from '@renderer/lib/ai'
+import { useT } from '@renderer/i18n'
 import { languageForFile } from '@renderer/features/editor/monacoSetup'
 import { COMPOSER_SYSTEM, buildContext, parseEdits, type ProposedEdit } from './edits'
 
@@ -24,6 +26,7 @@ export function Composer(): JSX.Element | null {
   const tabs = useEditorStore((s) => s.tabs)
   const setSavedContent = useEditorStore((s) => s.setSavedContent)
   const hasModel = useSettingsStore((s) => s.models.length > 0)
+  const t = useT()
 
   const [instruction, setInstruction] = useState('')
   const [busy, setBusy] = useState(false)
@@ -37,7 +40,9 @@ export function Composer(): JSX.Element | null {
     setBusy(true)
     setError(null)
     setItems([])
-    const res = await complete(COMPOSER_SYSTEM, buildContext(instruction, tabs))
+    const projectContext = useWorkspaceStore.getState().projectContext
+    const system = projectContext ? `${COMPOSER_SYSTEM}\n\n${projectContext}` : COMPOSER_SYSTEM
+    const res = await complete(system, buildContext(instruction, tabs))
     if (res.error) {
       setError(res.error)
       setBusy(false)
@@ -45,7 +50,7 @@ export function Composer(): JSX.Element | null {
     }
     const edits = parseEdits(res.text)
     if (edits.length === 0) {
-      setError('The model returned no file edits. Try rephrasing the instruction.')
+      setError(t('composer.noEdits'))
       setBusy(false)
       return
     }
@@ -90,29 +95,25 @@ export function Composer(): JSX.Element | null {
     <div className="modal-backdrop" onClick={() => setComposer(false)}>
       <div className="composer" onClick={(e) => e.stopPropagation()}>
         <div className="composer-header">
-          <span>✦ Composer</span>
+          <span>{t('composer.title')}</span>
           <button onClick={() => setComposer(false)}>✕</button>
         </div>
 
         <div className="composer-prompt">
           <textarea
-            placeholder={
-              hasModel
-                ? 'Describe the change across your open files… (e.g. "add a dark-mode toggle to the header")'
-                : 'Configure a provider in Settings first.'
-            }
+            placeholder={hasModel ? t('composer.placeholder') : t('composer.placeholderNoModel')}
             value={instruction}
             disabled={!hasModel || busy}
             onChange={(e) => setInstruction(e.target.value)}
           />
           <div className="composer-actions">
-            <span className="ctx">{tabs.length} file(s) in context</span>
+            <span className="ctx">{t('composer.context', { n: tabs.length })}</span>
             <button
               className="primary"
               disabled={!hasModel || busy || !instruction.trim()}
               onClick={() => void generate()}
             >
-              {busy ? 'Generating…' : 'Generate edits'}
+              {busy ? t('composer.generating') : t('composer.generate')}
             </button>
           </div>
           {error && <div className="composer-error">⚠️ {error}</div>}
@@ -128,20 +129,20 @@ export function Composer(): JSX.Element | null {
                 </span>
                 <span className="spacer" />
                 {it.status === 'applied' ? (
-                  <span className="applied-badge">✓ Applied</span>
+                  <span className="applied-badge">{t('composer.applied')}</span>
                 ) : (
                   <>
                     <button
                       className={it.status === 'accepted' ? 'on' : ''}
                       onClick={() => setStatus(it.path, 'accepted')}
                     >
-                      Accept
+                      {t('composer.accept')}
                     </button>
                     <button
                       className={it.status === 'rejected' ? 'on danger' : ''}
                       onClick={() => setStatus(it.path, 'rejected')}
                     >
-                      Reject
+                      {t('composer.reject')}
                     </button>
                   </>
                 )}
@@ -175,7 +176,7 @@ export function Composer(): JSX.Element | null {
               disabled={acceptedCount === 0}
               onClick={() => void applyAccepted()}
             >
-              Apply {acceptedCount} accepted change(s)
+              {t('composer.apply', { n: acceptedCount })}
             </button>
           </div>
         )}

@@ -8,6 +8,9 @@ import {
   type CompleteRequest,
   type CompleteResult,
   type DirEntry,
+  type GitBranches,
+  type GitResult,
+  type GitStatus,
   type ModelInfo,
   type OpenFolderResult,
   type ProviderId,
@@ -79,6 +82,25 @@ const api = {
       ipcRenderer.on(IPC.termExit, handler)
       return () => ipcRenderer.removeListener(IPC.termExit, handler)
     }
+  },
+  git: {
+    status: (cwd: string): Promise<GitStatus> => ipcRenderer.invoke(IPC.gitStatus, cwd),
+    stage: (cwd: string, path: string): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitStage, cwd, path),
+    unstage: (cwd: string, path: string): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitUnstage, cwd, path),
+    stageAll: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitStageAll, cwd),
+    stagedDiff: (cwd: string): Promise<string> => ipcRenderer.invoke(IPC.gitStagedDiff, cwd),
+    commit: (cwd: string, message: string): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitCommit, cwd, message),
+    push: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitPush, cwd),
+    pull: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitPull, cwd),
+    branches: (cwd: string): Promise<GitBranches> => ipcRenderer.invoke(IPC.gitBranches, cwd),
+    checkout: (cwd: string, branch: string, create: boolean): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitCheckout, cwd, branch, create)
+  },
+  project: {
+    context: (root: string): Promise<string> => ipcRenderer.invoke(IPC.projectContext, root)
   }
 }
 

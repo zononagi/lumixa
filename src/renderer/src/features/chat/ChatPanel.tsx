@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type JSX } from 'react'
 import { useChatStore } from '@renderer/stores/chatStore'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
+import { useT } from '@renderer/i18n'
 
 /** Right-hand AI chat panel with streaming responses and a model picker. */
 export function ChatPanel(): JSX.Element {
@@ -8,6 +9,7 @@ export function ChatPanel(): JSX.Element {
   const { models, selectedModel, selectModel } = useSettingsStore()
   const [text, setText] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
+  const t = useT()
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
@@ -24,8 +26,8 @@ export function ChatPanel(): JSX.Element {
   return (
     <div className="chat">
       <div className="sidebar-header">
-        <span>AI Chat</span>
-        <button title="Clear conversation" onClick={clear}>
+        <span>{t('chat.title')}</span>
+        <button title={t('chat.clear')} onClick={clear}>
           🗑
         </button>
       </div>
@@ -33,14 +35,12 @@ export function ChatPanel(): JSX.Element {
       <div className="chat-messages" ref={scrollRef}>
         {messages.length === 0 && (
           <div className="empty-hint" style={{ padding: 0 }}>
-            {noModels
-              ? 'No models available. Add a provider API key in Settings (⚙) to start chatting.'
-              : 'Ask anything about your code. Responses stream in live.'}
+            {noModels ? t('chat.emptyNoModel') : t('chat.empty')}
           </div>
         )}
         {messages.map((m) => (
           <div key={m.id} className={`msg ${m.role}`}>
-            <div className="who">{m.role === 'user' ? 'You' : 'Lumixa'}</div>
+            <div className="who">{m.role === 'user' ? t('chat.you') : 'Lumixa'}</div>
             <div className="bubble">
               {m.content}
               {m.streaming && <span className="cursor">▋</span>}
@@ -51,7 +51,7 @@ export function ChatPanel(): JSX.Element {
 
       <div className="chat-input">
         <textarea
-          placeholder={noModels ? 'Configure a provider first…' : 'Message Lumixa…'}
+          placeholder={noModels ? t('chat.placeholderNoModel') : t('chat.placeholder')}
           value={text}
           disabled={noModels}
           onChange={(e) => setText(e.target.value)}
@@ -68,7 +68,7 @@ export function ChatPanel(): JSX.Element {
             onChange={(e) => selectModel(e.target.value)}
             disabled={noModels}
           >
-            {noModels && <option value="">No models</option>}
+            {noModels && <option value="">{t('chat.noModels')}</option>}
             {models.map((m) => (
               <option key={m.id} value={m.id}>
                 {m.displayName}
@@ -77,11 +77,11 @@ export function ChatPanel(): JSX.Element {
           </select>
           {streaming ? (
             <button className="send" onClick={cancel}>
-              Stop
+              {t('chat.stop')}
             </button>
           ) : (
             <button className="send" onClick={submit} disabled={noModels || !text.trim()}>
-              Send
+              {t('chat.send')}
             </button>
           )}
         </div>

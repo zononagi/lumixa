@@ -3,6 +3,7 @@ import './features/editor/monacoSetup' // side-effect: configure Monaco loader +
 import { ActivityBar, type LeftView } from './shell/ActivityBar'
 import { StatusBar } from './shell/StatusBar'
 import { Explorer } from './features/explorer/Explorer'
+import { GitPanel } from './features/git/GitPanel'
 import { SettingsPanel } from './features/settings/SettingsPanel'
 import { EditorArea } from './features/editor/EditorArea'
 import { ChatPanel } from './features/chat/ChatPanel'
@@ -48,7 +49,9 @@ export default function App(): JSX.Element {
           chatOpen={chatOpen}
           onToggleChat={() => setChatOpen((v) => !v)}
         />
-        {leftView === 'explorer' ? <Explorer /> : <SettingsPanel />}
+        {leftView === 'explorer' && <Explorer />}
+        {leftView === 'git' && <GitPanel />}
+        {leftView === 'settings' && <SettingsPanel />}
         <div className="main">
           <EditorArea />
           <BottomPanel />

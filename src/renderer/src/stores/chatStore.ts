@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { ChatMessage, ProviderId } from '@shared/ipc'
 import { useSettingsStore } from './settingsStore'
+import { useWorkspaceStore } from './workspaceStore'
 
 /**
  * Chat state. Holds the conversation, streams assistant tokens into the last
@@ -106,12 +107,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
       activeRequestId: requestId
     }))
 
+    const projectContext = useWorkspaceStore.getState().projectContext
+    const system =
+      'You are Lumixa, an AI pair-programmer embedded in a code editor. Be concise and practical.' +
+      (projectContext ? `\n\n${projectContext}` : '')
+
     await window.lumixa.ai.startChat({
       requestId,
       provider,
       model: selectedModel,
-      system:
-        'You are Lumixa, an AI pair-programmer embedded in a code editor. Be concise and practical.',
+      system,
       messages: history
     })
   },
