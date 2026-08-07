@@ -36,13 +36,12 @@ Cursorライクな操作性をベースにしながら、複数AIモデル・エ
 
 ## 特徴
 
-### 🤖 AI First
+### 🤖 AI First（アカウント連携 / APIキー不要）
 
-- Claude API
-- OpenAI API
-- Gemini API
-- OpenRouter
-- Ollama(Local LLM)
+- Claude（Claudeアカウントでサインイン / OAuth）
+- ChatGPT（ChatGPTアカウントでサインイン / OAuth）
+
+<sub>APIキーの代わりに、お使いの Claude / ChatGPT アカウントで直接サインインしてモデルを利用します。</sub>
 
 ---
 
@@ -52,6 +51,7 @@ Cursorライクな操作性をベースにしながら、複数AIモデル・エ
 - コンテキスト保持
 - ストリーミング応答
 - プロジェクトメモリ
+- コードブロックの syntax ハイライト
 
 ---
 
@@ -121,9 +121,14 @@ AIによるレビュー・コミットメッセージ生成に対応。
 ## ロードマップ
 
 - [x] MVP
-- [x] Composer
-- [ ] AI Agent
-- [ ] Project Memory
+- [x] Composer / Inline Edit
+- [x] アカウント連携（Claude / ChatGPT OAuth）※実ログインは要検証
+- [x] AI Agent（複数エージェント・カスタムSystem Prompt・権限管理・バックグラウンド実行）
+- [x] Cursorライク編集（AI Diff / Ghost Preview / One Click Fix）
+- [x] Project Memory
+- [x] UI カスタマイズ（Mica / Acrylic / 背景画像・動画 / VSCodeテーマ互換）
+- [x] Git（Commit / Push / Pull / Branch / Merge / Rebase）
+- [x] syntax ハイライト
 - [ ] MCP
 - [ ] Plugin SDK
 - [ ] Cloud Sync
@@ -150,13 +155,12 @@ Our goal is to make AI a true development partner—not just a chatbot.
 
 ## Features
 
-### 🤖 AI First
+### 🤖 AI First (account linking — no API keys)
 
-- Anthropic Claude
-- OpenAI
-- Google Gemini
-- OpenRouter
-- Ollama (Local LLM)
+- Claude (sign in with your Claude account / OAuth)
+- ChatGPT (sign in with your ChatGPT account / OAuth)
+
+<sub>Instead of API keys, sign in directly with your Claude / ChatGPT account to use their models.</sub>
 
 ---
 
@@ -166,6 +170,7 @@ Our goal is to make AI a true development partner—not just a chatbot.
 - Streaming responses
 - Context memory
 - Project memory
+- Syntax-highlighted code blocks
 
 ---
 
@@ -237,9 +242,14 @@ AI-assisted commit messages and code reviews.
 ## Roadmap
 
 - [x] MVP
-- [x] Composer
-- [ ] AI Agents
-- [ ] Project Memory
+- [x] Composer / Inline Edit
+- [x] Account linking (Claude / ChatGPT OAuth) — real login needs verification
+- [x] AI Agents (multiple agents, custom system prompts, permissions, background execution)
+- [x] Cursor-like editing (AI Diff / Ghost Preview / One Click Fix)
+- [x] Project Memory
+- [x] UI customization (Mica / Acrylic / background image·video / VS Code themes)
+- [x] Git (Commit / Push / Pull / Branch / Merge / Rebase)
+- [x] Syntax highlighting
 - [ ] MCP Support
 - [ ] Plugin SDK
 - [ ] Cloud Sync
