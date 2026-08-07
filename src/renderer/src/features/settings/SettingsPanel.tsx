@@ -10,10 +10,9 @@ interface ProviderMeta {
   available: boolean
 }
 
-// Phase 1 wires Anthropic end-to-end; the rest are scaffolded for later phases.
 const PROVIDERS: ProviderMeta[] = [
-  { id: 'anthropic', name: 'Anthropic (Claude)', placeholder: 'sk-ant-…', available: true },
-  { id: 'openai', name: 'OpenAI', placeholder: 'sk-…', available: false },
+  { id: 'anthropic', name: 'Anthropic (Claude)', placeholder: 'sk-ant-… or account token', available: true },
+  { id: 'openai', name: 'OpenAI', placeholder: 'sk-… or account token', available: true },
   { id: 'gemini', name: 'Google Gemini', placeholder: 'AIza…', available: false },
   { id: 'openrouter', name: 'OpenRouter', placeholder: 'sk-or-…', available: false },
   { id: 'ollama', name: 'Ollama (local)', placeholder: 'http://localhost:11434', available: false }
