@@ -1,75 +1,247 @@
 # Lumixa
 
-An AI-native IDE — Cursor-like operability with a VS Code-familiar feel, built to be extended.
+> The AI-native IDE for modern software development.
 
-> **Status: Phase 0 + 1 complete.** A working desktop app: open a folder, edit
-> files in Monaco, and chat with Claude (streaming) using your own API key.
+<div align="center">
 
-## Run
+**🇯🇵 日本語 | [🇺🇸 English](#english)**
 
-```bash
-npm install
-npm run dev      # launches Electron with HMR
-```
+</div>
 
-Other scripts:
+---
 
-```bash
-npm run build      # bundle main + preload + renderer into out/
-npm run start      # preview the built app
-npm run typecheck  # type-check both node and web sides
-```
+# 日本語
 
-## First-time setup
+## Lumixaとは
 
-1. Launch the app.
-2. Open **Settings** (⚙ in the activity bar) and paste your **Anthropic API key**.
-   Keys are encrypted with the OS keychain (Windows DPAPI / macOS Keychain) and
-   never leave your machine.
-3. Click **↻ Refresh models** — only reachable models appear.
-4. Open **AI Chat** (✨) and start talking to your code.
+**Lumixa** は、AIとの共同開発を前提として設計された次世代のAIネイティブIDEです。
 
-## Architecture
+Cursorライクな操作性をベースにしながら、複数AIモデル・エージェント・プロジェクトメモリ・高度なコード編集を統合し、開発者がより高速かつ直感的にソフトウェアを開発できる環境を提供します。
 
-```
-src/
-  main/            Electron main process (Node). Owns disk, secrets, AI networking.
-    ai/            Provider abstraction (IProvider) + anthropic adapter + registry.
-    services/      fs (workspace), secrets (encrypted key storage).
-    ipc.ts         Typed IPC handler registration.
-    index.ts       Window creation + entry.
-  preload/         contextBridge — the only surface the renderer can touch.
-  shared/          IPC contract (channel names + types), shared by both sides.
-  renderer/src/    React UI.
-    shell/         ActivityBar, StatusBar, layout.
-    features/      editor (Monaco) / explorer / chat / settings.
-    stores/        Zustand state, decoupled from UI.
-```
+---
 
-**Design principles**
+## 特徴
 
-- **UI ↔ logic separation.** `core`/state is UI-independent; `main` is Electron-only.
-- **Provider abstraction.** New LLM backends (OpenAI, Gemini, OpenRouter, Ollama)
-  are a single adapter file implementing `AIProvider` — nothing else changes.
-- **Security first.** API keys live only in the main process; the renderer learns
-  only *whether* a provider is configured, never the value. Streaming runs in main
-  to avoid exposing keys or hitting CORS.
+### 🤖 AI First
 
-## App icon
+- Claude API
+- OpenAI API
+- Gemini API
+- OpenRouter
+- Ollama(Local LLM)
 
-Drop a PNG at `resources/icon.png` and it is picked up automatically at launch.
+---
+
+### 💬 AIチャット
+
+- プロジェクト全体を理解
+- コンテキスト保持
+- ストリーミング応答
+- プロジェクトメモリ
+
+---
+
+### 🧠 AI Agent
+
+- 複数エージェント
+- カスタムSystem Prompt
+- 権限管理
+- バックグラウンド実行
+
+---
+
+### ✨ Cursorライクな編集体験
+
+- Composer
+- Inline Edit
+- AI Diff
+- Ghost Preview
+- One Click Fix
+
+---
+
+### 🎨 カスタマイズ
+
+- VSCodeテーマ互換
+- 半透明UI
+- Mica
+- Acrylic
+- Background Cover風背景
+- 背景動画対応
+
+---
+
+### 💻 ターミナル
+
+- PowerShell
+- CMD
+- Git Bash
+- WSL
+- Bash
+- zsh
+
+AIによるコマンド実行・エラー解析をサポートします。
+
+---
+
+### 📦 Git
+
+- Commit
+- Push
+- Pull
+- Branch
+- Rebase
+- Merge
+
+AIによるレビュー・コミットメッセージ生成に対応。
+
+---
+
+## 対応OS
+
+- Windows
+- macOS
+
+---
+
+## ロードマップ
+
+- [ ] MVP
+- [ ] Composer
+- [ ] AI Agent
+- [ ] Project Memory
+- [ ] MCP
+- [ ] Plugin SDK
+- [ ] Cloud Sync
+
+---
+
+## ライセンス
+
+現在開発中です。
+
+---
+
+# English
+
+## About
+
+**Lumixa** is an AI-native IDE built for modern software development.
+
+Inspired by Cursor, Lumixa combines multiple AI providers, intelligent agents, project memory, and an extensible development environment into a single workspace.
+
+Our goal is to make AI a true development partner—not just a chatbot.
+
+---
+
+## Features
+
+### 🤖 AI First
+
+- Anthropic Claude
+- OpenAI
+- Google Gemini
+- OpenRouter
+- Ollama (Local LLM)
+
+---
+
+### 💬 AI Chat
+
+- Full project awareness
+- Streaming responses
+- Context memory
+- Project memory
+
+---
+
+### 🧠 AI Agents
+
+- Multiple agents
+- Custom system prompts
+- Permission management
+- Background execution
+
+---
+
+### ✨ Cursor-like Editing
+
+- Composer
+- Inline Edit
+- AI-powered Diff
+- Ghost Preview
+- One Click Fix
+
+---
+
+### 🎨 Customization
+
+- VSCode themes
+- Acrylic
+- Mica
+- Transparent UI
+- Background images
+- Video backgrounds
+
+---
+
+### 💻 Integrated Terminal
+
+Supports
+
+- PowerShell
+- CMD
+- Git Bash
+- WSL
+- Bash
+- zsh
+
+AI can execute commands, analyze logs, and help resolve errors.
+
+---
+
+### 📦 Git Integration
+
+- Commit
+- Push
+- Pull
+- Branch
+- Merge
+- Rebase
+
+AI-assisted commit messages and code reviews.
+
+---
+
+## Supported Platforms
+
+- Windows
+- macOS
+
+---
 
 ## Roadmap
 
-| Phase | Scope |
-|---|---|
-| **0** ✅ | Electron + React + Monaco shell, Explorer, file open/save |
-| **1** ✅ | Anthropic provider, streaming AI chat, encrypted key storage, model picker |
-| 2 | xterm.js terminal, Composer (multi-file diff + accept/reject), Ctrl+K inline edit |
-| 3 | Git GUI + AI commit messages, more providers, Project Memory |
-| 4+ | RAG index, MCP, Agents, Cost Dashboard, AI Review, Ghost Mode, themes/backgrounds |
+- [ ] MVP
+- [ ] Composer
+- [ ] AI Agents
+- [ ] Project Memory
+- [ ] MCP Support
+- [ ] Plugin SDK
+- [ ] Cloud Sync
 
-## Tech stack
+---
 
-Electron · React · TypeScript · Vite (electron-vite) · Monaco Editor · Zustand ·
-`@anthropic-ai/sdk`
+## License
+
+Currently under development.
+
+---
+
+<div align="center">
+
+Made with ❤️ by the Lumixa Team
+
+**Code at the speed of thought.**
+
+</div>
