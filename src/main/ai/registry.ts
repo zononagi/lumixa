@@ -4,8 +4,8 @@ import { AnthropicProvider } from './anthropic'
 import { OpenAIProvider } from './openai'
 
 /**
- * Provider registry. Anthropic and OpenAI are wired up for account-based
- * access. Other providers can be added here later with no other code changes.
+ * Provider registry. Both backends authenticate via account linking (OAuth);
+ * new adapters slot in here with no other code changes.
  */
 const providers = new Map<ProviderId, AIProvider>([
   ['anthropic', new AnthropicProvider()],

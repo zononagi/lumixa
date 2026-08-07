@@ -22,11 +22,15 @@ win:
     - target: nsis
       arch:
         - x64
-  icon: build/icon.png
+  # Single source of truth for the app icon — the same file the running window
+  # uses (see src/main/index.ts). electron-builder auto-generates the .ico for
+  # the installer and shortcuts from this PNG.
+  icon: resources/icon.png
   # rcedit/signtool live in electron-builder's winCodeSign cache, whose macOS
   # symlinks can't be extracted on Windows without Developer Mode/admin. Skipping
   # exe editing keeps the build working everywhere. Installer + shortcuts still
-  # use build/icon.ico; enable this (and Developer Mode) to also stamp the exe.
+  # use resources/icon.png; enable this (and Developer Mode) to also stamp the
+  # icon directly into the .exe.
   signAndEditExecutable: false
 
 nsis:
@@ -36,14 +40,16 @@ nsis:
   createDesktopShortcut: true
   createStartMenuShortcut: true
   shortcutName: Lumixa
+  # Hyphenated name so the URL has no spaces (matches the README download link).
+  artifactName: ${productName}-Setup-${version}.${ext}
 
 # macOS target (for future cross-builds; ignored on Windows-only runs).
 mac:
   target: dmg
-  icon: build/icon.png
+  icon: resources/icon.png
   category: public.app-category.developer-tools
 
 linux:
   target: AppImage
-  icon: build/icon.png
+  icon: resources/icon.png
   category: Development

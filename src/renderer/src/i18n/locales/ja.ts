@@ -26,11 +26,15 @@ export const ja: typeof en = {
   'editor.applied': '✓ 適用済み',
   'editor.keep': '保持',
   'editor.undo': '元に戻す',
+  'editor.diffPreview': 'AI差分 — 確認',
+  'editor.accept': '✓ 承認',
+  'editor.reject': '✕ 却下',
+  'editor.fixProblems': '✨ {n} 件の問題を修正',
 
   'chat.title': 'AIチャット',
   'chat.clear': '会話をクリア',
   'chat.emptyNoModel':
-    '利用可能なモデルがありません。設定(⚙)でプロバイダーのAPIキーを追加してください。',
+    '利用可能なモデルがありません。設定(⚙)で Claude または ChatGPT アカウントにサインインしてください。',
   'chat.empty': 'コードについて何でも質問できます。応答はリアルタイムで表示されます。',
   'chat.you': 'あなた',
   'chat.placeholderNoModel': 'まずプロバイダーを設定してください…',
@@ -38,18 +42,66 @@ export const ja: typeof en = {
   'chat.noModels': 'モデルなし',
   'chat.stop': '停止',
   'chat.send': '送信',
+  'chat.background': 'バックグラウンドで実行',
 
   'settings.title': '設定',
   'settings.language': '言語',
-  'settings.providers': 'プロバイダー',
-  'settings.providersHint':
-    '自分のAPIキーを使用します。キーはOSのキーチェーン（DPAPI / Keychain）で暗号化され、この端末から外に出ません。キー未設定のプロバイダーはモデル選択に表示されません。',
-  'settings.comingSoon': '近日対応',
-  'settings.configured': '✓ 設定済み',
+  'settings.accounts': 'アカウント',
+  'settings.accountsHint':
+    'Claude または ChatGPT アカウントでサインインしてモデルを利用します（APIキー不要）。トークンはOSのキーチェーン（DPAPI / Keychain）で暗号化され、この端末から外に出ません。',
+  'settings.signInClaude': 'Claude でサインイン',
+  'settings.signInChatGPT': 'ChatGPT でサインイン',
+  'settings.signOut': 'サインアウト',
+  'settings.connected': '✓ 連携済み',
+  'settings.connecting': '接続中…',
+  'settings.pasteCodeHint':
+    'ブラウザが開きました。認可後に表示されるコードをここに貼り付けてください。',
+  'settings.pasteCodePlaceholder': '認可コードを貼り付け',
   'settings.refresh': '↻ モデルを更新',
   'settings.refreshing': '更新中…',
   'settings.modelsAvailable': '{n} 個のモデルが利用可能。',
-  'settings.noModels': 'モデルがありません — 上でキーを追加して更新してください。',
+  'settings.noModels': 'モデルがありません — 上でサインインして更新してください。',
+
+  'settings.appearance': '外観',
+  'settings.appearanceHint':
+    'ウィンドウ素材、テーマ、半透明、背景画像/動画を設定します。VSCodeテーマもインポートできます。',
+  'settings.windowEffect': 'ウィンドウ効果',
+  'settings.effectNone': 'なし（不透明）',
+  'settings.effectMica': 'Mica',
+  'settings.effectAcrylic': 'Acrylic',
+  'settings.winOnly': 'Mica / Acrylic は Windows 11 が必要です。',
+  'settings.theme': 'テーマ',
+  'settings.themeDark': 'ダーク',
+  'settings.themeLight': 'ライト',
+  'settings.importTheme': 'VSCodeテーマをインポート…',
+  'settings.themeImported': 'インポート済み: {name}',
+  'settings.uiOpacity': 'UIの不透明度',
+  'settings.background': '背景',
+  'settings.bgNone': 'なし',
+  'settings.bgImage': '画像…',
+  'settings.bgVideo': '動画…',
+  'settings.bgDim': '背景の暗さ',
+
+  'settings.agents': 'エージェント',
+  'settings.agentsHint':
+    '各エージェントは独自の System Prompt と（任意で）固定モデルを持ちます。アクティブなエージェントがチャットを制御します。',
+  'settings.agentName': '名前',
+  'settings.agentModel': 'モデル',
+  'settings.agentModelDefault': '選択中のモデルに従う',
+  'settings.agentSystem': 'System Prompt',
+  'settings.agentAdd': '+ 新規エージェント',
+  'settings.agentDelete': '削除',
+  'settings.agentActive': '✓ 使用中',
+  'settings.agentSetActive': '使用',
+  'settings.permissions': '権限',
+  'settings.permissionsHint':
+    'Lumixa が端末上で行える操作を制御します。危険なシェルコマンドはこの設定に関わらず常に確認します。',
+  'settings.permFileWrite': 'ファイル書き込み',
+  'settings.permRunCommand': 'コマンド実行',
+  'settings.permNetwork': 'ネットワークアクセス',
+  'settings.permAllow': '許可',
+  'settings.permAsk': '確認',
+  'settings.permDeny': '拒否',
 
   'composer.title': '✦ Composer',
   'composer.placeholder':
@@ -70,6 +122,7 @@ export const ja: typeof en = {
   'terminal.dangerConfirm':
     '⚠️ 破壊的な可能性のあるコマンド：\n\n{cmd}\n\n理由: {reason}\n\n実行しますか？',
   'terminal.cancelled': '（キャンセルしました）',
+  'terminal.runConfirm': 'このコマンドを実行しますか？\n\n{cmd}',
 
   'ab.git': 'ソース管理',
   'git.title': 'ソース管理',
@@ -85,5 +138,13 @@ export const ja: typeof en = {
   'git.pull': 'プル',
   'git.refresh': '更新',
   'git.noStaged': '変更をステージしてからコミットしてください。',
-  'git.clean': 'コミットする変更はありません — 作業ツリーはクリーンです。'
+  'git.clean': 'コミットする変更はありません — 作業ツリーはクリーンです。',
+  'git.checkout': 'チェックアウト',
+  'git.merge': 'マージ',
+  'git.rebase': 'リベース',
+  'git.continue': '続行',
+  'git.abort': '中止',
+  'git.noOtherBranches': '他のブランチなし',
+  'git.mergeInProgress': '⚠️ マージ中 — 競合を解決しステージして「続行」してください。',
+  'git.rebaseInProgress': '⚠️ リベース中 — 競合を解決しステージして「続行」してください。'
 }

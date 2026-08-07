@@ -24,11 +24,15 @@ export const en = {
   'editor.applied': '✓ Applied',
   'editor.keep': 'Keep',
   'editor.undo': 'Undo',
+  'editor.diffPreview': 'AI Diff — review',
+  'editor.accept': '✓ Accept',
+  'editor.reject': '✕ Reject',
+  'editor.fixProblems': '✨ Fix {n} problem(s)',
 
   'chat.title': 'AI Chat',
   'chat.clear': 'Clear conversation',
   'chat.emptyNoModel':
-    'No models available. Add a provider API key in Settings (⚙) to start chatting.',
+    'No models available. Sign in with your Claude or ChatGPT account in Settings (⚙) to start chatting.',
   'chat.empty': 'Ask anything about your code. Responses stream in live.',
   'chat.you': 'You',
   'chat.placeholderNoModel': 'Configure a provider first…',
@@ -36,18 +40,66 @@ export const en = {
   'chat.noModels': 'No models',
   'chat.stop': 'Stop',
   'chat.send': 'Send',
+  'chat.background': 'Run in background',
 
   'settings.title': 'Settings',
   'settings.language': 'Language',
-  'settings.providers': 'Providers',
-  'settings.providersHint':
-    'Bring your own API key. Keys are encrypted with your OS keychain (DPAPI / Keychain) and never leave this machine. Providers without a key are hidden from the model picker.',
-  'settings.comingSoon': 'coming soon',
-  'settings.configured': '✓ configured',
+  'settings.accounts': 'Accounts',
+  'settings.accountsHint':
+    'Sign in with your Claude or ChatGPT account to use their models — no API keys. Tokens are encrypted with your OS keychain (DPAPI / Keychain) and never leave this machine.',
+  'settings.signInClaude': 'Sign in with Claude',
+  'settings.signInChatGPT': 'Sign in with ChatGPT',
+  'settings.signOut': 'Sign out',
+  'settings.connected': '✓ connected',
+  'settings.connecting': 'Connecting…',
+  'settings.pasteCodeHint':
+    'A browser window opened. Authorize, then paste the code shown back here.',
+  'settings.pasteCodePlaceholder': 'Paste authorization code',
   'settings.refresh': '↻ Refresh models',
   'settings.refreshing': 'Refreshing…',
   'settings.modelsAvailable': '{n} model(s) available.',
-  'settings.noModels': 'No models yet — add a key above, then refresh.',
+  'settings.noModels': 'No models yet — sign in above, then refresh.',
+
+  'settings.appearance': 'Appearance',
+  'settings.appearanceHint':
+    'Window material, theme, translucency and a background image/video. VS Code themes can be imported.',
+  'settings.windowEffect': 'Window effect',
+  'settings.effectNone': 'None (opaque)',
+  'settings.effectMica': 'Mica',
+  'settings.effectAcrylic': 'Acrylic',
+  'settings.winOnly': 'Mica / Acrylic require Windows 11.',
+  'settings.theme': 'Theme',
+  'settings.themeDark': 'Dark',
+  'settings.themeLight': 'Light',
+  'settings.importTheme': 'Import VS Code theme…',
+  'settings.themeImported': 'Imported: {name}',
+  'settings.uiOpacity': 'UI opacity',
+  'settings.background': 'Background',
+  'settings.bgNone': 'None',
+  'settings.bgImage': 'Image…',
+  'settings.bgVideo': 'Video…',
+  'settings.bgDim': 'Background dim',
+
+  'settings.agents': 'Agents',
+  'settings.agentsHint':
+    'Each agent has its own System Prompt and (optionally) a pinned model. The active agent drives the Chat panel.',
+  'settings.agentName': 'Name',
+  'settings.agentModel': 'Model',
+  'settings.agentModelDefault': 'Follow selected model',
+  'settings.agentSystem': 'System Prompt',
+  'settings.agentAdd': '+ New agent',
+  'settings.agentDelete': 'Delete',
+  'settings.agentActive': '✓ active',
+  'settings.agentSetActive': 'Use',
+  'settings.permissions': 'Permissions',
+  'settings.permissionsHint':
+    'Control what Lumixa may do on your machine. Dangerous shell commands always prompt regardless of this setting.',
+  'settings.permFileWrite': 'Write files',
+  'settings.permRunCommand': 'Run commands',
+  'settings.permNetwork': 'Network access',
+  'settings.permAllow': 'Allow',
+  'settings.permAsk': 'Ask',
+  'settings.permDeny': 'Deny',
 
   'composer.title': '✦ Composer',
   'composer.placeholder':
@@ -68,6 +120,7 @@ export const en = {
   'terminal.dangerConfirm':
     '⚠️ Potentially destructive command:\n\n{cmd}\n\nReason: {reason}\n\nRun it anyway?',
   'terminal.cancelled': '(cancelled)',
+  'terminal.runConfirm': 'Run this command?\n\n{cmd}',
 
   'ab.git': 'Source Control',
   'git.title': 'Source Control',
@@ -83,5 +136,13 @@ export const en = {
   'git.pull': 'Pull',
   'git.refresh': 'Refresh',
   'git.noStaged': 'Stage changes, then commit.',
-  'git.clean': 'Nothing to commit — working tree clean.'
+  'git.clean': 'Nothing to commit — working tree clean.',
+  'git.checkout': 'Checkout',
+  'git.merge': 'Merge',
+  'git.rebase': 'Rebase',
+  'git.continue': 'Continue',
+  'git.abort': 'Abort',
+  'git.noOtherBranches': 'No other branches',
+  'git.mergeInProgress': '⚠️ Merge in progress — resolve conflicts, stage, then Continue.',
+  'git.rebaseInProgress': '⚠️ Rebase in progress — resolve conflicts, stage, then Continue.'
 }

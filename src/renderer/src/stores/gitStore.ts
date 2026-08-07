@@ -8,6 +8,7 @@ Return ONLY the message — a subject line under 72 chars, optionally a blank li
 
 interface GitState {
   status: GitStatus | null
+  branches: string[]
   message: string
   busy: boolean
   generating: boolean
@@ -22,12 +23,18 @@ interface GitState {
   push: () => Promise<void>
   pull: () => Promise<void>
   generateMessage: () => Promise<void>
+  checkout: (branch: string, create?: boolean) => Promise<void>
+  merge: (branch: string) => Promise<void>
+  rebase: (branch: string) => Promise<void>
+  continueOp: () => Promise<void>
+  abortOp: () => Promise<void>
 }
 
 const root = (): string | null => useWorkspaceStore.getState().root
 
 export const useGitStore = create<GitState>((set, get) => ({
   status: null,
+  branches: [],
   message: '',
   busy: false,
   generating: false,
@@ -38,11 +45,15 @@ export const useGitStore = create<GitState>((set, get) => ({
   refresh: async () => {
     const r = root()
     if (!r) {
-      set({ status: null })
+      set({ status: null, branches: [] })
       return
     }
     const status = await window.lumixa.git.status(r)
     set({ status })
+    if (status.isRepo) {
+      const b = await window.lumixa.git.branches(r)
+      set({ branches: b.all })
+    }
   },
 
   stage: async (path) => {
@@ -110,5 +121,37 @@ export const useGitStore = create<GitState>((set, get) => ({
     set({ generating: false })
     if (res.error) set({ lastError: res.error })
     else set({ message: res.text.trim() })
-  }
+  },
+
+  // Run a git operation, surface its output on failure, then refresh.
+  ...(() => {
+    const run = async (
+      fn: (r: string) => Promise<{ ok: boolean; output: string }>
+    ): Promise<void> => {
+      const r = root()
+      if (!r) return
+      set({ busy: true, lastError: null })
+      const res = await fn(r)
+      set({ busy: false, lastError: res.ok ? null : res.output })
+      await get().refresh()
+    }
+    return {
+      checkout: (branch: string, create = false) =>
+        run((r) => window.lumixa.git.checkout(r, branch, create)),
+      merge: (branch: string) => run((r) => window.lumixa.git.merge(r, branch)),
+      rebase: (branch: string) => run((r) => window.lumixa.git.rebase(r, branch)),
+      continueOp: () =>
+        run((r) =>
+          get().status?.operation === 'merge'
+            ? window.lumixa.git.commit(r, 'Merge')
+            : window.lumixa.git.rebaseContinue(r)
+        ),
+      abortOp: () =>
+        run((r) =>
+          get().status?.operation === 'merge'
+            ? window.lumixa.git.mergeAbort(r)
+            : window.lumixa.git.rebaseAbort(r)
+        )
+    }
+  })()
 }))

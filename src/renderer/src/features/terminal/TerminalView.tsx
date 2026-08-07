@@ -4,6 +4,7 @@ import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
 import { checkDanger } from '@renderer/lib/danger'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { usePermissionsStore } from '@renderer/stores/permissionsStore'
 import { useT } from '@renderer/i18n'
 
 /**
@@ -60,17 +61,27 @@ export function TerminalView({
           if (line.length) term.write('\b \b'.repeat(line.length))
           line = ''
 
+          const policy = usePermissionsStore.getState().policies.runCommand
           const verdict = checkDanger(cmd)
-          if (verdict.dangerous) {
+          const cancel = (): void => {
+            term.write(`\r\n\x1b[33m${tRef.current('terminal.cancelled')}\x1b[0m`)
+            send('\n') // nudge a fresh prompt
+          }
+          // 'deny' blocks every command; a detected danger always asks; 'ask'
+          // additionally confirms ordinary commands; 'allow' runs them freely.
+          if (policy === 'deny' && cmd.trim()) {
+            cancel()
+            continue
+          }
+          const needConfirm = verdict.dangerous || (policy === 'ask' && cmd.trim().length > 0)
+          if (needConfirm) {
             const ok = window.confirm(
-              tRef.current('terminal.dangerConfirm', {
-                cmd,
-                reason: verdict.reason ?? ''
-              })
+              verdict.dangerous
+                ? tRef.current('terminal.dangerConfirm', { cmd, reason: verdict.reason ?? '' })
+                : tRef.current('terminal.runConfirm', { cmd })
             )
             if (!ok) {
-              term.write(`\r\n\x1b[33m${tRef.current('terminal.cancelled')}\x1b[0m`)
-              send('\n') // nudge a fresh prompt
+              cancel()
               continue
             }
           }

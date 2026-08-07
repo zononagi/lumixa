@@ -1,4 +1,4 @@
-import { useEffect, type JSX } from 'react'
+import { useEffect, useState, type JSX } from 'react'
 import type { GitFile } from '@shared/ipc'
 import { useGitStore } from '@renderer/stores/gitStore'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
@@ -9,6 +9,7 @@ export function GitPanel(): JSX.Element {
   const root = useWorkspaceStore((s) => s.root)
   const {
     status,
+    branches,
     message,
     busy,
     generating,
@@ -21,9 +22,15 @@ export function GitPanel(): JSX.Element {
     commit,
     push,
     pull,
-    generateMessage
+    generateMessage,
+    checkout,
+    merge,
+    rebase,
+    continueOp,
+    abortOp
   } = useGitStore()
   const t = useT()
+  const [targetBranch, setTargetBranch] = useState('')
 
   useEffect(() => {
     void refresh()
@@ -58,6 +65,8 @@ export function GitPanel(): JSX.Element {
 
   const files: GitFile[] = status?.files ?? []
   const hasStaged = files.some((f) => f.staged)
+  const others = branches.filter((b) => b !== status?.branch)
+  const pick = targetBranch || others[0] || ''
 
   const Row = ({ f }: { f: GitFile }): JSX.Element => (
     <div className="git-row" title={f.path}>
@@ -87,6 +96,48 @@ export function GitPanel(): JSX.Element {
       </div>
 
       <div className="git-body">
+        {status?.operation && (
+          <div className="git-conflict">
+            <span>
+              {status.operation === 'merge'
+                ? t('git.mergeInProgress')
+                : t('git.rebaseInProgress')}
+            </span>
+            <div className="git-remote-actions">
+              <button disabled={busy} onClick={() => void continueOp()}>
+                {t('git.continue')}
+              </button>
+              <button disabled={busy} onClick={() => void abortOp()}>
+                {t('git.abort')}
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="git-branchbox">
+          <select
+            value={pick}
+            onChange={(e) => setTargetBranch(e.target.value)}
+            disabled={others.length === 0}
+          >
+            {others.length === 0 && <option value="">{t('git.noOtherBranches')}</option>}
+            {others.map((b) => (
+              <option key={b} value={b}>
+                {b}
+              </option>
+            ))}
+          </select>
+          <button disabled={busy || !pick} onClick={() => void checkout(pick)}>
+            {t('git.checkout')}
+          </button>
+          <button disabled={busy || !pick} onClick={() => void merge(pick)}>
+            {t('git.merge')}
+          </button>
+          <button disabled={busy || !pick} onClick={() => void rebase(pick)}>
+            {t('git.rebase')}
+          </button>
+        </div>
+
         <div className="git-commitbox">
           <textarea
             placeholder={t('git.commitPlaceholder')}

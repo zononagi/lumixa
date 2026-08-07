@@ -25,6 +25,20 @@ async function git(
   }
 }
 
+/** Detect an in-progress merge or rebase so the UI can offer continue/abort. */
+async function inProgress(cwd: string): Promise<'merge' | 'rebase' | undefined> {
+  const rebase = await git(cwd, ['rev-parse', '--git-path', 'rebase-merge'])
+  const rebaseApply = await git(cwd, ['rev-parse', '--git-path', 'rebase-apply'])
+  const { existsSync } = await import('node:fs')
+  if ((rebase.ok && existsSync(rebase.stdout.trim())) ||
+      (rebaseApply.ok && existsSync(rebaseApply.stdout.trim()))) {
+    return 'rebase'
+  }
+  const merge = await git(cwd, ['rev-parse', '--verify', '--quiet', 'MERGE_HEAD'])
+  if (merge.ok && merge.stdout.trim()) return 'merge'
+  return undefined
+}
+
 export async function status(cwd: string): Promise<GitStatus> {
   const inside = await git(cwd, ['rev-parse', '--is-inside-work-tree'])
   if (!inside.ok || inside.stdout.trim() !== 'true') {
@@ -57,7 +71,7 @@ export async function status(cwd: string): Promise<GitStatus> {
     const path = line.slice(3)
     files.push({ path, index, work, staged: index !== ' ' && index !== '?' })
   }
-  return { isRepo: true, branch, ahead, behind, files }
+  return { isRepo: true, branch, ahead, behind, files, operation: await inProgress(cwd) }
 }
 
 export async function stage(cwd: string, path: string): Promise<GitResult> {
@@ -107,5 +121,31 @@ export async function branches(cwd: string): Promise<GitBranches> {
 export async function checkout(cwd: string, branch: string, create: boolean): Promise<GitResult> {
   const args = create ? ['checkout', '-b', branch] : ['checkout', branch]
   const r = await git(cwd, args)
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+export async function merge(cwd: string, branch: string): Promise<GitResult> {
+  const r = await git(cwd, ['merge', '--no-edit', branch])
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+export async function mergeAbort(cwd: string): Promise<GitResult> {
+  const r = await git(cwd, ['merge', '--abort'])
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+export async function rebase(cwd: string, branch: string): Promise<GitResult> {
+  const r = await git(cwd, ['rebase', branch])
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+export async function rebaseContinue(cwd: string): Promise<GitResult> {
+  // -c core.editor=true skips the interactive editor for the continue step.
+  const r = await git(cwd, ['-c', 'core.editor=true', 'rebase', '--continue'])
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+export async function rebaseAbort(cwd: string): Promise<GitResult> {
+  const r = await git(cwd, ['rebase', '--abort'])
   return { ok: r.ok, output: r.stderr || r.stdout }
 }

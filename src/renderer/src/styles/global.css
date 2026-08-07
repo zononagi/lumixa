@@ -691,6 +691,47 @@ button.primary:disabled {
   max-height: 80px;
   overflow: auto;
 }
+.git-branchbox {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.git-branchbox select {
+  flex: 1 1 100%;
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 12px;
+  outline: none;
+}
+.git-branchbox button {
+  flex: 1;
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.git-branchbox button:hover:not(:disabled) {
+  background: #4a4a4a;
+}
+.git-branchbox button:disabled {
+  opacity: 0.5;
+}
+.git-conflict {
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(224, 108, 117, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
 .git-section {
   display: flex;
   align-items: center;
@@ -751,4 +792,219 @@ button.primary:disabled {
 }
 .git-row button:hover {
   color: #fff;
+}
+
+/* ---- Appearance: background media + translucency (Mica/Acrylic) ---- */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.app-bg-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.app-bg-dim {
+  position: absolute;
+  inset: 0;
+}
+/* When a system backdrop or background media is active, let it show through the
+   shell chrome by clearing the opaque base backgrounds. Individual surfaces
+   keep their rgba() --bg* values (alpha driven by --surface-alpha). */
+html[data-translucent],
+html[data-translucent] body,
+html[data-translucent] #root,
+html[data-translucent] .shell,
+html[data-translucent] .workbench,
+html[data-translucent] .main {
+  background: transparent !important;
+}
+/* Give the Monaco editor a matching translucency so background media reads
+   through the code surface too. */
+html[data-translucent] .editor-host,
+html[data-translucent] .monaco-editor,
+html[data-translucent] .monaco-editor .overflow-guard,
+html[data-translucent] .monaco-editor-background,
+html[data-translucent] .monaco-editor .margin {
+  background: transparent !important;
+}
+
+/* ---- AI Diff / Ghost Preview / One-Click Fix ---- */
+.tabs .spacer {
+  flex: 1;
+}
+.fix-btn {
+  align-self: center;
+  margin: 0 8px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.fix-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.fix-btn:disabled {
+  opacity: 0.6;
+}
+.ai-diff {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 20;
+  width: min(520px, 60%);
+  max-height: 60%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+.ai-diff-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.ai-diff-head .spacer {
+  flex: 1;
+}
+.ai-diff-head button {
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #fff;
+}
+.ai-diff-head button.ok {
+  background: #2ea043;
+}
+.ai-diff-head button.danger {
+  background: var(--danger);
+}
+.ai-diff-body {
+  margin: 0;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  user-select: text;
+}
+.ai-diff-body .dl {
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding: 0 8px;
+}
+.ai-diff-body .dl .sign {
+  display: inline-block;
+  width: 12px;
+  opacity: 0.7;
+}
+.ai-diff-body .dl.add {
+  background: rgba(46, 160, 67, 0.18);
+}
+.ai-diff-body .dl.del {
+  background: rgba(241, 76, 76, 0.16);
+}
+.badge {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+}
+.lumixa-ghost-range {
+  background: rgba(14, 99, 156, 0.18);
+}
+.lumixa-ghost-gutter {
+  background: var(--accent);
+  width: 3px !important;
+  margin-left: 3px;
+}
+
+/* ---- Agents / background tasks ---- */
+.chat-agentbar {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.chat-agentbar select {
+  width: 100%;
+  background: #3c3c3c;
+  color: var(--fg);
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+.bg-badge {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-right: 6px;
+}
+.chat-input .bg-run {
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+.chat-input .bg-run:hover:not(:disabled) {
+  background: #4a4a4a;
+}
+.chat-input .bg-run:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.sidebar-header .spacer {
+  flex: 1;
+}
+
+/* ---- Chat markdown / syntax highlighting ---- */
+.code-block {
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.code-lang {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fg-muted);
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+.code-body {
+  margin: 0;
+  padding: 8px 10px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: pre;
+  tab-size: 2;
+}
+/* monaco.editor.colorize emits its own inline colors; keep our container clean */
+.code-body .mtk1 {
+  color: var(--fg);
+}
+.inline-code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: rgba(127, 127, 127, 0.18);
+  border-radius: 3px;
+  padding: 1px 5px;
 }

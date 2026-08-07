@@ -1,6 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import {
   IPC,
+  type AuthAccount,
+  type AuthResult,
   type ChatDeltaEvent,
   type ChatDoneEvent,
   type ChatErrorEvent,
@@ -11,9 +13,13 @@ import {
   type GitBranches,
   type GitResult,
   type GitStatus,
+  type LoginResult,
   type ModelInfo,
   type OpenFolderResult,
+  type PickFileFilter,
+  type PickFileResult,
   type ProviderId,
+  type WindowEffect,
   type ShellInfo,
   type TerminalCreateRequest,
   type TerminalDataEvent,
@@ -30,14 +36,22 @@ const api = {
     readDir: (path: string): Promise<DirEntry[]> => ipcRenderer.invoke(IPC.fsReadDir, path),
     readFile: (path: string): Promise<string> => ipcRenderer.invoke(IPC.fsReadFile, path),
     writeFile: (path: string, content: string): Promise<void> =>
-      ipcRenderer.invoke(IPC.fsWriteFile, path, content)
+      ipcRenderer.invoke(IPC.fsWriteFile, path, content),
+    pickFile: (filters: PickFileFilter[], withContent = false): Promise<PickFileResult | null> =>
+      ipcRenderer.invoke(IPC.fsPickFile, filters, withContent)
   },
-  secrets: {
-    set: (provider: ProviderId, key: string): Promise<void> =>
-      ipcRenderer.invoke(IPC.secretsSet, provider, key),
-    has: (provider: ProviderId): Promise<boolean> =>
-      ipcRenderer.invoke(IPC.secretsGet, provider),
-    list: (): Promise<ProviderId[]> => ipcRenderer.invoke(IPC.secretsList)
+  window: {
+    setEffect: (effect: WindowEffect): Promise<void> =>
+      ipcRenderer.invoke(IPC.windowSetEffect, effect)
+  },
+  auth: {
+    status: (): Promise<AuthAccount[]> => ipcRenderer.invoke(IPC.authStatus),
+    login: (provider: ProviderId): Promise<LoginResult> =>
+      ipcRenderer.invoke(IPC.authLogin, provider),
+    submitCode: (provider: ProviderId, code: string): Promise<AuthResult> =>
+      ipcRenderer.invoke(IPC.authSubmitCode, provider, code),
+    logout: (provider: ProviderId): Promise<AuthResult> =>
+      ipcRenderer.invoke(IPC.authLogout, provider)
   },
   ai: {
     listModels: (): Promise<ModelInfo[]> => ipcRenderer.invoke(IPC.aiListModels),
@@ -97,7 +111,15 @@ const api = {
     pull: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitPull, cwd),
     branches: (cwd: string): Promise<GitBranches> => ipcRenderer.invoke(IPC.gitBranches, cwd),
     checkout: (cwd: string, branch: string, create: boolean): Promise<GitResult> =>
-      ipcRenderer.invoke(IPC.gitCheckout, cwd, branch, create)
+      ipcRenderer.invoke(IPC.gitCheckout, cwd, branch, create),
+    merge: (cwd: string, branch: string): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitMerge, cwd, branch),
+    mergeAbort: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitMergeAbort, cwd),
+    rebase: (cwd: string, branch: string): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitRebase, cwd, branch),
+    rebaseContinue: (cwd: string): Promise<GitResult> =>
+      ipcRenderer.invoke(IPC.gitRebaseContinue, cwd),
+    rebaseAbort: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitRebaseAbort, cwd)
   },
   project: {
     context: (root: string): Promise<string> => ipcRenderer.invoke(IPC.projectContext, root)

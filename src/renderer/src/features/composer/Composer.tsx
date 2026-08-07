@@ -4,6 +4,8 @@ import { useUiStore } from '@renderer/stores/uiStore'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { useAppearanceStore } from '@renderer/stores/appearanceStore'
+import { usePermissionsStore } from '@renderer/stores/permissionsStore'
 import { complete } from '@renderer/lib/ai'
 import { useT } from '@renderer/i18n'
 import { languageForFile } from '@renderer/features/editor/monacoSetup'
@@ -26,6 +28,8 @@ export function Composer(): JSX.Element | null {
   const tabs = useEditorStore((s) => s.tabs)
   const setSavedContent = useEditorStore((s) => s.setSavedContent)
   const hasModel = useSettingsStore((s) => s.models.length > 0)
+  const monacoTheme = useAppearanceStore((s) => s.monacoTheme)
+  const ensure = usePermissionsStore((s) => s.ensure)
   const t = useT()
 
   const [instruction, setInstruction] = useState('')
@@ -81,8 +85,10 @@ export function Composer(): JSX.Element | null {
     setItems((prev) => prev.map((it) => (it.path === path ? { ...it, status } : it)))
 
   const applyAccepted = async (): Promise<void> => {
-    for (const it of items) {
-      if (it.status !== 'accepted') continue
+    const accepted = items.filter((it) => it.status === 'accepted')
+    if (accepted.length === 0) return
+    if (!ensure('fileWrite', accepted.map((it) => it.path).join('\n'))) return
+    for (const it of accepted) {
       await window.lumixa.fs.writeFile(it.path, it.newContent)
       setSavedContent(it.path, it.newContent)
       setStatus(it.path, 'applied')
@@ -151,7 +157,7 @@ export function Composer(): JSX.Element | null {
                 <div className="review-diff">
                   <DiffEditor
                     height="240px"
-                    theme="vs-dark"
+                    theme={monacoTheme}
                     language={languageForFile(it.name)}
                     original={it.original}
                     modified={it.newContent}

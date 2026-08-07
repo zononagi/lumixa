@@ -16,11 +16,16 @@ export const IPC = {
   fsReadDir: 'fs:readDir',
   fsReadFile: 'fs:readFile',
   fsWriteFile: 'fs:writeFile',
+  fsPickFile: 'fs:pickFile',
 
-  // Secure secrets (API keys, per provider)
-  secretsGet: 'secrets:get',
-  secretsSet: 'secrets:set',
-  secretsList: 'secrets:list',
+  // Window appearance (Windows 11 Mica/Acrylic)
+  windowSetEffect: 'window:setEffect',
+
+  // Account linking (OAuth) — replaces API keys entirely.
+  authStatus: 'auth:status', // -> AuthAccount[]
+  authLogin: 'auth:login', // start the OAuth flow for a provider
+  authSubmitCode: 'auth:submitCode', // paste-flow: hand back the authorization code
+  authLogout: 'auth:logout', // sign out / forget tokens for a provider
 
   // AI providers
   aiListModels: 'ai:listModels',
@@ -53,6 +58,11 @@ export const IPC = {
   gitPull: 'git:pull',
   gitBranches: 'git:branches',
   gitCheckout: 'git:checkout',
+  gitMerge: 'git:merge',
+  gitMergeAbort: 'git:mergeAbort',
+  gitRebase: 'git:rebase',
+  gitRebaseContinue: 'git:rebaseContinue',
+  gitRebaseAbort: 'git:rebaseAbort',
 
   // Project context / memory
   projectContext: 'project:context'
@@ -62,7 +72,36 @@ export const IPC = {
 // Domain types
 // ---------------------------------------------------------------------------
 
-export type ProviderId = 'anthropic' | 'openai' | 'gemini' | 'openrouter' | 'ollama'
+export type ProviderId = 'anthropic' | 'openai'
+
+// ---------------------------------------------------------------------------
+// Account linking (OAuth)
+// ---------------------------------------------------------------------------
+
+/** Connection state for one provider, surfaced to the renderer (never tokens). */
+export interface AuthAccount {
+  provider: ProviderId
+  connected: boolean
+  /** Human-friendly label for the linked account (email / plan), when known. */
+  label?: string
+}
+
+/**
+ * Result of starting a login. `needsCode` is true for providers whose OAuth
+ * redirect can't be captured automatically (Anthropic): the browser shows an
+ * authorization code the user pastes back via `auth:submitCode`. Loopback
+ * providers (OpenAI) resolve straight to `ok` once the browser round-trip ends.
+ */
+export interface LoginResult {
+  ok: boolean
+  needsCode?: boolean
+  error?: string
+}
+
+export interface AuthResult {
+  ok: boolean
+  error?: string
+}
 
 export interface DirEntry {
   name: string
@@ -73,6 +112,22 @@ export interface DirEntry {
 export interface OpenFolderResult {
   root: string
   name: string
+}
+
+/** Windows 11 system backdrop material. 'none' = opaque (default). */
+export type WindowEffect = 'none' | 'mica' | 'acrylic'
+
+export interface PickFileFilter {
+  name: string
+  extensions: string[]
+}
+
+export interface PickFileResult {
+  path: string
+  /** UTF-8 content, included only when `withContent` was requested. */
+  content?: string
+  /** A `lumixa-media://` URL usable directly as an <img>/<video> src. */
+  mediaUrl: string
 }
 
 export interface ModelInfo {
@@ -148,6 +203,8 @@ export interface GitStatus {
   ahead: number
   behind: number
   files: GitFile[]
+  /** Set when a merge or rebase is mid-flight (conflicts to resolve). */
+  operation?: 'merge' | 'rebase'
   error?: string
 }
 

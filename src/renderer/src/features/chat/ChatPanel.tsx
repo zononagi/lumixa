@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState, type JSX } from 'react'
 import { useChatStore } from '@renderer/stores/chatStore'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
+import { useAgentsStore } from '@renderer/stores/agentsStore'
+import { useTasksStore } from '@renderer/stores/tasksStore'
+import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { MarkdownMessage } from './MarkdownMessage'
 import { useT } from '@renderer/i18n'
 
 /** Right-hand AI chat panel with streaming responses and a model picker. */
 export function ChatPanel(): JSX.Element {
-  const { messages, streaming, send, cancel, clear } = useChatStore()
+  const { messages, streaming, send, cancel, clear, note } = useChatStore()
   const { models, selectedModel, selectModel } = useSettingsStore()
+  const { agents, activeId, setActive, active } = useAgentsStore()
+  const runTask = useTasksStore((s) => s.run)
+  const running = useTasksStore((s) => s.tasks.filter((tk) => tk.status === 'running').length)
   const [text, setText] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
   const t = useT()
@@ -21,15 +28,44 @@ export function ChatPanel(): JSX.Element {
     setText('')
   }
 
+  const runBackground = (): void => {
+    const prompt = text.trim()
+    if (!prompt) return
+    const agent = active()
+    const projectContext = useWorkspaceStore.getState().projectContext
+    const system = agent.systemPrompt + (projectContext ? `\n\n${projectContext}` : '')
+    setText('')
+    void runTask(`${agent.name}: ${prompt.slice(0, 40)}`, system, prompt, agent.model ?? undefined).then(
+      (id) => {
+        const task = useTasksStore.getState().tasks.find((tk) => tk.id === id)
+        if (task?.result) note(`🕒 ${task.title}\n\n${task.result}`)
+        else if (task?.error) note(`⚠️ ${task.title}: ${task.error}`)
+      }
+    )
+  }
+
   const noModels = models.length === 0
+  const agentName = active().name
 
   return (
     <div className="chat">
       <div className="sidebar-header">
         <span>{t('chat.title')}</span>
+        <span className="spacer" />
+        {running > 0 && <span className="bg-badge">🕒 {running}</span>}
         <button title={t('chat.clear')} onClick={clear}>
           🗑
         </button>
+      </div>
+
+      <div className="chat-agentbar">
+        <select value={activeId} onChange={(e) => setActive(e.target.value)}>
+          {agents.map((a) => (
+            <option key={a.id} value={a.id}>
+              🤖 {a.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="chat-messages" ref={scrollRef}>
@@ -40,9 +76,9 @@ export function ChatPanel(): JSX.Element {
         )}
         {messages.map((m) => (
           <div key={m.id} className={`msg ${m.role}`}>
-            <div className="who">{m.role === 'user' ? t('chat.you') : 'Lumixa'}</div>
+            <div className="who">{m.role === 'user' ? t('chat.you') : agentName}</div>
             <div className="bubble">
-              {m.content}
+              {m.role === 'assistant' ? <MarkdownMessage content={m.content} /> : m.content}
               {m.streaming && <span className="cursor">▋</span>}
             </div>
           </div>
@@ -80,9 +116,19 @@ export function ChatPanel(): JSX.Element {
               {t('chat.stop')}
             </button>
           ) : (
-            <button className="send" onClick={submit} disabled={noModels || !text.trim()}>
-              {t('chat.send')}
-            </button>
+            <>
+              <button
+                className="bg-run"
+                title={t('chat.background')}
+                onClick={runBackground}
+                disabled={noModels || !text.trim()}
+              >
+                🕒
+              </button>
+              <button className="send" onClick={submit} disabled={noModels || !text.trim()}>
+                {t('chat.send')}
+              </button>
+            </>
           )}
         </div>
       </div>

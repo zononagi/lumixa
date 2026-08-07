@@ -1,37 +1,56 @@
 import { create } from 'zustand'
-import type { ModelInfo, ProviderId } from '@shared/ipc'
+import type { AuthAccount, LoginResult, ModelInfo, ProviderId } from '@shared/ipc'
 
 /**
- * Settings + model catalog. Tracks which providers have a key configured and
- * the list of available models (only reachable models appear). Per the spec,
- * unconfigured providers are hidden entirely from the model picker.
+ * Settings + model catalog. Tracks which providers are linked (OAuth account
+ * connected) and the list of available models. Per the spec, providers that
+ * aren't signed in are hidden entirely from the model picker.
  */
 interface SettingsState {
-  configured: ProviderId[]
+  accounts: AuthAccount[]
   models: ModelInfo[]
   selectedModel: string | null
   loadingModels: boolean
 
-  refreshConfigured: () => Promise<void>
-  saveKey: (provider: ProviderId, key: string) => Promise<void>
+  refreshAuth: () => Promise<void>
+  login: (provider: ProviderId) => Promise<LoginResult>
+  submitCode: (provider: ProviderId, code: string) => Promise<void>
+  logout: (provider: ProviderId) => Promise<void>
   refreshModels: () => Promise<void>
   selectModel: (id: string) => void
 }
 
 export const useSettingsStore = create<SettingsState>((set, get) => ({
-  configured: [],
+  accounts: [],
   models: [],
   selectedModel: null,
   loadingModels: false,
 
-  refreshConfigured: async () => {
-    const configured = await window.lumixa.secrets.list()
-    set({ configured })
+  refreshAuth: async () => {
+    const accounts = await window.lumixa.auth.status()
+    set({ accounts })
   },
 
-  saveKey: async (provider, key) => {
-    await window.lumixa.secrets.set(provider, key)
-    await get().refreshConfigured()
+  login: async (provider) => {
+    const result = await window.lumixa.auth.login(provider)
+    // Loopback providers finish here; refresh once they're linked.
+    if (result.ok && !result.needsCode) {
+      await get().refreshAuth()
+      await get().refreshModels()
+    }
+    return result
+  },
+
+  submitCode: async (provider, code) => {
+    const result = await window.lumixa.auth.submitCode(provider, code)
+    if (!result.ok) throw new Error(result.error ?? 'Sign-in failed.')
+    await get().refreshAuth()
+    await get().refreshModels()
+  },
+
+  logout: async (provider) => {
+    await window.lumixa.auth.logout(provider)
+    await get().refreshAuth()
     await get().refreshModels()
   },
 

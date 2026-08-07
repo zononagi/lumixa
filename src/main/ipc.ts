@@ -1,6 +1,7 @@
 import { ipcMain, type BrowserWindow } from 'electron'
 import {
   IPC,
+  type AuthAccount,
   type ChatStartRequest,
   type CompleteRequest,
   type CompleteResult,
@@ -8,9 +9,11 @@ import {
   type ProviderId,
   type TerminalCreateRequest
 } from '@shared/ipc'
-import { openFolderDialog, readDir, readFile, writeFile } from './services/fs'
-import { getSecret, setSecret, listConfiguredProviders } from './services/secrets'
+import { openFolderDialog, readDir, readFile, writeFile, pickFile } from './services/fs'
+import { getTokens, clearTokens, listConnectedProviders } from './services/tokenStore'
+import { startLogin, submitCode, getValidAccessToken, getAccountMeta } from './services/oauth'
 import { getProvider, registeredProviderIds } from './ai/registry'
+import type { Credential } from './ai/types'
 import {
   createTerminal,
   killTerminal,
@@ -32,27 +35,60 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   ipcMain.handle(IPC.fsWriteFile, (_e, filePath: string, content: string) =>
     writeFile(filePath, content)
   )
-
-  // --- Secrets --------------------------------------------------------------
-  ipcMain.handle(IPC.secretsSet, (_e, provider: ProviderId, key: string) =>
-    setSecret(provider, key)
+  ipcMain.handle(IPC.fsPickFile, (_e, filters, withContent: boolean) =>
+    pickFile(filters, withContent)
   )
-  ipcMain.handle(IPC.secretsGet, async (_e, provider: ProviderId) => {
-    // Renderer only needs to know a key exists, never its value.
-    return (await getSecret(provider)) !== null
+
+  // --- Window appearance (Windows 11 Mica / Acrylic) ------------------------
+  ipcMain.handle(IPC.windowSetEffect, (_e, effect: 'none' | 'mica' | 'acrylic') => {
+    if (win.isDestroyed()) return
+    if (process.platform !== 'win32') return // Mica/Acrylic are Windows 11 only.
+    if (effect === 'none') {
+      win.setBackgroundMaterial('none')
+      win.setBackgroundColor('#1e1e1e')
+    } else {
+      // A transparent background lets the system material show through.
+      win.setBackgroundColor('#00000000')
+      win.setBackgroundMaterial(effect)
+    }
   })
-  ipcMain.handle(IPC.secretsList, () => listConfiguredProviders())
+
+  // --- Account linking (OAuth) ----------------------------------------------
+  ipcMain.handle(IPC.authStatus, async (): Promise<AuthAccount[]> => {
+    const connected = await listConnectedProviders()
+    const out: AuthAccount[] = []
+    for (const id of registeredProviderIds()) {
+      const tokens = connected.includes(id) ? await getTokens(id) : null
+      out.push({ provider: id, connected: tokens !== null, label: tokens?.label })
+    }
+    return out
+  })
+  ipcMain.handle(IPC.authLogin, (_e, provider: ProviderId) => startLogin(provider))
+  ipcMain.handle(IPC.authSubmitCode, (_e, provider: ProviderId, code: string) =>
+    submitCode(provider, code)
+  )
+  ipcMain.handle(IPC.authLogout, async (_e, provider: ProviderId) => {
+    await clearTokens(provider)
+    return { ok: true }
+  })
+
+  // Resolve a valid credential (refreshing the token if needed) for a provider.
+  const credentialFor = async (provider: ProviderId): Promise<Credential | null> => {
+    const token = await getValidAccessToken(provider)
+    if (!token) return null
+    return { token, meta: await getAccountMeta(provider) }
+  }
 
   // --- AI: model discovery --------------------------------------------------
   ipcMain.handle(IPC.aiListModels, async (): Promise<ModelInfo[]> => {
-    const configured = await listConfiguredProviders()
+    const connected = await listConnectedProviders()
     const out: ModelInfo[] = []
     for (const id of registeredProviderIds()) {
-      if (!configured.includes(id)) continue // hide unconfigured providers
-      const key = await getSecret(id)
+      if (!connected.includes(id)) continue // hide unlinked providers
       const provider = getProvider(id)
-      if (!key || !provider) continue
-      out.push(...(await provider.listModels(key)))
+      const cred = await credentialFor(id)
+      if (!provider || !cred) continue
+      out.push(...(await provider.listModels(cred)))
     }
     return out
   })
@@ -62,15 +98,15 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   ipcMain.handle(IPC.aiChatStart, async (_e, req: ChatStartRequest) => {
     const provider = getProvider(req.provider)
-    const key = await getSecret(req.provider)
+    const cred = await credentialFor(req.provider)
     const send = (channel: string, payload: unknown): void => {
       if (!win.isDestroyed()) win.webContents.send(channel, payload)
     }
 
-    if (!provider || !key) {
+    if (!provider || !cred) {
       send(IPC.aiChatError, {
         requestId: req.requestId,
-        message: `Provider "${req.provider}" is not configured.`
+        message: `Provider "${req.provider}" is not linked. Sign in from Settings.`
       })
       return
     }
@@ -79,7 +115,7 @@ export function registerIpcHandlers(win: BrowserWindow): void {
     active.set(req.requestId, controller)
 
     await provider.streamChat(
-      key,
+      cred,
       { model: req.model, system: req.system, messages: req.messages },
       {
         signal: controller.signal,
@@ -108,15 +144,15 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   // --- AI: one-shot completion (Composer / Inline Edit) ---------------------
   ipcMain.handle(IPC.aiComplete, async (_e, req: CompleteRequest): Promise<CompleteResult> => {
     const provider = getProvider(req.provider)
-    const key = await getSecret(req.provider)
-    if (!provider || !key) {
-      return { text: '', error: `Provider "${req.provider}" is not configured.` }
+    const cred = await credentialFor(req.provider)
+    if (!provider || !cred) {
+      return { text: '', error: `Provider "${req.provider}" is not linked. Sign in from Settings.` }
     }
     return new Promise<CompleteResult>((resolve) => {
       let acc = ''
       const controller = new AbortController()
       void provider.streamChat(
-        key,
+        cred,
         { model: req.model, system: req.system, messages: req.messages },
         {
           signal: controller.signal,
@@ -160,6 +196,11 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   ipcMain.handle(IPC.gitCheckout, (_e, cwd: string, branch: string, create: boolean) =>
     git.checkout(cwd, branch, create)
   )
+  ipcMain.handle(IPC.gitMerge, (_e, cwd: string, branch: string) => git.merge(cwd, branch))
+  ipcMain.handle(IPC.gitMergeAbort, (_e, cwd: string) => git.mergeAbort(cwd))
+  ipcMain.handle(IPC.gitRebase, (_e, cwd: string, branch: string) => git.rebase(cwd, branch))
+  ipcMain.handle(IPC.gitRebaseContinue, (_e, cwd: string) => git.rebaseContinue(cwd))
+  ipcMain.handle(IPC.gitRebaseAbort, (_e, cwd: string) => git.rebaseAbort(cwd))
 
   // --- Project context / memory ---------------------------------------------
   ipcMain.handle(IPC.projectContext, (_e, root: string) => buildProjectContext(root))

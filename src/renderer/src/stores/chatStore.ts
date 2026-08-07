@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { ChatMessage, ProviderId } from '@shared/ipc'
 import { useSettingsStore } from './settingsStore'
 import { useWorkspaceStore } from './workspaceStore'
+import { useAgentsStore } from './agentsStore'
 
 /**
  * Chat state. Holds the conversation, streams assistant tokens into the last
@@ -23,6 +24,8 @@ interface ChatState {
   send: (text: string) => Promise<void>
   cancel: () => void
   clear: () => void
+  /** Append a ready-made assistant message (e.g. a finished background task). */
+  note: (text: string) => void
 }
 
 const uid = (): string => Math.random().toString(36).slice(2) + Date.now().toString(36)
@@ -82,9 +85,13 @@ export const useChatStore = create<ChatState>((set, get) => ({
     if (!trimmed || get().streaming) return
 
     const { selectedModel, models } = useSettingsStore.getState()
-    if (!selectedModel) return
+    const agent = useAgentsStore.getState().active()
+    // Honour the agent's pinned model when it's actually available.
+    const model =
+      agent.model && models.some((m) => m.id === agent.model) ? agent.model : selectedModel
+    if (!model) return
     const provider: ProviderId =
-      models.find((m) => m.id === selectedModel)?.provider ?? 'anthropic'
+      models.find((m) => m.id === model)?.provider ?? 'anthropic'
 
     const requestId = uid()
     const userMsg: DisplayMessage = { id: uid(), role: 'user', content: trimmed }
@@ -108,14 +115,12 @@ export const useChatStore = create<ChatState>((set, get) => ({
     }))
 
     const projectContext = useWorkspaceStore.getState().projectContext
-    const system =
-      'You are Lumixa, an AI pair-programmer embedded in a code editor. Be concise and practical.' +
-      (projectContext ? `\n\n${projectContext}` : '')
+    const system = agent.systemPrompt + (projectContext ? `\n\n${projectContext}` : '')
 
     await window.lumixa.ai.startChat({
       requestId,
       provider,
-      model: selectedModel,
+      model,
       system,
       messages: history
     })
@@ -126,5 +131,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
     if (id) void window.lumixa.ai.cancelChat(id)
   },
 
-  clear: () => set({ messages: [], lastUsage: null })
+  clear: () => set({ messages: [], lastUsage: null }),
+
+  note: (text) =>
+    set((s) => ({
+      messages: [...s.messages, { id: uid(), role: 'assistant', content: text }]
+    }))
 }))
