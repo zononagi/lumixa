@@ -10,6 +10,20 @@
 
 ---
 
+<div align="center">
+
+## ⬇️ ダウンロード / Download
+
+### [**Windows インストーラー (.exe) — v0.1.0**](https://github.com/7g3n/lumixa/releases/download/v0.1.0/Lumixa-Setup-0.1.0.exe)
+
+[すべてのリリース / All releases →](https://github.com/7g3n/lumixa/releases)
+
+<sub>未署名ビルドのため Windows SmartScreen の警告が出る場合があります → 「詳細情報」→「実行」。<br/>Unsigned build — if SmartScreen warns, click **More info → Run anyway**.</sub>
+
+</div>
+
+---
+
 # 日本語
 
 ## Lumixaとは
