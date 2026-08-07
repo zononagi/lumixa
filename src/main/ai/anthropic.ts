@@ -1,24 +1,19 @@
 import Anthropic from '@anthropic-ai/sdk'
 import type { ModelInfo } from '@shared/ipc'
-import type { AIProvider, ChatParams, Credential, StreamHandlers } from './types'
+import type { AIProvider, ChatParams, StreamHandlers } from './types'
 
 /**
- * Anthropic adapter — uses the Claude subscription OAuth token (Claude Pro/Max),
- * not an API key. The token is sent as a Bearer credential with the OAuth beta
- * header; no `x-api-key` is set.
+ * Anthropic adapter. Streams via the SDK's `messages.stream` helper and
+ * forwards text deltas through the handler callbacks. Model discovery uses the
+ * live Models API so only models the key can actually reach are surfaced.
  *
- * The subscription (Claude Code) OAuth grant expects requests to identify as
- * Claude Code — the first system block must state that identity, otherwise the
- * inference endpoint rejects the request. We prepend it and keep the caller's
- * own system prompt as a second block.
+ * Auth is an Anthropic API key (from console.anthropic.com). Consumer
+ * (Claude Pro/Max) OAuth tokens are intentionally NOT supported — since
+ * Jan 2026 Anthropic blocks those outside Claude Code / Claude.ai.
  */
 
-const CLAUDE_CODE_IDENTITY = "You are Claude Code, Anthropic's official CLI for Claude."
-const OAUTH_BETA = 'oauth-2025-04-20'
-
-// Models available under the subscription grant. (The Models API isn't reachable
-// with an OAuth inference token, so this list is static and easy to update.)
-const MODELS: ModelInfo[] = [
+// Fallback list used when the Models API can't be reached but the key is set.
+const FALLBACK_MODELS: ModelInfo[] = [
   { id: 'claude-opus-4-8', displayName: 'Claude Opus 4.8', provider: 'anthropic' },
   { id: 'claude-sonnet-4-6', displayName: 'Claude Sonnet 4.6', provider: 'anthropic' },
   { id: 'claude-haiku-4-5', displayName: 'Claude Haiku 4.5', provider: 'anthropic' }
@@ -27,28 +22,35 @@ const MODELS: ModelInfo[] = [
 export class AnthropicProvider implements AIProvider {
   readonly id = 'anthropic' as const
 
-  private client(token: string): Anthropic {
-    // `authToken` sets `Authorization: Bearer …` and omits `x-api-key`.
-    return new Anthropic({ authToken: token, defaultHeaders: { 'anthropic-beta': OAUTH_BETA } })
+  private client(apiKey: string): Anthropic {
+    return new Anthropic({ apiKey })
   }
 
-  async listModels(_cred: Credential): Promise<ModelInfo[]> {
-    return MODELS
-  }
-
-  async streamChat(cred: Credential, params: ChatParams, handlers: StreamHandlers): Promise<void> {
-    const client = this.client(cred.token)
+  async listModels(apiKey: string): Promise<ModelInfo[]> {
     try {
-      const system = [
-        { type: 'text' as const, text: CLAUDE_CODE_IDENTITY },
-        ...(params.system ? [{ type: 'text' as const, text: params.system }] : [])
-      ]
+      const client = this.client(apiKey)
+      const models: ModelInfo[] = []
+      for await (const m of client.models.list()) {
+        models.push({
+          id: m.id,
+          displayName: m.display_name ?? m.id,
+          provider: 'anthropic'
+        })
+      }
+      return models.length > 0 ? models : FALLBACK_MODELS
+    } catch {
+      return FALLBACK_MODELS
+    }
+  }
 
+  async streamChat(apiKey: string, params: ChatParams, handlers: StreamHandlers): Promise<void> {
+    const client = this.client(apiKey)
+    try {
       const stream = client.messages.stream(
         {
           model: params.model,
           max_tokens: 8192,
-          system,
+          system: params.system,
           messages: params.messages.map((m) => ({ role: m.role, content: m.content }))
         },
         { signal: handlers.signal }

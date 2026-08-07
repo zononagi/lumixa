@@ -34,7 +34,7 @@ export const ko: typeof en = {
   'chat.title': 'AI 채팅',
   'chat.clear': '대화 지우기',
   'chat.emptyNoModel':
-    '사용 가능한 모델이 없습니다. 설정(⚙)에서 Claude 또는 ChatGPT 계정으로 로그인하세요.',
+    '사용 가능한 모델이 없습니다. 설정(⚙)에서 제공자 API 키를 추가하세요.',
   'chat.empty': '코드에 대해 무엇이든 물어보세요. 응답이 실시간으로 표시됩니다.',
   'chat.you': '나',
   'chat.placeholderNoModel': '먼저 제공자를 설정하세요…',
@@ -46,20 +46,15 @@ export const ko: typeof en = {
 
   'settings.title': '설정',
   'settings.language': '언어',
-  'settings.accounts': '계정',
-  'settings.accountsHint':
-    'Claude 또는 ChatGPT 계정으로 로그인하여 모델을 사용합니다(API 키 불필요). 토큰은 OS 키체인(DPAPI / Keychain)으로 암호화되며 이 기기를 벗어나지 않습니다.',
-  'settings.signInClaude': 'Claude로 로그인',
-  'settings.signInChatGPT': 'ChatGPT로 로그인',
-  'settings.signOut': '로그아웃',
-  'settings.connected': '✓ 연결됨',
-  'settings.connecting': '연결 중…',
-  'settings.pasteCodeHint': '브라우저 창이 열렸습니다. 승인 후 표시된 코드를 여기에 붙여넣으세요.',
-  'settings.pasteCodePlaceholder': '인증 코드 붙여넣기',
+  'settings.providers': '제공자',
+  'settings.providersHint':
+    '본인의 API 키를 사용합니다. 키는 OS 키체인(DPAPI / Keychain)으로 암호화되며 이 기기를 벗어나지 않습니다. 키가 없는 제공자는 모델 선택에 표시되지 않습니다.',
+  'settings.configured': '✓ 설정됨',
+  'settings.getKey': '키 발급: {where}',
   'settings.refresh': '↻ 모델 새로고침',
   'settings.refreshing': '새로고침 중…',
   'settings.modelsAvailable': '{n}개 모델 사용 가능.',
-  'settings.noModels': '아직 모델이 없습니다 — 위에서 로그인한 후 새로고침하세요.',
+  'settings.noModels': '아직 모델이 없습니다 — 위에서 키를 추가한 후 새로고침하세요.',
 
   'settings.appearance': '모양',
   'settings.appearanceHint':

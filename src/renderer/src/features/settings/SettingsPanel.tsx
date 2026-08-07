@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties, type JSX } from 'react'
-import type { AuthAccount, ProviderId, WindowEffect } from '@shared/ipc'
+import type { ProviderId, WindowEffect } from '@shared/ipc'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
 import {
   useAppearanceStore,
@@ -13,27 +13,31 @@ import { useT, useI18nStore, LOCALES, type TKey } from '@renderer/i18n'
 interface ProviderMeta {
   id: ProviderId
   name: string
-  signInLabel: TKey
+  placeholder: string
+  /** Where to get a key — shown as a hint under the field. */
+  keysUrl: string
 }
 
 const PROVIDERS: ProviderMeta[] = [
-  { id: 'anthropic', name: 'Anthropic (Claude)', signInLabel: 'settings.signInClaude' },
-  { id: 'openai', name: 'OpenAI (ChatGPT)', signInLabel: 'settings.signInChatGPT' }
+  {
+    id: 'anthropic',
+    name: 'Anthropic (Claude)',
+    placeholder: 'sk-ant-…',
+    keysUrl: 'console.anthropic.com → API Keys'
+  },
+  { id: 'openai', name: 'OpenAI', placeholder: 'sk-…', keysUrl: 'platform.openai.com → API keys' }
 ]
 
-/**
- * Settings view: account linking (OAuth) + model refresh. Users sign in with
- * their Claude / ChatGPT account — no API keys. Tokens are stored encrypted in
- * the main process and never reach the renderer.
- */
+/** Settings view: API key management + model refresh. Keys are stored encrypted. */
 export function SettingsPanel(): JSX.Element {
-  const { accounts, refreshAuth, refreshModels, models, loadingModels } = useSettingsStore()
+  const { configured, refreshConfigured, saveKey, refreshModels, models, loadingModels } =
+    useSettingsStore()
   const t = useT()
   const { locale, setLocale } = useI18nStore()
 
   useEffect(() => {
-    void refreshAuth()
-  }, [refreshAuth])
+    void refreshConfigured()
+  }, [refreshConfigured])
 
   return (
     <div className="sidebar">
@@ -63,14 +67,15 @@ export function SettingsPanel(): JSX.Element {
           </select>
         </div>
 
-        <h2>{t('settings.accounts')}</h2>
-        <p className="hint">{t('settings.accountsHint')}</p>
+        <h2>{t('settings.providers')}</h2>
+        <p className="hint">{t('settings.providersHint')}</p>
 
         {PROVIDERS.map((p) => (
-          <AccountRow
+          <ProviderRow
             key={p.id}
             meta={p}
-            account={accounts.find((a) => a.provider === p.id)}
+            configured={configured.includes(p.id)}
+            onSave={(key) => void saveKey(p.id, key)}
           />
         ))}
 
@@ -103,93 +108,44 @@ export function SettingsPanel(): JSX.Element {
   )
 }
 
-function AccountRow({
+function ProviderRow({
   meta,
-  account
+  configured,
+  onSave
 }: {
   meta: ProviderMeta
-  account?: AuthAccount
+  configured: boolean
+  onSave: (key: string) => void
 }): JSX.Element {
-  const { login, submitCode, logout } = useSettingsStore()
+  const [value, setValue] = useState('')
   const t = useT()
-  const [busy, setBusy] = useState(false)
-  const [needsCode, setNeedsCode] = useState(false)
-  const [code, setCode] = useState('')
-  const [error, setError] = useState<string | null>(null)
-
-  const connected = account?.connected ?? false
-
-  const onSignIn = async (): Promise<void> => {
-    setBusy(true)
-    setError(null)
-    try {
-      const result = await login(meta.id)
-      if (!result.ok) setError(result.error ?? 'Sign-in failed.')
-      else if (result.needsCode) setNeedsCode(true)
-    } finally {
-      setBusy(false)
-    }
-  }
-
-  const onSubmitCode = async (): Promise<void> => {
-    setBusy(true)
-    setError(null)
-    try {
-      await submitCode(meta.id, code.trim())
-      setNeedsCode(false)
-      setCode('')
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e))
-    } finally {
-      setBusy(false)
-    }
-  }
 
   return (
     <div className="provider-row">
       <label>
         {meta.name}
-        {connected && (
-          <span className="ok">
-            {' '}
-            {t('settings.connected')}
-            {account?.label ? ` — ${account.label}` : ''}
-          </span>
-        )}
+        {configured && <span className="ok">{t('settings.configured')}</span>}
       </label>
-
-      {connected ? (
-        <div className="field">
-          <button onClick={() => void logout(meta.id)}>{t('settings.signOut')}</button>
-        </div>
-      ) : needsCode ? (
-        <div className="field" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 6 }}>
-          <p className="hint">{t('settings.pasteCodeHint')}</p>
-          <div className="field">
-            <input
-              type="text"
-              placeholder={t('settings.pasteCodePlaceholder')}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-            />
-            <button disabled={busy || !code.trim()} onClick={() => void onSubmitCode()}>
-              {busy ? t('settings.connecting') : t('action.save')}
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="field">
-          <button disabled={busy} onClick={() => void onSignIn()}>
-            {busy ? t('settings.connecting') : t(meta.signInLabel)}
-          </button>
-        </div>
-      )}
-
-      {error && (
-        <p className="hint" style={{ color: 'var(--danger, #e06c75)' }}>
-          {error}
-        </p>
-      )}
+      <div className="field">
+        <input
+          type="password"
+          placeholder={meta.placeholder}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <button
+          disabled={!value.trim()}
+          onClick={() => {
+            onSave(value.trim())
+            setValue('')
+          }}
+        >
+          {t('action.save')}
+        </button>
+      </div>
+      <p className="hint" style={{ marginTop: 4 }}>
+        {t('settings.getKey', { where: meta.keysUrl })}
+      </p>
     </div>
   )
 }

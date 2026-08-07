@@ -32,7 +32,7 @@ export const en = {
   'chat.title': 'AI Chat',
   'chat.clear': 'Clear conversation',
   'chat.emptyNoModel':
-    'No models available. Sign in with your Claude or ChatGPT account in Settings (⚙) to start chatting.',
+    'No models available. Add a provider API key in Settings (⚙) to start chatting.',
   'chat.empty': 'Ask anything about your code. Responses stream in live.',
   'chat.you': 'You',
   'chat.placeholderNoModel': 'Configure a provider first…',
@@ -44,21 +44,15 @@ export const en = {
 
   'settings.title': 'Settings',
   'settings.language': 'Language',
-  'settings.accounts': 'Accounts',
-  'settings.accountsHint':
-    'Sign in with your Claude or ChatGPT account to use their models — no API keys. Tokens are encrypted with your OS keychain (DPAPI / Keychain) and never leave this machine.',
-  'settings.signInClaude': 'Sign in with Claude',
-  'settings.signInChatGPT': 'Sign in with ChatGPT',
-  'settings.signOut': 'Sign out',
-  'settings.connected': '✓ connected',
-  'settings.connecting': 'Connecting…',
-  'settings.pasteCodeHint':
-    'A browser window opened. Authorize, then paste the code shown back here.',
-  'settings.pasteCodePlaceholder': 'Paste authorization code',
+  'settings.providers': 'Providers',
+  'settings.providersHint':
+    'Bring your own API key. Keys are encrypted with your OS keychain (DPAPI / Keychain) and never leave this machine. Providers without a key are hidden from the model picker.',
+  'settings.configured': '✓ configured',
+  'settings.getKey': 'Get a key: {where}',
   'settings.refresh': '↻ Refresh models',
   'settings.refreshing': 'Refreshing…',
   'settings.modelsAvailable': '{n} model(s) available.',
-  'settings.noModels': 'No models yet — sign in above, then refresh.',
+  'settings.noModels': 'No models yet — add a key above, then refresh.',
 
   'settings.appearance': 'Appearance',
   'settings.appearanceHint':

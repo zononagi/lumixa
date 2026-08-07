@@ -21,16 +21,16 @@ export default function App(): JSX.Element {
 
   const initChat = useChatStore((s) => s.init)
   const refreshModels = useSettingsStore((s) => s.refreshModels)
-  const refreshAuth = useSettingsStore((s) => s.refreshAuth)
+  const refreshConfigured = useSettingsStore((s) => s.refreshConfigured)
   const initAppearance = useAppearanceStore((s) => s.init)
   const toggleTerminal = useUiStore((s) => s.toggleTerminal)
 
   useEffect(() => {
     const dispose = initChat()
-    void refreshAuth().then(() => refreshModels())
+    void refreshConfigured().then(() => refreshModels())
     initAppearance()
     return dispose
-  }, [initChat, refreshModels, refreshAuth, initAppearance])
+  }, [initChat, refreshModels, refreshConfigured, initAppearance])
 
   // Global shortcut: Ctrl/Cmd+` toggles the terminal panel.
   useEffect(() => {

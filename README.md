@@ -36,12 +36,12 @@ Cursorライクな操作性をベースにしながら、複数AIモデル・エ
 
 ## 特徴
 
-### 🤖 AI First（アカウント連携 / APIキー不要）
+### 🤖 AI First（APIキー）
 
-- Claude（Claudeアカウントでサインイン / OAuth）
-- ChatGPT（ChatGPTアカウントでサインイン / OAuth）
+- Claude（Anthropic API）
+- OpenAI（GPT）
 
-<sub>APIキーの代わりに、お使いの Claude / ChatGPT アカウントで直接サインインしてモデルを利用します。</sub>
+<sub>各プロバイダのAPIキーを設定に入力して利用します。キーはOSのキーチェーン（DPAPI / Keychain）で暗号化され、端末外に出ません。<br/>※ Claude/ChatGPT の「サブスク・アカウント連携」は Anthropic 側の制限（2026年1月〜、公式アプリ以外をブロック）により現在利用できません。</sub>
 
 ---
 
@@ -122,7 +122,8 @@ AIによるレビュー・コミットメッセージ生成に対応。
 
 - [x] MVP
 - [x] Composer / Inline Edit
-- [x] アカウント連携（Claude / ChatGPT OAuth）※実ログインは要検証
+- [x] APIキー認証（Claude / OpenAI・暗号化保存）
+- [ ] アカウント連携（OAuth）— Anthropicの制限により保留
 - [x] AI Agent（複数エージェント・カスタムSystem Prompt・権限管理・バックグラウンド実行）
 - [x] Cursorライク編集（AI Diff / Ghost Preview / One Click Fix）
 - [x] Project Memory
@@ -155,12 +156,12 @@ Our goal is to make AI a true development partner—not just a chatbot.
 
 ## Features
 
-### 🤖 AI First (account linking — no API keys)
+### 🤖 AI First (API keys)
 
-- Claude (sign in with your Claude account / OAuth)
-- ChatGPT (sign in with your ChatGPT account / OAuth)
+- Claude (Anthropic API)
+- OpenAI (GPT)
 
-<sub>Instead of API keys, sign in directly with your Claude / ChatGPT account to use their models.</sub>
+<sub>Enter each provider's API key in Settings. Keys are encrypted with your OS keychain (DPAPI / Keychain) and never leave this machine.<br/>Note: Claude/ChatGPT subscription "account linking" is currently unavailable due to Anthropic's server-side restriction (since Jan 2026) blocking non-official apps.</sub>
 
 ---
 
@@ -243,7 +244,8 @@ AI-assisted commit messages and code reviews.
 
 - [x] MVP
 - [x] Composer / Inline Edit
-- [x] Account linking (Claude / ChatGPT OAuth) — real login needs verification
+- [x] API-key auth (Claude / OpenAI, encrypted at rest)
+- [ ] Account linking (OAuth) — on hold due to Anthropic restriction
 - [x] AI Agents (multiple agents, custom system prompts, permissions, background execution)
 - [x] Cursor-like editing (AI Diff / Ghost Preview / One Click Fix)
 - [x] Project Memory

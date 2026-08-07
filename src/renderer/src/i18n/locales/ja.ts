@@ -34,7 +34,7 @@ export const ja: typeof en = {
   'chat.title': 'AIチャット',
   'chat.clear': '会話をクリア',
   'chat.emptyNoModel':
-    '利用可能なモデルがありません。設定(⚙)で Claude または ChatGPT アカウントにサインインしてください。',
+    '利用可能なモデルがありません。設定(⚙)でプロバイダーのAPIキーを追加してください。',
   'chat.empty': 'コードについて何でも質問できます。応答はリアルタイムで表示されます。',
   'chat.you': 'あなた',
   'chat.placeholderNoModel': 'まずプロバイダーを設定してください…',
@@ -46,21 +46,15 @@ export const ja: typeof en = {
 
   'settings.title': '設定',
   'settings.language': '言語',
-  'settings.accounts': 'アカウント',
-  'settings.accountsHint':
-    'Claude または ChatGPT アカウントでサインインしてモデルを利用します（APIキー不要）。トークンはOSのキーチェーン（DPAPI / Keychain）で暗号化され、この端末から外に出ません。',
-  'settings.signInClaude': 'Claude でサインイン',
-  'settings.signInChatGPT': 'ChatGPT でサインイン',
-  'settings.signOut': 'サインアウト',
-  'settings.connected': '✓ 連携済み',
-  'settings.connecting': '接続中…',
-  'settings.pasteCodeHint':
-    'ブラウザが開きました。認可後に表示されるコードをここに貼り付けてください。',
-  'settings.pasteCodePlaceholder': '認可コードを貼り付け',
+  'settings.providers': 'プロバイダー',
+  'settings.providersHint':
+    '自分のAPIキーを使用します。キーはOSのキーチェーン（DPAPI / Keychain）で暗号化され、この端末から外に出ません。キー未設定のプロバイダーはモデル選択に表示されません。',
+  'settings.configured': '✓ 設定済み',
+  'settings.getKey': 'キーの取得: {where}',
   'settings.refresh': '↻ モデルを更新',
   'settings.refreshing': '更新中…',
   'settings.modelsAvailable': '{n} 個のモデルが利用可能。',
-  'settings.noModels': 'モデルがありません — 上でサインインして更新してください。',
+  'settings.noModels': 'モデルがありません — 上でキーを追加して更新してください。',
 
   'settings.appearance': '外観',
   'settings.appearanceHint':

@@ -1,7 +1,6 @@
 import { ipcMain, type BrowserWindow } from 'electron'
 import {
   IPC,
-  type AuthAccount,
   type ChatStartRequest,
   type CompleteRequest,
   type CompleteResult,
@@ -10,10 +9,8 @@ import {
   type TerminalCreateRequest
 } from '@shared/ipc'
 import { openFolderDialog, readDir, readFile, writeFile, pickFile } from './services/fs'
-import { getTokens, clearTokens, listConnectedProviders } from './services/tokenStore'
-import { startLogin, submitCode, getValidAccessToken, getAccountMeta } from './services/oauth'
+import { getSecret, setSecret, listConfiguredProviders } from './services/secrets'
 import { getProvider, registeredProviderIds } from './ai/registry'
-import type { Credential } from './ai/types'
 import {
   createTerminal,
   killTerminal,
@@ -53,42 +50,26 @@ export function registerIpcHandlers(win: BrowserWindow): void {
     }
   })
 
-  // --- Account linking (OAuth) ----------------------------------------------
-  ipcMain.handle(IPC.authStatus, async (): Promise<AuthAccount[]> => {
-    const connected = await listConnectedProviders()
-    const out: AuthAccount[] = []
-    for (const id of registeredProviderIds()) {
-      const tokens = connected.includes(id) ? await getTokens(id) : null
-      out.push({ provider: id, connected: tokens !== null, label: tokens?.label })
-    }
-    return out
-  })
-  ipcMain.handle(IPC.authLogin, (_e, provider: ProviderId) => startLogin(provider))
-  ipcMain.handle(IPC.authSubmitCode, (_e, provider: ProviderId, code: string) =>
-    submitCode(provider, code)
+  // --- Secrets --------------------------------------------------------------
+  ipcMain.handle(IPC.secretsSet, (_e, provider: ProviderId, key: string) =>
+    setSecret(provider, key)
   )
-  ipcMain.handle(IPC.authLogout, async (_e, provider: ProviderId) => {
-    await clearTokens(provider)
-    return { ok: true }
+  ipcMain.handle(IPC.secretsGet, async (_e, provider: ProviderId) => {
+    // Renderer only needs to know a key exists, never its value.
+    return (await getSecret(provider)) !== null
   })
-
-  // Resolve a valid credential (refreshing the token if needed) for a provider.
-  const credentialFor = async (provider: ProviderId): Promise<Credential | null> => {
-    const token = await getValidAccessToken(provider)
-    if (!token) return null
-    return { token, meta: await getAccountMeta(provider) }
-  }
+  ipcMain.handle(IPC.secretsList, () => listConfiguredProviders())
 
   // --- AI: model discovery --------------------------------------------------
   ipcMain.handle(IPC.aiListModels, async (): Promise<ModelInfo[]> => {
-    const connected = await listConnectedProviders()
+    const configured = await listConfiguredProviders()
     const out: ModelInfo[] = []
     for (const id of registeredProviderIds()) {
-      if (!connected.includes(id)) continue // hide unlinked providers
+      if (!configured.includes(id)) continue // hide unconfigured providers
+      const key = await getSecret(id)
       const provider = getProvider(id)
-      const cred = await credentialFor(id)
-      if (!provider || !cred) continue
-      out.push(...(await provider.listModels(cred)))
+      if (!key || !provider) continue
+      out.push(...(await provider.listModels(key)))
     }
     return out
   })
@@ -98,15 +79,15 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   ipcMain.handle(IPC.aiChatStart, async (_e, req: ChatStartRequest) => {
     const provider = getProvider(req.provider)
-    const cred = await credentialFor(req.provider)
+    const key = await getSecret(req.provider)
     const send = (channel: string, payload: unknown): void => {
       if (!win.isDestroyed()) win.webContents.send(channel, payload)
     }
 
-    if (!provider || !cred) {
+    if (!provider || !key) {
       send(IPC.aiChatError, {
         requestId: req.requestId,
-        message: `Provider "${req.provider}" is not linked. Sign in from Settings.`
+        message: `Provider "${req.provider}" is not configured. Add an API key in Settings.`
       })
       return
     }
@@ -115,7 +96,7 @@ export function registerIpcHandlers(win: BrowserWindow): void {
     active.set(req.requestId, controller)
 
     await provider.streamChat(
-      cred,
+      key,
       { model: req.model, system: req.system, messages: req.messages },
       {
         signal: controller.signal,
@@ -144,15 +125,15 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   // --- AI: one-shot completion (Composer / Inline Edit) ---------------------
   ipcMain.handle(IPC.aiComplete, async (_e, req: CompleteRequest): Promise<CompleteResult> => {
     const provider = getProvider(req.provider)
-    const cred = await credentialFor(req.provider)
-    if (!provider || !cred) {
-      return { text: '', error: `Provider "${req.provider}" is not linked. Sign in from Settings.` }
+    const key = await getSecret(req.provider)
+    if (!provider || !key) {
+      return { text: '', error: `Provider "${req.provider}" is not configured. Add an API key in Settings.` }
     }
     return new Promise<CompleteResult>((resolve) => {
       let acc = ''
       const controller = new AbortController()
       void provider.streamChat(
-        cred,
+        key,
         { model: req.model, system: req.system, messages: req.messages },
         {
           signal: controller.signal,

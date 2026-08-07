@@ -21,11 +21,12 @@ export const IPC = {
   // Window appearance (Windows 11 Mica/Acrylic)
   windowSetEffect: 'window:setEffect',
 
-  // Account linking (OAuth) — replaces API keys entirely.
-  authStatus: 'auth:status', // -> AuthAccount[]
-  authLogin: 'auth:login', // start the OAuth flow for a provider
-  authSubmitCode: 'auth:submitCode', // paste-flow: hand back the authorization code
-  authLogout: 'auth:logout', // sign out / forget tokens for a provider
+  // Secure secrets (API keys, per provider). Anthropic's Jan-2026 server-side
+  // enforcement blocks consumer OAuth tokens outside Claude Code/Claude.ai, so
+  // API keys are the only supported auth for a third-party app.
+  secretsGet: 'secrets:get',
+  secretsSet: 'secrets:set',
+  secretsList: 'secrets:list',
 
   // AI providers
   aiListModels: 'ai:listModels',
@@ -73,35 +74,6 @@ export const IPC = {
 // ---------------------------------------------------------------------------
 
 export type ProviderId = 'anthropic' | 'openai'
-
-// ---------------------------------------------------------------------------
-// Account linking (OAuth)
-// ---------------------------------------------------------------------------
-
-/** Connection state for one provider, surfaced to the renderer (never tokens). */
-export interface AuthAccount {
-  provider: ProviderId
-  connected: boolean
-  /** Human-friendly label for the linked account (email / plan), when known. */
-  label?: string
-}
-
-/**
- * Result of starting a login. `needsCode` is true for providers whose OAuth
- * redirect can't be captured automatically (Anthropic): the browser shows an
- * authorization code the user pastes back via `auth:submitCode`. Loopback
- * providers (OpenAI) resolve straight to `ok` once the browser round-trip ends.
- */
-export interface LoginResult {
-  ok: boolean
-  needsCode?: boolean
-  error?: string
-}
-
-export interface AuthResult {
-  ok: boolean
-  error?: string
-}
 
 export interface DirEntry {
   name: string

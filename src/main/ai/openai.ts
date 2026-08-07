@@ -1,61 +1,81 @@
 import type { ModelInfo } from '@shared/ipc'
-import type { AIProvider, ChatParams, Credential, StreamHandlers } from './types'
+import type { AIProvider, ChatParams, StreamHandlers } from './types'
 
 /**
- * OpenAI adapter — uses the ChatGPT subscription OAuth token (the "Sign in with
- * ChatGPT" flow used by Codex), not an API key. Requests go to the ChatGPT
- * backend Codex responses endpoint with the account id captured at login.
- *
- * This mirrors the Codex CLI's request shape. The endpoint and payload are the
- * parts most likely to drift over time — if OpenAI changes them, this file is
- * the single place to update.
+ * OpenAI adapter. Uses a standard OpenAI API key (platform.openai.com) against
+ * the Chat Completions API with SSE streaming. ChatGPT-subscription OAuth is
+ * intentionally not used — it's locked to OpenAI's own apps (Codex/ChatGPT).
  */
 
-const RESPONSES_URL = 'https://chatgpt.com/backend-api/codex/responses'
+const BASE = 'https://api.openai.com/v1'
 
-const MODELS: ModelInfo[] = [
-  { id: 'gpt-5', displayName: 'GPT-5', provider: 'openai' },
-  { id: 'gpt-5-codex', displayName: 'GPT-5 Codex', provider: 'openai' }
+// Shown when the Models API can't be reached but a key is set.
+const FALLBACK_MODELS: ModelInfo[] = [
+  { id: 'gpt-4o', displayName: 'GPT-4o', provider: 'openai' },
+  { id: 'gpt-4o-mini', displayName: 'GPT-4o mini', provider: 'openai' },
+  { id: 'gpt-4.1', displayName: 'GPT-4.1', provider: 'openai' }
 ]
+
+/** Parse one SSE block's `data:` lines into text deltas. */
+export function parseOpenAIStreamChunk(chunk: string): string[] {
+  return chunk
+    .split('\n')
+    .filter((l) => l.startsWith('data:'))
+    .map((l) => l.slice(5).trim())
+    .filter((d) => d && d !== '[DONE]')
+    .map((d) => {
+      try {
+        const parsed = JSON.parse(d) as { choices?: { delta?: { content?: string } }[] }
+        return parsed.choices?.[0]?.delta?.content ?? ''
+      } catch {
+        return ''
+      }
+    })
+    .filter((s) => s.length > 0)
+}
 
 export class OpenAIProvider implements AIProvider {
   readonly id = 'openai' as const
 
-  async listModels(_cred: Credential): Promise<ModelInfo[]> {
-    return MODELS
+  async listModels(apiKey: string): Promise<ModelInfo[]> {
+    try {
+      const res = await fetch(`${BASE}/models`, {
+        headers: { authorization: `Bearer ${apiKey}` }
+      })
+      if (!res.ok) return FALLBACK_MODELS
+      const json = (await res.json()) as { data?: { id?: string }[] }
+      const models = (json.data ?? [])
+        .map((m) => m.id)
+        .filter((id): id is string => typeof id === 'string')
+        // Chat-capable families only; drop embeddings/audio/image/moderation.
+        .filter(
+          (id) =>
+            /^(gpt-|o\d|chatgpt)/.test(id) &&
+            !/embedding|audio|realtime|image|tts|whisper|moderation/.test(id)
+        )
+        .sort()
+        .map((id) => ({ id, displayName: id, provider: 'openai' as const }))
+      return models.length > 0 ? models : FALLBACK_MODELS
+    } catch {
+      return FALLBACK_MODELS
+    }
   }
 
-  async streamChat(cred: Credential, params: ChatParams, handlers: StreamHandlers): Promise<void> {
-    const accountId = cred.meta?.chatgptAccountId
+  async streamChat(apiKey: string, params: ChatParams, handlers: StreamHandlers): Promise<void> {
     try {
-      // Responses API input: prior turns as typed message items.
-      const input = params.messages.map((m) => ({
-        type: 'message' as const,
-        role: m.role,
-        content: [
-          {
-            type: m.role === 'assistant' ? ('output_text' as const) : ('input_text' as const),
-            text: m.content
-          }
-        ]
-      }))
+      const messages = [
+        ...(params.system ? [{ role: 'system' as const, content: params.system }] : []),
+        ...params.messages.map((m) => ({ role: m.role, content: m.content }))
+      ]
 
-      const res = await fetch(RESPONSES_URL, {
+      const res = await fetch(`${BASE}/chat/completions`, {
         method: 'POST',
         signal: handlers.signal,
         headers: {
           'content-type': 'application/json',
-          authorization: `Bearer ${cred.token}`,
-          ...(accountId ? { 'chatgpt-account-id': accountId } : {}),
-          'openai-beta': 'responses=experimental'
+          authorization: `Bearer ${apiKey}`
         },
-        body: JSON.stringify({
-          model: params.model,
-          instructions: params.system,
-          input,
-          stream: true,
-          store: false
-        })
+        body: JSON.stringify({ model: params.model, messages, stream: true })
       })
 
       if (!res.ok || !res.body) {
@@ -63,7 +83,22 @@ export class OpenAIProvider implements AIProvider {
         throw new Error(`OpenAI returned ${res.status}: ${text.slice(0, 300)}`)
       }
 
-      await this.pump(res.body, handlers)
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      for (;;) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        let idx: number
+        while ((idx = buffer.indexOf('\n\n')) !== -1) {
+          for (const delta of parseOpenAIStreamChunk(buffer.slice(0, idx))) handlers.onDelta(delta)
+          buffer = buffer.slice(idx + 2)
+        }
+      }
+      if (buffer.trim()) for (const delta of parseOpenAIStreamChunk(buffer)) handlers.onDelta(delta)
+
+      handlers.onDone()
     } catch (err) {
       if (handlers.signal.aborted) {
         handlers.onDone()
@@ -71,57 +106,5 @@ export class OpenAIProvider implements AIProvider {
       }
       handlers.onError(err instanceof Error ? err.message : String(err))
     }
-  }
-
-  /** Parse the SSE stream, forwarding text deltas and final usage. */
-  private async pump(body: ReadableStream<Uint8Array>, handlers: StreamHandlers): Promise<void> {
-    const reader = body.getReader()
-    const decoder = new TextDecoder()
-    let buffer = ''
-    let usage: { inputTokens?: number; outputTokens?: number } | undefined
-
-    const handleEvent = (raw: string): void => {
-      // Each SSE block may carry multiple `data:` lines.
-      const dataLines = raw
-        .split('\n')
-        .filter((l) => l.startsWith('data:'))
-        .map((l) => l.slice(5).trim())
-      if (dataLines.length === 0) return
-      const payload = dataLines.join('')
-      if (!payload || payload === '[DONE]') return
-
-      try {
-        const evt = JSON.parse(payload) as {
-          type?: string
-          delta?: string
-          response?: { usage?: { input_tokens?: number; output_tokens?: number } }
-        }
-        if (evt.type === 'response.output_text.delta' && typeof evt.delta === 'string') {
-          handlers.onDelta(evt.delta)
-        } else if (evt.type === 'response.completed') {
-          usage = {
-            inputTokens: evt.response?.usage?.input_tokens,
-            outputTokens: evt.response?.usage?.output_tokens
-          }
-        }
-      } catch {
-        // Ignore non-JSON keep-alive lines.
-      }
-    }
-
-    for (;;) {
-      const { done, value } = await reader.read()
-      if (done) break
-      buffer += decoder.decode(value, { stream: true })
-      // SSE events are separated by a blank line.
-      let idx: number
-      while ((idx = buffer.indexOf('\n\n')) !== -1) {
-        handleEvent(buffer.slice(0, idx))
-        buffer = buffer.slice(idx + 2)
-      }
-    }
-    if (buffer.trim()) handleEvent(buffer)
-
-    handlers.onDone(usage)
   }
 }

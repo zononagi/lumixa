@@ -1,8 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import {
   IPC,
-  type AuthAccount,
-  type AuthResult,
   type ChatDeltaEvent,
   type ChatDoneEvent,
   type ChatErrorEvent,
@@ -13,7 +11,6 @@ import {
   type GitBranches,
   type GitResult,
   type GitStatus,
-  type LoginResult,
   type ModelInfo,
   type OpenFolderResult,
   type PickFileFilter,
@@ -44,14 +41,12 @@ const api = {
     setEffect: (effect: WindowEffect): Promise<void> =>
       ipcRenderer.invoke(IPC.windowSetEffect, effect)
   },
-  auth: {
-    status: (): Promise<AuthAccount[]> => ipcRenderer.invoke(IPC.authStatus),
-    login: (provider: ProviderId): Promise<LoginResult> =>
-      ipcRenderer.invoke(IPC.authLogin, provider),
-    submitCode: (provider: ProviderId, code: string): Promise<AuthResult> =>
-      ipcRenderer.invoke(IPC.authSubmitCode, provider, code),
-    logout: (provider: ProviderId): Promise<AuthResult> =>
-      ipcRenderer.invoke(IPC.authLogout, provider)
+  secrets: {
+    set: (provider: ProviderId, key: string): Promise<void> =>
+      ipcRenderer.invoke(IPC.secretsSet, provider, key),
+    has: (provider: ProviderId): Promise<boolean> =>
+      ipcRenderer.invoke(IPC.secretsGet, provider),
+    list: (): Promise<ProviderId[]> => ipcRenderer.invoke(IPC.secretsList)
   },
   ai: {
     listModels: (): Promise<ModelInfo[]> => ipcRenderer.invoke(IPC.aiListModels),
