@@ -26,11 +26,21 @@ export const IPC = {
   aiListModels: 'ai:listModels',
   aiChatStart: 'ai:chatStart',
   aiChatCancel: 'ai:chatCancel',
+  aiComplete: 'ai:complete', // one-shot, returns the full response text
 
   // AI streaming events (main -> renderer, per request id)
   aiChatDelta: 'ai:chatDelta',
   aiChatDone: 'ai:chatDone',
-  aiChatError: 'ai:chatError'
+  aiChatError: 'ai:chatError',
+
+  // Terminal
+  termListShells: 'term:listShells',
+  termCreate: 'term:create',
+  termInput: 'term:input',
+  termResize: 'term:resize',
+  termKill: 'term:kill',
+  termData: 'term:data', // main -> renderer
+  termExit: 'term:exit' // main -> renderer
 } as const
 
 // ---------------------------------------------------------------------------
@@ -67,6 +77,44 @@ export interface ChatStartRequest {
   model: string
   system?: string
   messages: ChatMessage[]
+}
+
+export interface CompleteRequest {
+  provider: ProviderId
+  model: string
+  system?: string
+  messages: ChatMessage[]
+}
+
+export interface CompleteResult {
+  text: string
+  error?: string
+}
+
+// --- Terminal ---
+export interface ShellInfo {
+  id: string
+  label: string
+  /** Absolute path or command name of the shell executable. */
+  path: string
+}
+
+export interface TerminalCreateRequest {
+  id: string
+  shellPath: string
+  cwd?: string
+  cols: number
+  rows: number
+}
+
+export interface TerminalDataEvent {
+  id: string
+  data: string
+}
+
+export interface TerminalExitEvent {
+  id: string
+  code: number | null
 }
 
 // Streaming event payloads (main -> renderer)

@@ -20,6 +20,8 @@ interface EditorState {
   closeTab: (path: string) => void
   updateContent: (path: string, content: string) => void
   saveActive: () => Promise<void>
+  /** Reflect an on-disk write (e.g. from Composer) into an open tab, if any. */
+  setSavedContent: (path: string, content: string) => void
 }
 
 const langFromName = (name: string): string => name // reserved for future Monaco language mapping
@@ -67,5 +69,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     set((s) => ({
       tabs: s.tabs.map((t) => (t.path === tab.path ? { ...t, dirty: false } : t))
     }))
-  }
+  },
+
+  setSavedContent: (path, content) =>
+    set((s) => ({
+      tabs: s.tabs.map((t) => (t.path === path ? { ...t, content, dirty: false } : t))
+    }))
 }))

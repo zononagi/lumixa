@@ -199,9 +199,16 @@ button {
 .tab .dot {
   color: #fff;
 }
+.editor-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
 .editor-host {
   flex: 1;
   min-height: 0;
+  position: relative;
 }
 .editor-empty {
   flex: 1;
@@ -354,4 +361,264 @@ button {
   color: #4ec9b0;
   font-size: 12px;
   margin-left: 6px;
+}
+
+/* ---- Bottom panel / Terminal ---- */
+.bottom-panel {
+  height: 280px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+}
+.bottom-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fg-muted);
+}
+.bottom-header .title {
+  color: #fff;
+}
+.bottom-header select {
+  background: #3c3c3c;
+  color: var(--fg);
+  border: 1px solid #3c3c3c;
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+.bottom-header button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+}
+.bottom-header button:hover {
+  color: #fff;
+}
+.bottom-body {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 6px;
+}
+.term-host {
+  height: 100%;
+  width: 100%;
+}
+
+/* ---- Inline edit (Ctrl+K) ---- */
+.inline-edit {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #252526;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 6px 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  width: min(560px, 80%);
+}
+.inline-edit .badge {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.inline-edit .badge.ok {
+  background: #2ea043;
+}
+.inline-edit input {
+  flex: 1;
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 6px 8px;
+  outline: none;
+  font-family: inherit;
+}
+.inline-edit input:focus {
+  border-color: var(--accent);
+}
+.inline-edit button {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.inline-edit button:hover {
+  background: var(--accent-hover);
+}
+.inline-edit button.danger {
+  background: var(--danger);
+}
+.inline-edit button:disabled {
+  opacity: 0.5;
+}
+
+/* ---- Composer modal ---- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.composer {
+  width: min(1000px, 92vw);
+  height: min(820px, 90vh);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+.composer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.composer-header button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  font-size: 15px;
+}
+.composer-header button:hover {
+  color: #fff;
+}
+.composer-prompt {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.composer-prompt textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 64px;
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  border-radius: 4px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.composer-prompt textarea:focus {
+  border-color: var(--accent);
+}
+.composer-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.composer-actions .ctx {
+  color: var(--fg-muted);
+  font-size: 12px;
+}
+button.primary {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 4px;
+}
+button.primary:hover {
+  background: var(--accent-hover);
+}
+button.primary:disabled {
+  opacity: 0.5;
+}
+.composer-error {
+  color: var(--danger);
+  margin-top: 8px;
+  font-size: 12px;
+}
+.composer-review {
+  flex: 1;
+  overflow: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.review-item {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.review-item.accepted {
+  border-color: #2ea043;
+}
+.review-item.rejected {
+  border-color: var(--danger);
+  opacity: 0.6;
+}
+.review-item.applied {
+  border-color: #2ea043;
+}
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #2d2d30;
+}
+.review-head .path {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.review-head .spacer {
+  flex: 1;
+}
+.review-head button {
+  background: #3c3c3c;
+  border: 1px solid #3c3c3c;
+  color: var(--fg);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.review-head button.on {
+  background: #2ea043;
+  color: #fff;
+}
+.review-head button.on.danger {
+  background: var(--danger);
+}
+.review-head .applied-badge {
+  color: #4ec9b0;
+  font-size: 12px;
+}
+.review-diff {
+  height: 240px;
+}
+.composer-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
 }

@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell } from 'electron'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { registerIpcHandlers } from './ipc'
+import { killAllTerminals } from './services/terminal'
 
 /** Resolve the app icon if the user has provided one under resources/. */
 function appIcon(): string | undefined {
@@ -58,6 +59,9 @@ app.whenReady().then(() => {
   })
 })
 
+app.on('before-quit', () => killAllTerminals())
+
 app.on('window-all-closed', () => {
+  killAllTerminals()
   if (process.platform !== 'darwin') app.quit()
 })

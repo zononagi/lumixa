@@ -2,12 +2,21 @@ import { ipcMain, type BrowserWindow } from 'electron'
 import {
   IPC,
   type ChatStartRequest,
+  type CompleteRequest,
+  type CompleteResult,
   type ModelInfo,
-  type ProviderId
+  type ProviderId,
+  type TerminalCreateRequest
 } from '@shared/ipc'
 import { openFolderDialog, readDir, readFile, writeFile } from './services/fs'
 import { getSecret, setSecret, listConfiguredProviders } from './services/secrets'
 import { getProvider, registeredProviderIds } from './ai/registry'
+import {
+  createTerminal,
+  killTerminal,
+  listShells,
+  writeTerminal
+} from './services/terminal'
 
 /**
  * Registers every IPC handler on the main process. Called once after the main
@@ -93,4 +102,46 @@ export function registerIpcHandlers(win: BrowserWindow): void {
     active.get(requestId)?.abort()
     active.delete(requestId)
   })
+
+  // --- AI: one-shot completion (Composer / Inline Edit) ---------------------
+  ipcMain.handle(IPC.aiComplete, async (_e, req: CompleteRequest): Promise<CompleteResult> => {
+    const provider = getProvider(req.provider)
+    const key = await getSecret(req.provider)
+    if (!provider || !key) {
+      return { text: '', error: `Provider "${req.provider}" is not configured.` }
+    }
+    return new Promise<CompleteResult>((resolve) => {
+      let acc = ''
+      const controller = new AbortController()
+      void provider.streamChat(
+        key,
+        { model: req.model, system: req.system, messages: req.messages },
+        {
+          signal: controller.signal,
+          onDelta: (text) => {
+            acc += text
+          },
+          onDone: () => resolve({ text: acc }),
+          onError: (message) => resolve({ text: acc, error: message })
+        }
+      )
+    })
+  })
+
+  // --- Terminal -------------------------------------------------------------
+  ipcMain.handle(IPC.termListShells, () => listShells())
+
+  ipcMain.handle(IPC.termCreate, (_e, req: TerminalCreateRequest) => {
+    const send = (channel: string, payload: unknown): void => {
+      if (!win.isDestroyed()) win.webContents.send(channel, payload)
+    }
+    createTerminal(
+      req,
+      (data) => send(IPC.termData, { id: req.id, data }),
+      (code) => send(IPC.termExit, { id: req.id, code })
+    )
+  })
+
+  ipcMain.handle(IPC.termInput, (_e, id: string, data: string) => writeTerminal(id, data))
+  ipcMain.handle(IPC.termKill, (_e, id: string) => killTerminal(id))
 }

@@ -106,8 +106,8 @@ AIによるレビュー・コミットメッセージ生成に対応。
 
 ## ロードマップ
 
-- [ ] MVP
-- [ ] Composer
+- [x] MVP
+- [x] Composer
 - [ ] AI Agent
 - [ ] Project Memory
 - [ ] MCP
@@ -222,8 +222,8 @@ AI-assisted commit messages and code reviews.
 
 ## Roadmap
 
-- [ ] MVP
-- [ ] Composer
+- [x] MVP
+- [x] Composer
 - [ ] AI Agents
 - [ ] Project Memory
 - [ ] MCP Support
