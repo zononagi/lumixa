@@ -6,6 +6,25 @@ export const ja: typeof en = {
   'ab.settings': '設定',
   'ab.terminal': 'ターミナル (Ctrl+`)',
   'ab.git': 'ソース管理',
+  'ab.health': 'プロジェクト状態',
+  'ab.palette': 'コマンドパレット (Ctrl+Shift+P)',
+
+  'problems.title': '問題',
+
+  'health.title': 'プロジェクト状態',
+  'health.noFolder': 'プロジェクト状態を見るにはフォルダを開いてください。',
+  'health.noPackage': 'このフォルダに package.json が見つかりません。',
+  'health.rescan': '再スキャン',
+  'health.scanning': 'スキャン中…',
+  'health.errors': 'エラー {n} 件',
+  'health.warnings': '警告 {n} 件',
+  'health.files': 'ソースファイル {n} 件',
+  'health.unused': '未使用の依存 {n} 件',
+  'health.missing': '不足している依存 {n} 件',
+  'health.dependencies': '依存関係',
+  'health.usedBy': '{n} ファイルで使用',
+  'health.unusedTag': '未使用',
+  'health.missingTitle': 'import されているが package.json に無い',
 
   'explorer.title': 'エクスプローラー',
   'explorer.openFolder': 'フォルダを開く',
@@ -64,5 +83,9 @@ export const ja: typeof en = {
   'git.abort': '中止',
   'git.noOtherBranches': '他のブランチなし',
   'git.mergeInProgress': '⚠️ マージ中 — 競合を解決しステージして「続行」してください。',
-  'git.rebaseInProgress': '⚠️ リベース中 — 競合を解決しステージして「続行」してください。'
+  'git.rebaseInProgress': '⚠️ リベース中 — 競合を解決しステージして「続行」してください。',
+  'git.stash': 'スタッシュ',
+  'git.stashPop': 'スタッシュ復元',
+  'git.history': '履歴',
+  'git.historyEmpty': 'まだコミットがありません。'
 }

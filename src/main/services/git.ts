@@ -149,3 +149,42 @@ export async function rebaseAbort(cwd: string): Promise<GitResult> {
   const r = await git(cwd, ['rebase', '--abort'])
   return { ok: r.ok, output: r.stderr || r.stdout }
 }
+
+export async function stash(cwd: string): Promise<GitResult> {
+  const r = await git(cwd, ['stash', 'push', '--include-untracked'])
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+export async function stashPop(cwd: string): Promise<GitResult> {
+  const r = await git(cwd, ['stash', 'pop'])
+  return { ok: r.ok, output: r.stderr || r.stdout }
+}
+
+/** Recent commit history as compact lines: "<hash> <subject> — <author>, <date>". */
+export async function log(cwd: string, limit = 50): Promise<string[]> {
+  const r = await git(cwd, [
+    'log',
+    `-n${limit}`,
+    '--pretty=format:%h\x1f%s\x1f%an\x1f%ar'
+  ])
+  if (!r.ok) return []
+  return r.stdout
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => {
+      const [hash, subject, author, date] = line.split('\x1f')
+      return `${hash}  ${subject}  — ${author}, ${date}`
+    })
+}
+
+/** git blame for a single line, summarised. */
+export async function blame(cwd: string, file: string, line: number): Promise<string> {
+  const r = await git(cwd, ['blame', '-L', `${line},${line}`, '--porcelain', '--', file])
+  if (!r.ok) return r.stderr || 'blame failed'
+  const lines = r.stdout.split('\n')
+  const hash = lines[0]?.split(' ')[0]?.slice(0, 8) ?? '????????'
+  const get = (k: string): string => lines.find((l) => l.startsWith(k + ' '))?.slice(k.length + 1) ?? ''
+  const author = get('author')
+  const summary = get('summary')
+  return `${hash} · ${author} · ${summary}`
+}

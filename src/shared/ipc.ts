@@ -45,7 +45,14 @@ export const IPC = {
   gitMergeAbort: 'git:mergeAbort',
   gitRebase: 'git:rebase',
   gitRebaseContinue: 'git:rebaseContinue',
-  gitRebaseAbort: 'git:rebaseAbort'
+  gitRebaseAbort: 'git:rebaseAbort',
+  gitStash: 'git:stash',
+  gitStashPop: 'git:stashPop',
+  gitLog: 'git:log',
+  gitBlame: 'git:blame',
+
+  // Project intelligence (dependency + health scan)
+  projectHealth: 'project:health'
 } as const
 
 // ---------------------------------------------------------------------------
@@ -134,4 +141,25 @@ export interface GitBranches {
 export interface GitResult {
   ok: boolean
   output: string
+}
+
+// --- Project intelligence ---
+export interface DependencyInfo {
+  name: string
+  version: string
+  dev: boolean
+  /** Number of project files that import this package (best-effort). */
+  usedBy: number
+}
+
+export interface ProjectHealth {
+  isProject: boolean
+  name?: string
+  fileCount: number
+  dependencies: DependencyInfo[]
+  /** Declared deps that no file appears to import. */
+  unusedDependencies: string[]
+  /** Bare imports with no matching dependency (best-effort; excludes builtins). */
+  missingDependencies: string[]
+  error?: string
 }

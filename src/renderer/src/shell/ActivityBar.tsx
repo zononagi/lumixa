@@ -2,48 +2,30 @@ import type { JSX } from 'react'
 import { useUiStore } from '@renderer/stores/uiStore'
 import { useT } from '@renderer/i18n'
 
-export type LeftView = 'explorer' | 'git' | 'settings'
-
-interface Props {
-  active: LeftView
-  onSelect: (view: LeftView) => void
-}
-
-/** Far-left icon rail. Switches the left panel and toggles the terminal. */
-export function ActivityBar({ active, onSelect }: Props): JSX.Element {
-  const { terminalOpen, toggleTerminal } = useUiStore()
+/** Far-left icon rail. Switches the left panel and toggles the terminal/palette. */
+export function ActivityBar(): JSX.Element {
+  const { leftView, setLeftView, terminalOpen, toggleTerminal, togglePalette } = useUiStore()
   const t = useT()
+
+  const view = (id: Parameters<typeof setLeftView>[0], icon: string, title: string): JSX.Element => (
+    <button className={leftView === id ? 'active' : ''} title={title} onClick={() => setLeftView(id)}>
+      {icon}
+    </button>
+  )
+
   return (
     <div className="activitybar">
-      <button
-        className={active === 'explorer' ? 'active' : ''}
-        title={t('ab.explorer')}
-        onClick={() => onSelect('explorer')}
-      >
-        🗂
-      </button>
-      <button
-        className={active === 'git' ? 'active' : ''}
-        title={t('ab.git')}
-        onClick={() => onSelect('git')}
-      >
-        ⑂
-      </button>
-      <button
-        className={active === 'settings' ? 'active' : ''}
-        title={t('ab.settings')}
-        onClick={() => onSelect('settings')}
-      >
-        ⚙
-      </button>
-      <button
-        className={terminalOpen ? 'active' : ''}
-        title={t('ab.terminal')}
-        onClick={toggleTerminal}
-      >
+      {view('explorer', '🗂', t('ab.explorer'))}
+      {view('git', '⑂', t('ab.git'))}
+      {view('health', '📊', t('ab.health'))}
+      {view('settings', '⚙', t('ab.settings'))}
+      <button className={terminalOpen ? 'active' : ''} title={t('ab.terminal')} onClick={toggleTerminal}>
         ▣
       </button>
       <div style={{ flex: 1 }} />
+      <button title={t('ab.palette')} onClick={togglePalette}>
+        ⌘
+      </button>
     </div>
   )
 }

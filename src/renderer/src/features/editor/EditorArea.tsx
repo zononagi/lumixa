@@ -1,7 +1,8 @@
 import { useEffect, type JSX } from 'react'
-import Editor from '@monaco-editor/react'
+import Editor, { type OnMount } from '@monaco-editor/react'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useAppearanceStore } from '@renderer/stores/appearanceStore'
+import { setActiveEditor } from '@renderer/lib/editorBridge'
 import { useT } from '@renderer/i18n'
 import { languageForFile } from './monacoSetup'
 
@@ -22,6 +23,8 @@ export function EditorArea(): JSX.Element {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [saveActive])
+
+  const onMount: OnMount = (editor, monaco) => setActiveEditor(editor, monaco)
 
   return (
     <div className="editor-pane">
@@ -54,6 +57,7 @@ export function EditorArea(): JSX.Element {
             theme={monacoTheme}
             language={languageForFile(active.name)}
             value={active.content}
+            onMount={onMount}
             onChange={(value) => updateContent(active.path, value ?? '')}
             options={{
               fontFamily: "'Cascadia Code', 'Consolas', monospace",

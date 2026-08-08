@@ -4,6 +4,25 @@ export const en = {
   'ab.settings': 'Settings',
   'ab.terminal': 'Terminal (Ctrl+`)',
   'ab.git': 'Source Control',
+  'ab.health': 'Project Health',
+  'ab.palette': 'Command Palette (Ctrl+Shift+P)',
+
+  'problems.title': 'Problems',
+
+  'health.title': 'Project Health',
+  'health.noFolder': 'Open a folder to see project health.',
+  'health.noPackage': 'No package.json found in this folder.',
+  'health.rescan': 'Rescan',
+  'health.scanning': 'Scanning project…',
+  'health.errors': '{n} error(s)',
+  'health.warnings': '{n} warning(s)',
+  'health.files': '{n} source files',
+  'health.unused': '{n} unused dep(s)',
+  'health.missing': '{n} missing dep(s)',
+  'health.dependencies': 'Dependencies',
+  'health.usedBy': 'used by {n}',
+  'health.unusedTag': 'unused',
+  'health.missingTitle': 'Imported but not in package.json',
 
   'explorer.title': 'Explorer',
   'explorer.openFolder': 'Open Folder',
@@ -62,5 +81,9 @@ export const en = {
   'git.abort': 'Abort',
   'git.noOtherBranches': 'No other branches',
   'git.mergeInProgress': '⚠️ Merge in progress — resolve conflicts, stage, then Continue.',
-  'git.rebaseInProgress': '⚠️ Rebase in progress — resolve conflicts, stage, then Continue.'
+  'git.rebaseInProgress': '⚠️ Rebase in progress — resolve conflicts, stage, then Continue.',
+  'git.stash': 'Stash',
+  'git.stashPop': 'Stash pop',
+  'git.history': 'History',
+  'git.historyEmpty': 'No commits yet.'
 }

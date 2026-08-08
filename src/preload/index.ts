@@ -6,6 +6,7 @@ import {
   type GitResult,
   type GitStatus,
   type OpenFolderResult,
+  type ProjectHealth,
   type PickFileFilter,
   type PickFileResult,
   type WindowEffect,
@@ -73,7 +74,15 @@ const api = {
       ipcRenderer.invoke(IPC.gitRebase, cwd, branch),
     rebaseContinue: (cwd: string): Promise<GitResult> =>
       ipcRenderer.invoke(IPC.gitRebaseContinue, cwd),
-    rebaseAbort: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitRebaseAbort, cwd)
+    rebaseAbort: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitRebaseAbort, cwd),
+    stash: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitStash, cwd),
+    stashPop: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitStashPop, cwd),
+    log: (cwd: string): Promise<string[]> => ipcRenderer.invoke(IPC.gitLog, cwd),
+    blame: (cwd: string, file: string, line: number): Promise<string> =>
+      ipcRenderer.invoke(IPC.gitBlame, cwd, file, line)
+  },
+  project: {
+    health: (root: string): Promise<ProjectHealth> => ipcRenderer.invoke(IPC.projectHealth, root)
   }
 }
 

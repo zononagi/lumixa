@@ -10,11 +10,13 @@ export function GitPanel(): JSX.Element {
   const {
     status,
     branches,
+    history,
     message,
     busy,
     lastError,
     setMessage,
     refresh,
+    loadHistory,
     stage,
     unstage,
     stageAll,
@@ -24,6 +26,8 @@ export function GitPanel(): JSX.Element {
     checkout,
     merge,
     rebase,
+    stash,
+    stashPop,
     continueOp,
     abortOp
   } = useGitStore()
@@ -32,7 +36,8 @@ export function GitPanel(): JSX.Element {
 
   useEffect(() => {
     void refresh()
-  }, [refresh, root])
+    void loadHistory()
+  }, [refresh, loadHistory, root])
 
   const name = (p: string): string => p.split(/[\\/]/).pop() ?? p
 
@@ -161,6 +166,14 @@ export function GitPanel(): JSX.Element {
               {status && status.ahead > 0 ? ` (${status.ahead})` : ''}
             </button>
           </div>
+          <div className="git-remote-actions">
+            <button disabled={busy} onClick={() => void stash()}>
+              {t('git.stash')}
+            </button>
+            <button disabled={busy} onClick={() => void stashPop()}>
+              {t('git.stashPop')}
+            </button>
+          </div>
           {lastError && <div className="git-error">{lastError}</div>}
         </div>
 
@@ -178,6 +191,22 @@ export function GitPanel(): JSX.Element {
               ))}
             </div>
           </>
+        )}
+
+        <div className="git-section">
+          <span>{t('git.history')}</span>
+          <button onClick={() => void loadHistory()}>{t('git.refresh')}</button>
+        </div>
+        {history.length === 0 ? (
+          <div className="empty-hint">{t('git.historyEmpty')}</div>
+        ) : (
+          <div className="git-history">
+            {history.map((line, i) => (
+              <div key={i} className="git-history-row" title={line}>
+                {line}
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -533,3 +533,236 @@ html[data-translucent] .monaco-editor .margin {
   background: transparent !important;
 }
 
+
+/* ---- Command Palette ---- */
+.palette-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 12vh;
+  z-index: 50;
+}
+.palette {
+  width: min(640px, 90%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.palette-input {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg);
+  padding: 12px 14px;
+  font-size: 14px;
+  outline: none;
+}
+.palette-list {
+  max-height: 50vh;
+  overflow: auto;
+}
+.palette-empty {
+  padding: 14px;
+  color: var(--fg-muted);
+}
+.palette-item {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.palette-item.active {
+  background: var(--selection);
+}
+.palette-cat {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fg-muted);
+  min-width: 74px;
+}
+.palette-title {
+  color: var(--fg);
+}
+
+/* ---- Why? overlay ---- */
+.why-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+}
+.why {
+  width: min(560px, 90%);
+  max-height: 70vh;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.why-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.why-header button {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+}
+.why-body {
+  margin: 0;
+  padding: 14px;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  user-select: text;
+  font-family: var(--font-ui);
+}
+
+/* ---- Problems panel ---- */
+.problems {
+  height: 100%;
+  overflow: auto;
+  user-select: text;
+}
+.problems-empty {
+  padding: 12px;
+  color: var(--fg-muted);
+}
+.problem-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 4px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.problem-row:hover {
+  background: #2a2d2e;
+}
+.problem-sev.error {
+  color: var(--danger);
+}
+.problem-sev.warn {
+  color: #cca700;
+}
+.problem-msg {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+.problem-loc {
+  color: var(--fg-muted);
+  font-size: 11px;
+}
+
+/* ---- Bottom tabs ---- */
+.bottom-tab {
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  padding: 2px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.bottom-tab.active {
+  color: #fff;
+  border-bottom: 1px solid var(--accent);
+}
+
+/* ---- Project Health ---- */
+.health {
+  padding: 8px;
+  overflow: auto;
+  user-select: text;
+}
+.health-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.health-stat {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.health-stat.ok {
+  color: #4ec9b0;
+}
+.health-stat.warn {
+  color: #cca700;
+}
+.health-stat.bad {
+  color: var(--danger);
+}
+.health-section {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fg-muted);
+  margin: 10px 0 4px;
+}
+.dep-list {
+  display: flex;
+  flex-direction: column;
+}
+.dep-row {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  padding: 3px 4px;
+  font-size: 12px;
+}
+.dep-row .spacer {
+  flex: 1;
+}
+.dep-name {
+  color: var(--fg);
+}
+.dep-tag {
+  font-size: 9px;
+  background: #3c3c3c;
+  color: var(--fg-muted);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+.dep-used {
+  color: var(--fg-muted);
+  font-size: 11px;
+}
+.dep-used.unused {
+  color: #cca700;
+}
+
+/* ---- Git history ---- */
+.git-history {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 0;
+}
+.git-history-row {
+  padding: 2px 10px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

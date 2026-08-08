@@ -8,6 +8,7 @@ import {
   writeTerminal
 } from './services/terminal'
 import * as git from './services/git'
+import { buildProjectHealth } from './services/projectHealth'
 
 /**
  * Registers every IPC handler on the main process. Called once after the main
@@ -74,4 +75,13 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   ipcMain.handle(IPC.gitRebase, (_e, cwd: string, branch: string) => git.rebase(cwd, branch))
   ipcMain.handle(IPC.gitRebaseContinue, (_e, cwd: string) => git.rebaseContinue(cwd))
   ipcMain.handle(IPC.gitRebaseAbort, (_e, cwd: string) => git.rebaseAbort(cwd))
+  ipcMain.handle(IPC.gitStash, (_e, cwd: string) => git.stash(cwd))
+  ipcMain.handle(IPC.gitStashPop, (_e, cwd: string) => git.stashPop(cwd))
+  ipcMain.handle(IPC.gitLog, (_e, cwd: string) => git.log(cwd))
+  ipcMain.handle(IPC.gitBlame, (_e, cwd: string, file: string, line: number) =>
+    git.blame(cwd, file, line)
+  )
+
+  // --- Project intelligence -------------------------------------------------
+  ipcMain.handle(IPC.projectHealth, (_e, root: string) => buildProjectHealth(root))
 }

@@ -6,6 +6,25 @@ export const ko: typeof en = {
   'ab.settings': '설정',
   'ab.terminal': '터미널 (Ctrl+`)',
   'ab.git': '소스 제어',
+  'ab.health': '프로젝트 상태',
+  'ab.palette': '명령 팔레트 (Ctrl+Shift+P)',
+
+  'problems.title': '문제',
+
+  'health.title': '프로젝트 상태',
+  'health.noFolder': '프로젝트 상태를 보려면 폴더를 여세요.',
+  'health.noPackage': '이 폴더에서 package.json을 찾을 수 없습니다.',
+  'health.rescan': '다시 스캔',
+  'health.scanning': '스캔 중…',
+  'health.errors': '오류 {n}개',
+  'health.warnings': '경고 {n}개',
+  'health.files': '소스 파일 {n}개',
+  'health.unused': '미사용 의존성 {n}개',
+  'health.missing': '누락된 의존성 {n}개',
+  'health.dependencies': '의존성',
+  'health.usedBy': '{n}개 파일에서 사용',
+  'health.unusedTag': '미사용',
+  'health.missingTitle': 'import되었지만 package.json에 없음',
 
   'explorer.title': '탐색기',
   'explorer.openFolder': '폴더 열기',
@@ -64,5 +83,9 @@ export const ko: typeof en = {
   'git.abort': '중단',
   'git.noOtherBranches': '다른 브랜치 없음',
   'git.mergeInProgress': '⚠️ 병합 진행 중 — 충돌을 해결하고 스테이지한 후 계속하세요.',
-  'git.rebaseInProgress': '⚠️ 리베이스 진행 중 — 충돌을 해결하고 스테이지한 후 계속하세요.'
+  'git.rebaseInProgress': '⚠️ 리베이스 진행 중 — 충돌을 해결하고 스테이지한 후 계속하세요.',
+  'git.stash': '스태시',
+  'git.stashPop': '스태시 복원',
+  'git.history': '기록',
+  'git.historyEmpty': '아직 커밋이 없습니다.'
 }

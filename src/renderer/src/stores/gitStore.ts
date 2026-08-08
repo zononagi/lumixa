@@ -5,12 +5,14 @@ import { useWorkspaceStore } from './workspaceStore'
 interface GitState {
   status: GitStatus | null
   branches: string[]
+  history: string[]
   message: string
   busy: boolean
   lastError: string | null
 
   setMessage: (m: string) => void
   refresh: () => Promise<void>
+  loadHistory: () => Promise<void>
   stage: (path: string) => Promise<void>
   unstage: (path: string) => Promise<void>
   stageAll: () => Promise<void>
@@ -20,6 +22,8 @@ interface GitState {
   checkout: (branch: string, create?: boolean) => Promise<void>
   merge: (branch: string) => Promise<void>
   rebase: (branch: string) => Promise<void>
+  stash: () => Promise<void>
+  stashPop: () => Promise<void>
   continueOp: () => Promise<void>
   abortOp: () => Promise<void>
 }
@@ -29,11 +33,18 @@ const root = (): string | null => useWorkspaceStore.getState().root
 export const useGitStore = create<GitState>((set, get) => ({
   status: null,
   branches: [],
+  history: [],
   message: '',
   busy: false,
   lastError: null,
 
   setMessage: (m) => set({ message: m }),
+
+  loadHistory: async () => {
+    const r = root()
+    if (!r) return
+    set({ history: await window.lumixa.git.log(r) })
+  },
 
   refresh: async () => {
     const r = root()
@@ -116,6 +127,8 @@ export const useGitStore = create<GitState>((set, get) => ({
         run((r) => window.lumixa.git.checkout(r, branch, create)),
       merge: (branch: string) => run((r) => window.lumixa.git.merge(r, branch)),
       rebase: (branch: string) => run((r) => window.lumixa.git.rebase(r, branch)),
+      stash: () => run((r) => window.lumixa.git.stash(r)),
+      stashPop: () => run((r) => window.lumixa.git.stashPop(r)),
       continueOp: () =>
         run((r) =>
           get().status?.operation === 'merge'

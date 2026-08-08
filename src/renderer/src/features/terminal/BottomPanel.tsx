@@ -1,13 +1,18 @@
 import { useEffect, useState, type JSX } from 'react'
 import type { ShellInfo } from '@shared/ipc'
 import { useUiStore } from '@renderer/stores/uiStore'
+import { useMarkersStore } from '@renderer/features/problems/markersStore'
+import { ProblemsPanel } from '@renderer/features/problems/ProblemsPanel'
 import { useT } from '@renderer/i18n'
 import { TerminalView } from './TerminalView'
 
-/** Bottom dock hosting the terminal, with a shell picker. */
+/** Bottom dock with Terminal / Problems tabs. */
 export function BottomPanel(): JSX.Element | null {
   const open = useUiStore((s) => s.terminalOpen)
   const setTerminal = useUiStore((s) => s.setTerminal)
+  const tab = useUiStore((s) => s.bottomTab)
+  const setBottomTab = useUiStore((s) => s.setBottomTab)
+  const problemCount = useMarkersStore((s) => s.problems.length)
   const t = useT()
   const [shells, setShells] = useState<ShellInfo[]>([])
   const [shellPath, setShellPath] = useState<string>('')
@@ -24,21 +29,39 @@ export function BottomPanel(): JSX.Element | null {
   return (
     <div className="bottom-panel">
       <div className="bottom-header">
-        <span className="title">{t('terminal.title')}</span>
-        <select value={shellPath} onChange={(e) => setShellPath(e.target.value)}>
-          {shells.map((s) => (
-            <option key={s.id} value={s.path}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+        <button
+          className={`bottom-tab ${tab === 'terminal' ? 'active' : ''}`}
+          onClick={() => setBottomTab('terminal')}
+        >
+          {t('terminal.title')}
+        </button>
+        <button
+          className={`bottom-tab ${tab === 'problems' ? 'active' : ''}`}
+          onClick={() => setBottomTab('problems')}
+        >
+          {t('problems.title')}
+          {problemCount > 0 ? ` (${problemCount})` : ''}
+        </button>
+        {tab === 'terminal' && (
+          <select value={shellPath} onChange={(e) => setShellPath(e.target.value)}>
+            {shells.map((s) => (
+              <option key={s.id} value={s.path}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        )}
         <div style={{ flex: 1 }} />
         <button title={t('terminal.close')} onClick={() => setTerminal(false)}>
           ✕
         </button>
       </div>
       <div className="bottom-body">
-        {shellPath && <TerminalView key={shellPath} shellPath={shellPath} visible={open} />}
+        {/* Keep the terminal mounted across tab switches; just hide it. */}
+        <div style={{ height: '100%', display: tab === 'terminal' ? 'block' : 'none' }}>
+          {shellPath && <TerminalView key={shellPath} shellPath={shellPath} visible={open && tab === 'terminal'} />}
+        </div>
+        {tab === 'problems' && <ProblemsPanel />}
       </div>
     </div>
   )

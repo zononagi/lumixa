@@ -6,6 +6,8 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import { installCompletionEngine } from '../completion'
+import { installLearningHovers } from '../intelligence/hoverProvider'
+import { installMarkersWatcher } from '../problems/markersStore'
 
 /**
  * Wires Monaco to the locally-bundled build. `@monaco-editor/react` defaults to
@@ -39,6 +41,10 @@ loader.config({ monaco })
 
 // Register the Ghost Text completion engine (complements built-in IntelliSense).
 installCompletionEngine(monaco)
+// Learning Mode: plain-language hovers for common APIs and error codes.
+installLearningHovers(monaco)
+// Mirror diagnostics into the Problems panel.
+installMarkersWatcher(monaco)
 
 /** Maps a filename to a Monaco language id. */
 export function languageForFile(name: string): string {
