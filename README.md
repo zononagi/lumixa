@@ -68,12 +68,15 @@ AI チャットや AI エージェントには依存しません。Monaco エデ
 
 ## ロードマップ
 - [x] エディタ / タブ / エクスプローラー
-- [x] ターミナル（複数シェル）
-- [x] Git（Merge / Rebase 含む）
+- [x] ターミナル（複数シェル）＋ Problems パネル
+- [x] Git（Merge / Rebase / Stash / History / Blame）
 - [x] 外観カスタマイズ（テーマ / Mica / Acrylic / 背景）
-- [ ] 高性能コード補完エンジン（LSP / 型 / プロジェクト解析ベース）
-- [ ] Quick Fix / リファクタリング / Project Intelligence
-- [ ] デバッガ統合
+- [x] コード補完エンジン（Ghost Text＋Monaco 型認識 IntelliSense）
+- [x] Quick Fix / リファクタリング（Monaco 内蔵）＋ Command Palette
+- [x] Project Intelligence（依存解析 / Project Health）
+- [x] Learning Mode / Why?（静的解析ベースの説明）
+- [ ] デバッガ統合（DAP）
+- [ ] Git グラフ可視化 / Call Hierarchy
 
 ---
 
@@ -126,12 +129,15 @@ It does not rely on AI chat or AI agents. Built on the Monaco editor, language s
 
 ## Roadmap
 - [x] Editor / tabs / explorer
-- [x] Terminal (multiple shells)
-- [x] Git (incl. Merge / Rebase)
+- [x] Terminal (multiple shells) + Problems panel
+- [x] Git (Merge / Rebase / Stash / History / Blame)
 - [x] Appearance (themes / Mica / Acrylic / background)
-- [ ] High-performance completion engine (LSP / types / project analysis)
-- [ ] Quick Fix / refactoring / Project Intelligence
-- [ ] Integrated debugger
+- [x] Completion engine (Ghost Text + Monaco type-aware IntelliSense)
+- [x] Quick Fix / refactoring (Monaco built-ins) + Command Palette
+- [x] Project Intelligence (dependency analysis / Project Health)
+- [x] Learning Mode / Why? (static-analysis explanations)
+- [ ] Integrated debugger (DAP)
+- [ ] Git graph visualization / Call Hierarchy
 
 ---
 
