@@ -61,7 +61,11 @@ export function EditorArea(): JSX.Element {
               minimap: { enabled: true },
               smoothScrolling: true,
               scrollBeyondLastLine: false,
-              automaticLayout: true
+              automaticLayout: true,
+              // Ghost Text inline completions (Tab to accept, Esc to dismiss).
+              inlineSuggest: { enabled: true },
+              suggestSelection: 'first',
+              tabCompletion: 'on'
             }}
           />
         </div>

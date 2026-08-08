@@ -5,6 +5,7 @@ import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
 import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import { installCompletionEngine } from '../completion'
 
 /**
  * Wires Monaco to the locally-bundled build. `@monaco-editor/react` defaults to
@@ -35,6 +36,9 @@ import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 }
 
 loader.config({ monaco })
+
+// Register the Ghost Text completion engine (complements built-in IntelliSense).
+installCompletionEngine(monaco)
 
 /** Maps a filename to a Monaco language id. */
 export function languageForFile(name: string): string {
