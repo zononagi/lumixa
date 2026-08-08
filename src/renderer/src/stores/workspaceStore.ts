@@ -11,8 +11,6 @@ interface WorkspaceState {
   rootName: string | null
   childrenByPath: Record<string, DirEntry[]>
   expanded: Set<string>
-  /** Project Memory: auto-loaded context (README/CLAUDE/AGENTS/package.json…). */
-  projectContext: string
 
   openFolder: () => Promise<void>
   toggleDir: (path: string) => Promise<void>
@@ -24,7 +22,6 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   rootName: null,
   childrenByPath: {},
   expanded: new Set(),
-  projectContext: '',
 
   openFolder: async () => {
     const result = await window.lumixa.fs.openFolder()
@@ -33,12 +30,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       root: result.root,
       rootName: result.name,
       childrenByPath: {},
-      expanded: new Set(),
-      projectContext: ''
+      expanded: new Set()
     })
     await get().loadChildren(result.root)
-    // Load Project Memory in the background so the AI knows the project.
-    void window.lumixa.project.context(result.root).then((ctx) => set({ projectContext: ctx }))
   },
 
   loadChildren: async (path) => {

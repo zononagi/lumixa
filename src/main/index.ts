@@ -23,7 +23,7 @@ function appIcon(): string | undefined {
 /**
  * Electron main-process entry point. Creates the application window and wires
  * up the IPC boundary. Kept intentionally thin — all real work lives in the
- * services and AI adapters.
+ * services.
  */
 
 function createWindow(): void {

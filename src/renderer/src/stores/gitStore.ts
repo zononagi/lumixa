@@ -1,17 +1,12 @@
 import { create } from 'zustand'
 import type { GitStatus } from '@shared/ipc'
 import { useWorkspaceStore } from './workspaceStore'
-import { complete } from '@renderer/lib/ai'
-
-const COMMIT_SYSTEM = `You write git commit messages. Given a staged diff, produce ONE concise Conventional Commits message (e.g. "feat: ...", "fix: ...", "refactor: ...").
-Return ONLY the message — a subject line under 72 chars, optionally a blank line and short body. No markdown, no quotes, no explanation.`
 
 interface GitState {
   status: GitStatus | null
   branches: string[]
   message: string
   busy: boolean
-  generating: boolean
   lastError: string | null
 
   setMessage: (m: string) => void
@@ -22,7 +17,6 @@ interface GitState {
   commit: () => Promise<void>
   push: () => Promise<void>
   pull: () => Promise<void>
-  generateMessage: () => Promise<void>
   checkout: (branch: string, create?: boolean) => Promise<void>
   merge: (branch: string) => Promise<void>
   rebase: (branch: string) => Promise<void>
@@ -37,7 +31,6 @@ export const useGitStore = create<GitState>((set, get) => ({
   branches: [],
   message: '',
   busy: false,
-  generating: false,
   lastError: null,
 
   setMessage: (m) => set({ message: m }),
@@ -104,23 +97,6 @@ export const useGitStore = create<GitState>((set, get) => ({
     const res = await window.lumixa.git.pull(r)
     set({ busy: false, lastError: res.ok ? null : res.output })
     await get().refresh()
-  },
-
-  generateMessage: async () => {
-    const r = root()
-    if (!r) return
-    set({ generating: true, lastError: null })
-    const diff = await window.lumixa.git.stagedDiff(r)
-    if (!diff.trim()) {
-      set({ generating: false, lastError: 'No staged changes to summarize.' })
-      return
-    }
-    // Bound the diff so the prompt stays reasonable.
-    const clipped = diff.length > 12000 ? diff.slice(0, 12000) + '\n…(truncated)' : diff
-    const res = await complete(COMMIT_SYSTEM, `Staged diff:\n\n${clipped}`)
-    set({ generating: false })
-    if (res.error) set({ lastError: res.error })
-    else set({ message: res.text.trim() })
   },
 
   // Run a git operation, surface its output on failure, then refresh.

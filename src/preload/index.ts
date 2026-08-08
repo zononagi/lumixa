@@ -1,21 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import {
   IPC,
-  type ChatDeltaEvent,
-  type ChatDoneEvent,
-  type ChatErrorEvent,
-  type ChatStartRequest,
-  type CompleteRequest,
-  type CompleteResult,
   type DirEntry,
   type GitBranches,
   type GitResult,
   type GitStatus,
-  type ModelInfo,
   type OpenFolderResult,
   type PickFileFilter,
   type PickFileResult,
-  type ProviderId,
   type WindowEffect,
   type ShellInfo,
   type TerminalCreateRequest,
@@ -40,39 +32,6 @@ const api = {
   window: {
     setEffect: (effect: WindowEffect): Promise<void> =>
       ipcRenderer.invoke(IPC.windowSetEffect, effect)
-  },
-  secrets: {
-    set: (provider: ProviderId, key: string): Promise<void> =>
-      ipcRenderer.invoke(IPC.secretsSet, provider, key),
-    has: (provider: ProviderId): Promise<boolean> =>
-      ipcRenderer.invoke(IPC.secretsGet, provider),
-    list: (): Promise<ProviderId[]> => ipcRenderer.invoke(IPC.secretsList)
-  },
-  ai: {
-    listModels: (): Promise<ModelInfo[]> => ipcRenderer.invoke(IPC.aiListModels),
-    startChat: (req: ChatStartRequest): Promise<void> =>
-      ipcRenderer.invoke(IPC.aiChatStart, req),
-    cancelChat: (requestId: string): Promise<void> =>
-      ipcRenderer.invoke(IPC.aiChatCancel, requestId),
-    complete: (req: CompleteRequest): Promise<CompleteResult> =>
-      ipcRenderer.invoke(IPC.aiComplete, req),
-
-    // Subscriptions return an unsubscribe function.
-    onDelta: (cb: (e: ChatDeltaEvent) => void): (() => void) => {
-      const handler = (_: unknown, payload: ChatDeltaEvent): void => cb(payload)
-      ipcRenderer.on(IPC.aiChatDelta, handler)
-      return () => ipcRenderer.removeListener(IPC.aiChatDelta, handler)
-    },
-    onDone: (cb: (e: ChatDoneEvent) => void): (() => void) => {
-      const handler = (_: unknown, payload: ChatDoneEvent): void => cb(payload)
-      ipcRenderer.on(IPC.aiChatDone, handler)
-      return () => ipcRenderer.removeListener(IPC.aiChatDone, handler)
-    },
-    onError: (cb: (e: ChatErrorEvent) => void): (() => void) => {
-      const handler = (_: unknown, payload: ChatErrorEvent): void => cb(payload)
-      ipcRenderer.on(IPC.aiChatError, handler)
-      return () => ipcRenderer.removeListener(IPC.aiChatError, handler)
-    }
   },
   terminal: {
     listShells: (): Promise<ShellInfo[]> => ipcRenderer.invoke(IPC.termListShells),
@@ -115,9 +74,6 @@ const api = {
     rebaseContinue: (cwd: string): Promise<GitResult> =>
       ipcRenderer.invoke(IPC.gitRebaseContinue, cwd),
     rebaseAbort: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitRebaseAbort, cwd)
-  },
-  project: {
-    context: (root: string): Promise<string> => ipcRenderer.invoke(IPC.projectContext, root)
   }
 }
 

@@ -9,7 +9,7 @@ import type { ShellInfo, TerminalCreateRequest } from '@shared/ipc'
  * We deliberately avoid a native PTY (node-pty) to keep the app buildable with
  * no C++ toolchain. Each shell reads commands from its stdin pipe and streams
  * stdout/stderr back — enough for running commands, capturing logs, and letting
- * the AI execute commands. Line editing / echo is handled in the renderer.
+ * users run commands. Line editing / echo is handled in the renderer.
  */
 
 interface Session {

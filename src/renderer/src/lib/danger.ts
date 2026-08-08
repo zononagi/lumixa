@@ -1,7 +1,6 @@
 /**
  * Heuristic detection of destructive / dangerous shell commands. Used to gate
- * command execution (from the terminal and from the AI) behind a confirmation
- * dialog, per the spec's "危険コマンドは確認ダイアログ" requirement.
+ * command execution in the terminal behind a confirmation dialog.
  *
  * This is intentionally conservative — it errs toward asking. It is a safety
  * prompt, not a security boundary.

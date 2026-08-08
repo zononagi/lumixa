@@ -7,13 +7,11 @@ export type LeftView = 'explorer' | 'git' | 'settings'
 interface Props {
   active: LeftView
   onSelect: (view: LeftView) => void
-  chatOpen: boolean
-  onToggleChat: () => void
 }
 
-/** Far-left icon rail. Switches the left panel and toggles feature panels. */
-export function ActivityBar({ active, onSelect, chatOpen, onToggleChat }: Props): JSX.Element {
-  const { composerOpen, toggleComposer, terminalOpen, toggleTerminal } = useUiStore()
+/** Far-left icon rail. Switches the left panel and toggles the terminal. */
+export function ActivityBar({ active, onSelect }: Props): JSX.Element {
+  const { terminalOpen, toggleTerminal } = useUiStore()
   const t = useT()
   return (
     <div className="activitybar">
@@ -39,13 +37,6 @@ export function ActivityBar({ active, onSelect, chatOpen, onToggleChat }: Props)
         ⚙
       </button>
       <button
-        className={composerOpen ? 'active' : ''}
-        title={t('ab.composer')}
-        onClick={toggleComposer}
-      >
-        ✦
-      </button>
-      <button
         className={terminalOpen ? 'active' : ''}
         title={t('ab.terminal')}
         onClick={toggleTerminal}
@@ -53,9 +44,6 @@ export function ActivityBar({ active, onSelect, chatOpen, onToggleChat }: Props)
         ▣
       </button>
       <div style={{ flex: 1 }} />
-      <button className={chatOpen ? 'active' : ''} title={t('ab.chat')} onClick={onToggleChat}>
-        ✨
-      </button>
     </div>
   )
 }

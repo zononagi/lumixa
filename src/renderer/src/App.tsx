@@ -6,31 +6,20 @@ import { Explorer } from './features/explorer/Explorer'
 import { GitPanel } from './features/git/GitPanel'
 import { SettingsPanel } from './features/settings/SettingsPanel'
 import { EditorArea } from './features/editor/EditorArea'
-import { ChatPanel } from './features/chat/ChatPanel'
 import { BottomPanel } from './features/terminal/BottomPanel'
-import { Composer } from './features/composer/Composer'
 import { BackgroundLayer } from './shell/BackgroundLayer'
-import { useChatStore } from './stores/chatStore'
-import { useSettingsStore } from './stores/settingsStore'
 import { useAppearanceStore } from './stores/appearanceStore'
 import { useUiStore } from './stores/uiStore'
 
 export default function App(): JSX.Element {
   const [leftView, setLeftView] = useState<LeftView>('explorer')
-  const [chatOpen, setChatOpen] = useState(true)
 
-  const initChat = useChatStore((s) => s.init)
-  const refreshModels = useSettingsStore((s) => s.refreshModels)
-  const refreshConfigured = useSettingsStore((s) => s.refreshConfigured)
   const initAppearance = useAppearanceStore((s) => s.init)
   const toggleTerminal = useUiStore((s) => s.toggleTerminal)
 
   useEffect(() => {
-    const dispose = initChat()
-    void refreshConfigured().then(() => refreshModels())
     initAppearance()
-    return dispose
-  }, [initChat, refreshModels, refreshConfigured, initAppearance])
+  }, [initAppearance])
 
   // Global shortcut: Ctrl/Cmd+` toggles the terminal panel.
   useEffect(() => {
@@ -48,12 +37,7 @@ export default function App(): JSX.Element {
     <div className="shell">
       <BackgroundLayer />
       <div className="workbench">
-        <ActivityBar
-          active={leftView}
-          onSelect={setLeftView}
-          chatOpen={chatOpen}
-          onToggleChat={() => setChatOpen((v) => !v)}
-        />
+        <ActivityBar active={leftView} onSelect={setLeftView} />
         {leftView === 'explorer' && <Explorer />}
         {leftView === 'git' && <GitPanel />}
         {leftView === 'settings' && <SettingsPanel />}
@@ -61,10 +45,8 @@ export default function App(): JSX.Element {
           <EditorArea />
           <BottomPanel />
         </div>
-        {chatOpen && <ChatPanel />}
       </div>
       <StatusBar />
-      <Composer />
     </div>
   )
 }

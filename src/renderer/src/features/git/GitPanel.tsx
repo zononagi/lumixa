@@ -4,7 +4,7 @@ import { useGitStore } from '@renderer/stores/gitStore'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { useT } from '@renderer/i18n'
 
-/** Source Control panel: status, stage/unstage, AI commit message, push/pull. */
+/** Source Control panel: status, stage/unstage, commit, push/pull, branches. */
 export function GitPanel(): JSX.Element {
   const root = useWorkspaceStore((s) => s.root)
   const {
@@ -12,7 +12,6 @@ export function GitPanel(): JSX.Element {
     branches,
     message,
     busy,
-    generating,
     lastError,
     setMessage,
     refresh,
@@ -22,7 +21,6 @@ export function GitPanel(): JSX.Element {
     commit,
     push,
     pull,
-    generateMessage,
     checkout,
     merge,
     rebase,
@@ -145,14 +143,6 @@ export function GitPanel(): JSX.Element {
             onChange={(e) => setMessage(e.target.value)}
           />
           <div className="git-commit-actions">
-            <button
-              className="ai"
-              disabled={generating || !hasStaged}
-              onClick={() => void generateMessage()}
-              title={t('git.aiMessage')}
-            >
-              {generating ? t('git.generating') : t('git.aiMessage')}
-            </button>
             <button
               className="primary"
               disabled={busy || !message.trim() || !hasStaged}

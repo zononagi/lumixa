@@ -21,24 +21,6 @@ export const IPC = {
   // Window appearance (Windows 11 Mica/Acrylic)
   windowSetEffect: 'window:setEffect',
 
-  // Secure secrets (API keys, per provider). Anthropic's Jan-2026 server-side
-  // enforcement blocks consumer OAuth tokens outside Claude Code/Claude.ai, so
-  // API keys are the only supported auth for a third-party app.
-  secretsGet: 'secrets:get',
-  secretsSet: 'secrets:set',
-  secretsList: 'secrets:list',
-
-  // AI providers
-  aiListModels: 'ai:listModels',
-  aiChatStart: 'ai:chatStart',
-  aiChatCancel: 'ai:chatCancel',
-  aiComplete: 'ai:complete', // one-shot, returns the full response text
-
-  // AI streaming events (main -> renderer, per request id)
-  aiChatDelta: 'ai:chatDelta',
-  aiChatDone: 'ai:chatDone',
-  aiChatError: 'ai:chatError',
-
   // Terminal
   termListShells: 'term:listShells',
   termCreate: 'term:create',
@@ -63,17 +45,12 @@ export const IPC = {
   gitMergeAbort: 'git:mergeAbort',
   gitRebase: 'git:rebase',
   gitRebaseContinue: 'git:rebaseContinue',
-  gitRebaseAbort: 'git:rebaseAbort',
-
-  // Project context / memory
-  projectContext: 'project:context'
+  gitRebaseAbort: 'git:rebaseAbort'
 } as const
 
 // ---------------------------------------------------------------------------
 // Domain types
 // ---------------------------------------------------------------------------
-
-export type ProviderId = 'anthropic' | 'openai'
 
 export interface DirEntry {
   name: string
@@ -100,37 +77,6 @@ export interface PickFileResult {
   content?: string
   /** A `lumixa-media://` URL usable directly as an <img>/<video> src. */
   mediaUrl: string
-}
-
-export interface ModelInfo {
-  id: string
-  displayName: string
-  provider: ProviderId
-}
-
-export interface ChatMessage {
-  role: 'user' | 'assistant'
-  content: string
-}
-
-export interface ChatStartRequest {
-  requestId: string
-  provider: ProviderId
-  model: string
-  system?: string
-  messages: ChatMessage[]
-}
-
-export interface CompleteRequest {
-  provider: ProviderId
-  model: string
-  system?: string
-  messages: ChatMessage[]
-}
-
-export interface CompleteResult {
-  text: string
-  error?: string
 }
 
 // --- Terminal ---
@@ -188,21 +134,4 @@ export interface GitBranches {
 export interface GitResult {
   ok: boolean
   output: string
-}
-
-// Streaming event payloads (main -> renderer)
-export interface ChatDeltaEvent {
-  requestId: string
-  text: string
-}
-
-export interface ChatDoneEvent {
-  requestId: string
-  inputTokens?: number
-  outputTokens?: number
-}
-
-export interface ChatErrorEvent {
-  requestId: string
-  message: string
 }
