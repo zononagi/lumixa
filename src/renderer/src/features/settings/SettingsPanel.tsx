@@ -5,6 +5,7 @@ import {
   parseVSCodeTheme,
   type BackgroundType
 } from '@renderer/stores/appearanceStore'
+import { useUsageStore, type RefreshInterval } from '@renderer/stores/usageStore'
 import { useT, useI18nStore, LOCALES } from '@renderer/i18n'
 
 /** Settings view: language + appearance (window effect, theme, background). */
@@ -41,8 +42,88 @@ export function SettingsPanel(): JSX.Element {
         </div>
 
         <AppearanceSettings />
+        <ClaudeCodeSettings />
       </div>
     </div>
+  )
+}
+
+/** Claude Code usage-monitor settings. */
+function ClaudeCodeSettings(): JSX.Element {
+  const t = useT()
+  const { settings, setSetting } = useUsageStore()
+  const selStyle = {
+    width: '100%',
+    background: '#3c3c3c',
+    color: 'var(--fg)',
+    border: '1px solid #3c3c3c',
+    borderRadius: 4,
+    padding: '6px 8px'
+  }
+
+  const toggle = (
+    key: 'enabled' | 'showInStatusBar' | 'notificationsEnabled',
+    label: string
+  ): JSX.Element => (
+    <label className="settings-check">
+      <input
+        type="checkbox"
+        checked={settings[key]}
+        onChange={(e) => setSetting(key, e.target.checked)}
+      />
+      {label}
+    </label>
+  )
+
+  const threshold = (
+    key: 'warnThreshold' | 'highThreshold' | 'criticalThreshold',
+    label: string
+  ): JSX.Element => (
+    <div className="provider-row">
+      <label>
+        {label} — {settings[key]}%
+      </label>
+      <input
+        type="range"
+        min={50}
+        max={100}
+        step={1}
+        value={settings[key]}
+        style={{ width: '100%' }}
+        onChange={(e) => setSetting(key, parseInt(e.target.value, 10))}
+      />
+    </div>
+  )
+
+  return (
+    <>
+      <h2 style={{ marginTop: 20 }}>{t('settings.claudeCode')}</h2>
+
+      <div className="provider-row">{toggle('enabled', t('settings.usageMonitor'))}</div>
+
+      <div className="provider-row">
+        <label>{t('settings.autoRefresh')}</label>
+        <select
+          value={settings.refreshInterval}
+          onChange={(e) => setSetting('refreshInterval', Number(e.target.value) as RefreshInterval)}
+          style={selStyle}
+        >
+          <option value={30}>{t('settings.refresh30')}</option>
+          <option value={60}>{t('settings.refresh60')}</option>
+          <option value={300}>{t('settings.refresh300')}</option>
+          <option value={0}>{t('settings.refreshManual')}</option>
+        </select>
+      </div>
+
+      <div className="provider-row">{toggle('showInStatusBar', t('settings.showUsageStatusBar'))}</div>
+      <div className="provider-row">
+        {toggle('notificationsEnabled', t('settings.usageNotifications'))}
+      </div>
+
+      {threshold('warnThreshold', t('settings.warnThreshold'))}
+      {threshold('highThreshold', t('settings.highThreshold'))}
+      {threshold('criticalThreshold', t('settings.criticalThreshold'))}
+    </>
   )
 }
 

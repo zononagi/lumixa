@@ -18,6 +18,7 @@ export function ActivityBar(): JSX.Element {
       {view('explorer', '🗂', t('ab.explorer'))}
       {view('git', '⑂', t('ab.git'))}
       {view('health', '📊', t('ab.health'))}
+      {view('agent', '✦', t('ab.agent'))}
       {view('settings', '⚙', t('ab.settings'))}
       <button className={terminalOpen ? 'active' : ''} title={t('ab.terminal')} onClick={toggleTerminal}>
         ▣

@@ -2,7 +2,7 @@ import { app, BrowserWindow, net, protocol, shell } from 'electron'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { registerIpcHandlers } from './ipc'
+import { disposeAgents, registerIpcHandlers } from './ipc'
 import { killAllTerminals } from './services/terminal'
 
 /**
@@ -79,9 +79,13 @@ app.whenReady().then(() => {
   })
 })
 
-app.on('before-quit', () => killAllTerminals())
+app.on('before-quit', () => {
+  killAllTerminals()
+  disposeAgents()
+})
 
 app.on('window-all-closed', () => {
   killAllTerminals()
+  disposeAgents()
   if (process.platform !== 'darwin') app.quit()
 })

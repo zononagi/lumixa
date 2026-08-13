@@ -15,6 +15,14 @@ import {
   type TerminalDataEvent,
   type TerminalExitEvent
 } from '@shared/ipc'
+import type {
+  AgentEventEnvelope,
+  AgentSession,
+  AgentSessionUpdate,
+  ProviderStatus,
+  SessionOptions
+} from '@shared/agent'
+import type { UsageStatus } from '@shared/usage'
 
 /**
  * contextBridge surface. This is the *only* thing the renderer can touch in the
@@ -83,6 +91,28 @@ const api = {
   },
   project: {
     health: (root: string): Promise<ProjectHealth> => ipcRenderer.invoke(IPC.projectHealth, root)
+  },
+  agent: {
+    listProviders: (): Promise<ProviderStatus[]> => ipcRenderer.invoke(IPC.agentListProviders),
+    startSession: (options: SessionOptions): Promise<AgentSession> =>
+      ipcRenderer.invoke(IPC.agentStartSession, options),
+    sendMessage: (sessionId: string, message: string): Promise<void> =>
+      ipcRenderer.invoke(IPC.agentSendMessage, sessionId, message),
+    stop: (sessionId: string): Promise<void> => ipcRenderer.invoke(IPC.agentStop, sessionId),
+    dispose: (sessionId: string): Promise<void> => ipcRenderer.invoke(IPC.agentDispose, sessionId),
+    onEvent: (cb: (e: AgentEventEnvelope) => void): (() => void) => {
+      const handler = (_: unknown, payload: AgentEventEnvelope): void => cb(payload)
+      ipcRenderer.on(IPC.agentEvent, handler)
+      return () => ipcRenderer.removeListener(IPC.agentEvent, handler)
+    },
+    onSessionUpdate: (cb: (e: AgentSessionUpdate) => void): (() => void) => {
+      const handler = (_: unknown, payload: AgentSessionUpdate): void => cb(payload)
+      ipcRenderer.on(IPC.agentSessionUpdate, handler)
+      return () => ipcRenderer.removeListener(IPC.agentSessionUpdate, handler)
+    }
+  },
+  usage: {
+    get: (): Promise<UsageStatus> => ipcRenderer.invoke(IPC.usageGet)
   }
 }
 

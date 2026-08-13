@@ -14,7 +14,7 @@
 
 ## ⬇️ ダウンロード / Download
 
-### [**Windows インストーラー (.exe) — v0.1.0**](https://github.com/7g3n/lumixa/releases/download/v0.1.0/Lumixa-Setup-0.1.0.exe)
+### [**Windows インストーラー (.exe) — v0.2.0**](https://github.com/7g3n/lumixa/releases/download/v0.2.0/Lumixa-Setup-0.2.0.exe)
 
 [すべてのリリース / All releases →](https://github.com/7g3n/lumixa/releases)
 
@@ -30,7 +30,7 @@
 
 **Lumixa** は、高速でモダンなデスクトップ **コードエディタ / IDE** です。
 
-AI チャットや AI エージェントには依存しません。Monaco エディタ・言語サービス・静的解析を土台に、初心者でも快適にコードを書ける軽量な開発環境を目指しています。
+コア機能は AI に依存しません（Monaco エディタ・言語サービス・静的解析が土台）。そのうえで、お使いの環境に **すでにインストール・認証済みの Claude Code CLI** を、そのまま AI エージェントとして Lumixa から利用できます。**Lumixa 自身は Claude の認証情報（OAuth トークン・Cookie・API キー）を一切取得・保存しません** — 認証はすべて Claude Code に委ねる設計です。
 
 ---
 
@@ -55,6 +55,16 @@ AI チャットや AI エージェントには依存しません。Monaco エデ
 - ダーク / ライトテーマ、VS Code テーマのインポート
 - 半透明 UI、Windows 11 の Mica / Acrylic、背景画像・動画
 
+### 🤖 AI エージェント（任意 / ローカル Claude Code 連携）
+- お使いの **Claude Code CLI** を Lumixa の GUI から操作（別ログイン不要・**Lumixa は認証情報を保持しません**）
+- リアルタイムのストリーミング表示、ツール実行の可視化、変更ファイル→クリックでエディタに反映
+- Provider 抽象化（将来 Codex / Gemini / Ollama などに拡張可能）
+
+### 📊 使用状況モニター（Usage Monitor）
+- Claude Code が公式に出力するリセット時刻を表示（5時間 / 週間）
+- 使用**率**は公式に非公開のため、推測せず正直に「Unavailable」表示（**独自計算値を公式使用量として表示しません**）
+- 公式使用量とは明確に分けた「Lumixa Activity」（セッション / メッセージ / ツール呼出 / 変更ファイル / 稼働時間）
+
 ### 🌐 多言語 UI
 - 日本語 / English / 한국어
 
@@ -75,6 +85,8 @@ AI チャットや AI エージェントには依存しません。Monaco エデ
 - [x] Quick Fix / リファクタリング（Monaco 内蔵）＋ Command Palette
 - [x] Project Intelligence（依存解析 / Project Health）
 - [x] Learning Mode / Why?（静的解析ベースの説明）
+- [x] AI エージェント（ローカル Claude Code 連携 / 認証は CLI に委譲）
+- [x] 使用状況モニター（公式リセット時刻 + Lumixa Activity）
 - [ ] デバッガ統合（DAP）
 - [ ] Git グラフ可視化 / Call Hierarchy
 
@@ -91,7 +103,7 @@ AI チャットや AI エージェントには依存しません。Monaco エデ
 
 **Lumixa** is a fast, modern desktop **code editor / IDE**.
 
-It does not rely on AI chat or AI agents. Built on the Monaco editor, language services, and static analysis, it aims to be a lightweight environment where even beginners can write code comfortably.
+Its core does not depend on AI (built on the Monaco editor, language services, and static analysis). On top of that, it can drive the **Claude Code CLI you already have installed and signed in** as an AI agent, straight from Lumixa's GUI. **Lumixa never obtains or stores Claude credentials (OAuth tokens, cookies, API keys)** — authentication is delegated entirely to Claude Code.
 
 ---
 
@@ -116,6 +128,16 @@ It does not rely on AI chat or AI agents. Built on the Monaco editor, language s
 - Dark / light themes, VS Code theme import
 - Translucent UI, Windows 11 Mica / Acrylic, background image/video
 
+### 🤖 AI Agent (optional / local Claude Code)
+- Drive your installed **Claude Code CLI** from Lumixa's GUI (no separate login — **Lumixa holds no credentials**)
+- Real-time streaming, tool-call visualization, file changes → click to open in the editor
+- Provider abstraction (extensible to Codex / Gemini / Ollama in future)
+
+### 📊 Usage Monitor
+- Shows the reset times Claude Code officially emits (5-hour / weekly)
+- Usage **percentages** are not officially exposed, so it honestly shows "Unavailable" instead of guessing (**never presents a self-computed value as official usage**)
+- A clearly separate "Lumixa Activity" (sessions / messages / tool calls / files modified / runtime)
+
 ### 🌐 Localized UI
 - Japanese / English / Korean
 
@@ -136,6 +158,8 @@ It does not rely on AI chat or AI agents. Built on the Monaco editor, language s
 - [x] Quick Fix / refactoring (Monaco built-ins) + Command Palette
 - [x] Project Intelligence (dependency analysis / Project Health)
 - [x] Learning Mode / Why? (static-analysis explanations)
+- [x] AI agent (local Claude Code integration / auth delegated to the CLI)
+- [x] Usage Monitor (official reset times + Lumixa Activity)
 - [ ] Integrated debugger (DAP)
 - [ ] Git graph visualization / Call Hierarchy
 

@@ -52,7 +52,19 @@ export const IPC = {
   gitBlame: 'git:blame',
 
   // Project intelligence (dependency + health scan)
-  projectHealth: 'project:health'
+  projectHealth: 'project:health',
+
+  // AI agent runtime (external Claude Code CLI wrapper)
+  agentListProviders: 'agent:listProviders',
+  agentStartSession: 'agent:startSession',
+  agentSendMessage: 'agent:sendMessage',
+  agentStop: 'agent:stop',
+  agentDispose: 'agent:dispose',
+  agentEvent: 'agent:event', // main -> renderer (streaming AgentEvent)
+  agentSessionUpdate: 'agent:sessionUpdate', // main -> renderer (session status changes)
+
+  // Usage monitor
+  usageGet: 'usage:get'
 } as const
 
 // ---------------------------------------------------------------------------

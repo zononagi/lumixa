@@ -1,5 +1,6 @@
 import { ipcMain, type BrowserWindow } from 'electron'
 import { IPC, type TerminalCreateRequest } from '@shared/ipc'
+import type { SessionOptions } from '@shared/agent'
 import { openFolderDialog, readDir, readFile, writeFile, pickFile } from './services/fs'
 import {
   createTerminal,
@@ -9,6 +10,16 @@ import {
 } from './services/terminal'
 import * as git from './services/git'
 import { buildProjectHealth } from './services/projectHealth'
+import { AgentRuntime } from './services/agent/runtime'
+import { getUsage, ingestUsageLine } from './services/agent/usage'
+
+let runtime: AgentRuntime | null = null
+
+/** Kill all agent sessions on shutdown so no Claude Code process is orphaned. */
+export function disposeAgents(): void {
+  runtime?.disposeAll()
+  runtime = null
+}
 
 /**
  * Registers every IPC handler on the main process. Called once after the main
@@ -84,4 +95,28 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   // --- Project intelligence -------------------------------------------------
   ipcMain.handle(IPC.projectHealth, (_e, root: string) => buildProjectHealth(root))
+
+  // --- AI agent runtime (external Claude Code CLI) --------------------------
+  const send = (channel: string, payload: unknown): void => {
+    if (!win.isDestroyed()) win.webContents.send(channel, payload)
+  }
+  runtime = new AgentRuntime({
+    event: (sessionId, event) => send(IPC.agentEvent, { sessionId, event }),
+    sessionUpdate: (session) => send(IPC.agentSessionUpdate, { session }),
+    // Harvest official rate-limit signals from real runs for the usage monitor.
+    rawLine: (line) => ingestUsageLine(line)
+  })
+
+  ipcMain.handle(IPC.agentListProviders, () => runtime!.listProviders())
+  ipcMain.handle(IPC.agentStartSession, (_e, options: SessionOptions) =>
+    runtime!.startSession(options)
+  )
+  ipcMain.handle(IPC.agentSendMessage, (_e, sessionId: string, message: string) =>
+    runtime!.sendMessage(sessionId, message)
+  )
+  ipcMain.handle(IPC.agentStop, (_e, sessionId: string) => runtime!.stop(sessionId))
+  ipcMain.handle(IPC.agentDispose, (_e, sessionId: string) => runtime!.dispose(sessionId))
+
+  // --- Usage monitor --------------------------------------------------------
+  ipcMain.handle(IPC.usageGet, () => getUsage())
 }
