@@ -3,6 +3,7 @@ import type { ShellInfo } from '@shared/ipc'
 import { useUiStore } from '@renderer/stores/uiStore'
 import { useMarkersStore } from '@renderer/features/problems/markersStore'
 import { ProblemsPanel } from '@renderer/features/problems/ProblemsPanel'
+import { WhatsNextPanel } from '@renderer/features/whatsnext/WhatsNextPanel'
 import { useT } from '@renderer/i18n'
 import { TerminalView } from './TerminalView'
 
@@ -42,6 +43,12 @@ export function BottomPanel(): JSX.Element | null {
           {t('problems.title')}
           {problemCount > 0 ? ` (${problemCount})` : ''}
         </button>
+        <button
+          className={`bottom-tab ${tab === 'whatsnext' ? 'active' : ''}`}
+          onClick={() => setBottomTab('whatsnext')}
+        >
+          {t('next.title')}
+        </button>
         {tab === 'terminal' && (
           <select value={shellPath} onChange={(e) => setShellPath(e.target.value)}>
             {shells.map((s) => (
@@ -62,6 +69,7 @@ export function BottomPanel(): JSX.Element | null {
           {shellPath && <TerminalView key={shellPath} shellPath={shellPath} visible={open && tab === 'terminal'} />}
         </div>
         {tab === 'problems' && <ProblemsPanel />}
+        {tab === 'whatsnext' && <WhatsNextPanel />}
       </div>
     </div>
   )

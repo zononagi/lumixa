@@ -152,5 +152,46 @@ export const ja: typeof en = {
   'settings.refresh30': '30秒',
   'settings.refresh60': '60秒',
   'settings.refresh300': '5分',
-  'settings.refreshManual': '手動'
+  'settings.refreshManual': '手動',
+
+  // Experience mode (Beginner / Developer / Expert)
+  'settings.experience': '習熟度レベル',
+  'settings.experienceHint':
+    'ガイドの量と詳細表示のバランスを設定します。いつでも変更できます。',
+  'mode.beginner': '初心者',
+  'mode.developer': '開発者',
+  'mode.expert': 'エキスパート',
+  'mode.beginner.desc': '分かりやすい言葉での説明とガイドを前面に表示します。',
+  'mode.developer.desc': '必要なときにガイドを表示しつつ、速度を優先します。',
+  'mode.expert.desc': '生の診断情報や高度な詳細を表示し、初心者向けUIは最小限にします。',
+  'mode.statusHint': '習熟度モード — クリックで切り替え',
+
+  // What's Next? panel
+  'next.title': '次にやること',
+  'next.statusHint': '今の状況に合わせて次の一歩を提案します',
+  'next.act.openFolder': 'フォルダを開く',
+  'next.act.openExplorer': 'ファイルを開く',
+  'next.act.save': '保存',
+  'next.act.fix': '修正',
+  'next.act.explain': '説明',
+  'next.act.showProblems': '問題を表示',
+  'next.act.openSourceControl': 'ソース管理を開く',
+  'next.act.resolveConflicts': '解決方法',
+  'next.act.saveWork': '作業を保存',
+  'next.act.showHealth': 'プロジェクト状態',
+  'next.act.askClaude': 'Claude Code に聞く',
+  'next.noWorkspace.title': 'まずはプロジェクトのフォルダを開きましょう。',
+  'next.noWorkspace.detail': 'すべてはフォルダから始まります。作業したいフォルダを選んでください。',
+  'next.conflict.title': '進行中の {op} を完了しましょう。',
+  'next.conflict.detail': '続ける前に、解決が必要な競合があります。',
+  'next.errors.title': '修正すべきエラーが {n} 件あります。',
+  'next.errors.detail': 'エラーがあるとコードは動きません。まず直しましょう。',
+  'next.warnings.title': '確認したほうがよい警告が {n} 件あります。',
+  'next.unsaved.title': '保存していない変更があります。',
+  'next.unsaved.detail': '{file} を保存して、作業を失わないようにしましょう。',
+  'next.commit.title': '作業を履歴に保存しましょう。',
+  'next.commit.detail': 'まだコミットしていない変更が {n} 件あります。',
+  'next.openFile.title': 'ファイルを開いて編集を始めましょう。',
+  'next.allGood.title': 'すべて良好です。🎉',
+  'next.allGood.detail': 'エラーも未保存もありません。続けて作るのに良いタイミングです。'
 }

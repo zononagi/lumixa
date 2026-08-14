@@ -14,7 +14,7 @@
 
 ## ⬇️ ダウンロード / Download
 
-### [**Windows インストーラー (.exe) — v0.2.1 beta**](https://github.com/zononagi/lumixa/releases/download/v0.2.1-beta/Lumixa-Setup-0.2.1-beta.exe)
+### [**Windows インストーラー (.exe) — v0.2.1 final beta**](https://github.com/zononagi/lumixa/releases/download/v0.2.1-final-beta/Lumixa-Setup-0.2.1-final-beta.exe)
 
 [すべてのリリース / All releases →](https://github.com/zononagi/lumixa/releases)
 
@@ -87,6 +87,8 @@
 - [x] Learning Mode / Why?（静的解析ベースの説明）
 - [x] AI エージェント（ローカル Claude Code 連携 / 認証は CLI に委譲）
 - [x] 使用状況モニター（公式リセット時刻 + Lumixa Activity）
+- [x] 習熟度モード（初心者 / 開発者 / エキスパート）＋「次にやること」ガイド
+- [ ] 初心者支援の拡充（Project Wizard / Environment Doctor / Code Builder / Safe Mode …）
 - [ ] デバッガ統合（DAP）
 - [ ] Git グラフ可視化 / Call Hierarchy
 
@@ -160,6 +162,8 @@ Its core does not depend on AI (built on the Monaco editor, language services, a
 - [x] Learning Mode / Why? (static-analysis explanations)
 - [x] AI agent (local Claude Code integration / auth delegated to the CLI)
 - [x] Usage Monitor (official reset times + Lumixa Activity)
+- [x] Experience modes (Beginner / Developer / Expert) + "What's Next?" guidance
+- [ ] Expanded beginner support (Project Wizard / Environment Doctor / Code Builder / Safe Mode …)
 - [ ] Integrated debugger (DAP)
 - [ ] Git graph visualization / Call Hierarchy
 

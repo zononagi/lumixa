@@ -6,6 +6,7 @@ import {
   type BackgroundType
 } from '@renderer/stores/appearanceStore'
 import { useUsageStore, type RefreshInterval } from '@renderer/stores/usageStore'
+import { useExperienceStore, type ExperienceMode } from '@renderer/stores/experienceStore'
 import { useT, useI18nStore, LOCALES } from '@renderer/i18n'
 
 /** Settings view: language + appearance (window effect, theme, background). */
@@ -41,10 +42,41 @@ export function SettingsPanel(): JSX.Element {
           </select>
         </div>
 
+        <ExperienceSettings />
         <AppearanceSettings />
         <ClaudeCodeSettings />
       </div>
     </div>
+  )
+}
+
+/** Experience level: Beginner / Developer / Expert (spec §3–§5). */
+function ExperienceSettings(): JSX.Element {
+  const t = useT()
+  const mode = useExperienceStore((s) => s.mode)
+  const setMode = useExperienceStore((s) => s.setMode)
+  const modes: ExperienceMode[] = ['beginner', 'developer', 'expert']
+  return (
+    <>
+      <h2 style={{ marginTop: 20 }}>{t('settings.experience')}</h2>
+      <p className="hint">{t('settings.experienceHint')}</p>
+      <div className="provider-row">
+        <div className="field">
+          {modes.map((m) => (
+            <button
+              key={m}
+              style={{ background: mode === m ? 'var(--accent)' : '#3c3c3c' }}
+              onClick={() => setMode(m)}
+            >
+              {t(`mode.${m}`)}
+            </button>
+          ))}
+        </div>
+        <p className="hint" style={{ marginTop: 4 }}>
+          {t(`mode.${mode}.desc`)}
+        </p>
+      </div>
+    </>
   )
 }
 

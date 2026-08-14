@@ -152,5 +152,46 @@ export const ko: typeof en = {
   'settings.refresh30': '30초',
   'settings.refresh60': '60초',
   'settings.refresh300': '5분',
-  'settings.refreshManual': '수동'
+  'settings.refreshManual': '수동',
+
+  // Experience mode (Beginner / Developer / Expert)
+  'settings.experience': '숙련도 수준',
+  'settings.experienceHint':
+    '안내와 상세 정보의 균형을 설정합니다. 언제든 변경할 수 있습니다.',
+  'mode.beginner': '초보자',
+  'mode.developer': '개발자',
+  'mode.expert': '전문가',
+  'mode.beginner.desc': '쉬운 말로 된 설명과 안내를 전면에 표시합니다.',
+  'mode.developer.desc': '필요할 때 안내를 표시하되 속도를 우선합니다.',
+  'mode.expert.desc': '원시 진단 정보와 고급 세부 정보를 표시하고 초보자 UI는 최소화합니다.',
+  'mode.statusHint': '숙련도 모드 — 클릭하여 전환',
+
+  // What's Next? panel
+  'next.title': '다음 할 일',
+  'next.statusHint': '현재 상황에 맞는 다음 단계를 제안합니다',
+  'next.act.openFolder': '폴더 열기',
+  'next.act.openExplorer': '파일 열기',
+  'next.act.save': '저장',
+  'next.act.fix': '수정',
+  'next.act.explain': '설명',
+  'next.act.showProblems': '문제 표시',
+  'next.act.openSourceControl': '소스 제어 열기',
+  'next.act.resolveConflicts': '해결 방법',
+  'next.act.saveWork': '작업 저장',
+  'next.act.showHealth': '프로젝트 상태',
+  'next.act.askClaude': 'Claude Code에게 묻기',
+  'next.noWorkspace.title': '먼저 프로젝트 폴더를 여세요.',
+  'next.noWorkspace.detail': '모든 것은 폴더에서 시작됩니다. 작업할 폴더를 선택하세요.',
+  'next.conflict.title': '진행 중인 {op}을(를) 완료하세요.',
+  'next.conflict.detail': '계속하기 전에 해결해야 할 충돌이 있습니다.',
+  'next.errors.title': '수정할 오류가 {n}개 있습니다.',
+  'next.errors.detail': '오류가 있으면 코드가 실행되지 않습니다. 먼저 고쳐 봅시다.',
+  'next.warnings.title': '살펴볼 만한 경고가 {n}개 있습니다.',
+  'next.unsaved.title': '저장하지 않은 변경이 있습니다.',
+  'next.unsaved.detail': '{file}을(를) 저장해 작업을 잃지 않도록 하세요.',
+  'next.commit.title': '작업을 기록에 저장하세요.',
+  'next.commit.detail': '아직 커밋하지 않은 변경이 {n}개 있습니다.',
+  'next.openFile.title': '파일을 열어 편집을 시작하세요.',
+  'next.allGood.title': '모두 정상입니다. 🎉',
+  'next.allGood.detail': '오류도 미저장도 없습니다. 계속 만들기 좋은 때입니다.'
 }

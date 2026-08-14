@@ -150,5 +150,46 @@ export const en = {
   'settings.refresh30': '30 sec',
   'settings.refresh60': '60 sec',
   'settings.refresh300': '5 min',
-  'settings.refreshManual': 'Manual'
+  'settings.refreshManual': 'Manual',
+
+  // Experience mode (Beginner / Developer / Expert)
+  'settings.experience': 'Experience Level',
+  'settings.experienceHint':
+    'How much guidance vs. raw detail Lumixa shows. You can change this anytime.',
+  'mode.beginner': 'Beginner',
+  'mode.developer': 'Developer',
+  'mode.expert': 'Expert',
+  'mode.beginner.desc': 'Plain-language help and guidance, front and centre.',
+  'mode.developer.desc': 'Guidance on demand, speed-first defaults.',
+  'mode.expert.desc': 'Raw diagnostics and advanced detail, minimal beginner UI.',
+  'mode.statusHint': 'Experience mode — click to switch',
+
+  // What's Next? panel
+  'next.title': "What's Next?",
+  'next.statusHint': 'Show a recommended next step for where you are now',
+  'next.act.openFolder': 'Open Folder',
+  'next.act.openExplorer': 'Open a File',
+  'next.act.save': 'Save',
+  'next.act.fix': 'Fix',
+  'next.act.explain': 'Explain',
+  'next.act.showProblems': 'Show Problems',
+  'next.act.openSourceControl': 'Open Source Control',
+  'next.act.resolveConflicts': 'How to resolve',
+  'next.act.saveWork': 'Save your work',
+  'next.act.showHealth': 'Project Health',
+  'next.act.askClaude': 'Ask Claude Code',
+  'next.noWorkspace.title': 'Open a project folder to get started.',
+  'next.noWorkspace.detail': 'Everything begins with a folder — pick the one you want to work in.',
+  'next.conflict.title': 'Finish the {op} in progress.',
+  'next.conflict.detail': 'There are conflicts to resolve before you can continue.',
+  'next.errors.title': 'You have {n} error(s) to fix.',
+  'next.errors.detail': "Errors stop your code from running — let's fix them first.",
+  'next.warnings.title': 'You have {n} warning(s) worth a look.',
+  'next.unsaved.title': 'You have unsaved changes.',
+  'next.unsaved.detail': "Save {file} so your work isn't lost.",
+  'next.commit.title': 'Save your work to history.',
+  'next.commit.detail': "{n} changed file(s) aren't committed yet.",
+  'next.openFile.title': 'Open a file to start editing.',
+  'next.allGood.title': 'Everything looks good. 🎉',
+  'next.allGood.detail': 'No errors, nothing unsaved. A good moment to keep building.'
 }

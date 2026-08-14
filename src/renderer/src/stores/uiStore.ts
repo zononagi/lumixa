@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 export type LeftView = 'explorer' | 'git' | 'health' | 'agent' | 'settings'
-export type BottomTab = 'terminal' | 'problems'
+export type BottomTab = 'terminal' | 'problems' | 'whatsnext'
 
 /** Cross-cutting UI state: active panels, bottom tab, command palette. */
 interface UiState {

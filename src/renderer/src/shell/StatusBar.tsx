@@ -3,6 +3,7 @@ import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useUsageStore } from '@renderer/stores/usageStore'
 import { useUiStore } from '@renderer/stores/uiStore'
+import { useExperienceStore, type ExperienceMode } from '@renderer/stores/experienceStore'
 import { formatDuration } from '@renderer/lib/format'
 import { useT } from '@renderer/i18n'
 
@@ -17,9 +18,50 @@ export function StatusBar(): JSX.Element {
       <span>{rootName ? `📁 ${rootName}` : t('status.noFolder')}</span>
       {activeTab && <span>{activeTab.dirty ? t('status.unsaved') : t('status.saved')}</span>}
       <div className="spacer" />
+      <WhatsNextItem />
+      <ModeItem />
       <UsageStatusItem />
       <span>Lumixa</span>
     </div>
+  )
+}
+
+/** Always-available "What's Next?" affordance (spec §78 — reachable anywhere). */
+function WhatsNextItem(): JSX.Element {
+  const t = useT()
+  const setTerminal = useUiStore((s) => s.setTerminal)
+  const setBottomTab = useUiStore((s) => s.setBottomTab)
+  return (
+    <span
+      className="statusbar-next"
+      title={t('next.statusHint')}
+      style={{ cursor: 'pointer' }}
+      onClick={() => {
+        setTerminal(true)
+        setBottomTab('whatsnext')
+      }}
+    >
+      💡 {t('next.title')}
+    </span>
+  )
+}
+
+/** Compact experience-mode indicator; click cycles Beginner → Developer → Expert. */
+function ModeItem(): JSX.Element {
+  const t = useT()
+  const mode = useExperienceStore((s) => s.mode)
+  const setMode = useExperienceStore((s) => s.setMode)
+  const order: ExperienceMode[] = ['beginner', 'developer', 'expert']
+  const next = order[(order.indexOf(mode) + 1) % order.length]
+  return (
+    <span
+      className="statusbar-mode"
+      title={t('mode.statusHint')}
+      style={{ cursor: 'pointer' }}
+      onClick={() => setMode(next)}
+    >
+      {t(`mode.${mode}`)}
+    </span>
   )
 }
 

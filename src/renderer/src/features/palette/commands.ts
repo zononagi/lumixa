@@ -3,6 +3,7 @@ import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useGitStore } from '@renderer/stores/gitStore'
 import { useAppearanceStore } from '@renderer/stores/appearanceStore'
+import { useExperienceStore } from '@renderer/stores/experienceStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainApi, explainError } from '@renderer/features/intelligence/knowledgeBase'
 import { useI18nStore } from '@renderer/i18n'
@@ -15,7 +16,7 @@ export interface Command {
 }
 
 /** Compose the current cursor's "Why?" explanation from static analysis. */
-function explainAtCursor(): string {
+export function explainAtCursor(): string {
   const active = getActiveEditor()
   if (!active) return 'Open a file first.'
   const { editor, monaco } = active
@@ -66,8 +67,22 @@ export function buildCommands(): Command[] {
   const ed = useEditorStore.getState
   const git = useGitStore.getState
   const appearance = useAppearanceStore.getState
+  const xp = useExperienceStore.getState
+
+  const openWhatsNext = (): void => {
+    ui().setTerminal(true)
+    ui().setBottomTab('whatsnext')
+  }
 
   return [
+    // "No Dead Ends" escape hatches (spec §77, §78) — always a way forward.
+    { id: 'help.whatsNext', title: "What's Next?", category: 'Help', run: openWhatsNext },
+    { id: 'help.lost', title: "I don't know what to do", category: 'Help', run: openWhatsNext },
+
+    { id: 'mode.beginner', title: 'Experience Mode: Beginner', category: 'Mode', run: () => xp().setMode('beginner') },
+    { id: 'mode.developer', title: 'Experience Mode: Developer', category: 'Mode', run: () => xp().setMode('developer') },
+    { id: 'mode.expert', title: 'Experience Mode: Expert', category: 'Mode', run: () => xp().setMode('expert') },
+
     { id: 'workspace.openFolder', title: 'Open Folder…', category: 'File', run: () => void ws().openFolder() },
     { id: 'file.save', title: 'Save File', category: 'File', run: () => void ed().saveActive() },
 
