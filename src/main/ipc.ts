@@ -1,7 +1,14 @@
-import { ipcMain, type BrowserWindow } from 'electron'
+import { app, ipcMain, type BrowserWindow } from 'electron'
+import { join } from 'node:path'
 import { IPC, type TerminalCreateRequest } from '@shared/ipc'
 import type { SessionOptions } from '@shared/agent'
 import { openFolderDialog, readDir, readFile, writeFile, pickFile } from './services/fs'
+import {
+  createSnapshot,
+  deleteSnapshot,
+  listSnapshots,
+  restoreSnapshot
+} from './services/snapshot'
 import {
   createTerminal,
   killTerminal,
@@ -119,4 +126,21 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   // --- Usage monitor --------------------------------------------------------
   ipcMain.handle(IPC.usageGet, () => getUsage())
+
+  // --- Safe Mode snapshots --------------------------------------------------
+  // Stored under the app's per-user data dir, keyed by workspace — never inside
+  // the workspace itself, so snapshots can't pollute the project or Git.
+  const snapshotsRoot = join(app.getPath('userData'), 'snapshots')
+  ipcMain.handle(IPC.snapshotCreate, (_e, workspace: string, label: string) =>
+    createSnapshot(snapshotsRoot, workspace, label)
+  )
+  ipcMain.handle(IPC.snapshotList, (_e, workspace: string) =>
+    listSnapshots(snapshotsRoot, workspace)
+  )
+  ipcMain.handle(IPC.snapshotRestore, (_e, workspace: string, id: string) =>
+    restoreSnapshot(snapshotsRoot, workspace, id)
+  )
+  ipcMain.handle(IPC.snapshotDelete, (_e, workspace: string, id: string) =>
+    deleteSnapshot(snapshotsRoot, workspace, id)
+  )
 }

@@ -13,7 +13,9 @@ import {
   type ShellInfo,
   type TerminalCreateRequest,
   type TerminalDataEvent,
-  type TerminalExitEvent
+  type TerminalExitEvent,
+  type SnapshotMeta,
+  type SnapshotResult
 } from '@shared/ipc'
 import type {
   AgentEventEnvelope,
@@ -113,6 +115,16 @@ const api = {
   },
   usage: {
     get: (): Promise<UsageStatus> => ipcRenderer.invoke(IPC.usageGet)
+  },
+  snapshot: {
+    create: (workspace: string, label: string): Promise<SnapshotResult> =>
+      ipcRenderer.invoke(IPC.snapshotCreate, workspace, label),
+    list: (workspace: string): Promise<SnapshotMeta[]> =>
+      ipcRenderer.invoke(IPC.snapshotList, workspace),
+    restore: (workspace: string, id: string): Promise<SnapshotResult> =>
+      ipcRenderer.invoke(IPC.snapshotRestore, workspace, id),
+    delete: (workspace: string, id: string): Promise<SnapshotResult> =>
+      ipcRenderer.invoke(IPC.snapshotDelete, workspace, id)
   }
 }
 

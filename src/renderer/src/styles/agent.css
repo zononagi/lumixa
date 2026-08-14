@@ -693,6 +693,192 @@
 .wn-btn.primary:hover {
   background: var(--accent-hover);
 }
+
+/* ---------------------- Error Explainer (Problems) ---------------------- */
+.problem-item {
+  border-bottom: 1px solid var(--border);
+}
+.problem-chevron {
+  color: var(--fg-muted);
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+.problem-explain {
+  padding: 8px 12px 12px 30px;
+  background: var(--bg-elevated);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.problem-cat {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 8px;
+  padding: 1px 8px;
+  margin-bottom: 6px;
+}
+.pe-line {
+  margin-top: 3px;
+}
+.pe-line strong {
+  color: var(--fg-muted);
+  font-weight: 600;
+  margin-right: 4px;
+}
+.pe-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.pe-btn {
+  background: #3c3c3c;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.pe-btn:hover {
+  border-color: var(--accent);
+}
+.pe-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.pe-tech {
+  margin-top: 10px;
+  color: var(--fg-muted);
+}
+.pe-tech summary {
+  cursor: pointer;
+}
+.pe-tech code {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ----------------------------- Safe Mode ----------------------------- */
+.safe-body {
+  padding: 8px 12px;
+  overflow-y: auto;
+}
+.safe-note {
+  margin-bottom: 10px;
+}
+.safe-create {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.safe-create input {
+  flex: 1;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.safe-create input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.safe-snap-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.safe-snap-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.safe-notice {
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  background: rgba(45, 157, 95, 0.12);
+  border: 1px solid #2d9d5f;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.safe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.safe-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+.safe-item.auto {
+  border-style: dashed;
+}
+.safe-item-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.safe-item-label {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.safe-auto-tag {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 4px;
+}
+.safe-item-meta {
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.safe-item-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.safe-item-actions button {
+  background: #3c3c3c;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.safe-item-actions button:hover {
+  border-color: var(--accent);
+}
+.safe-del:hover {
+  border-color: var(--danger) !important;
+  color: var(--danger);
+}
 .settings-check {
   display: flex;
   align-items: center;

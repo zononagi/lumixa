@@ -64,7 +64,13 @@ export const IPC = {
   agentSessionUpdate: 'agent:sessionUpdate', // main -> renderer (session status changes)
 
   // Usage monitor
-  usageGet: 'usage:get'
+  usageGet: 'usage:get',
+
+  // Safe Mode — project snapshots (a temporary safety net, NOT a Git replacement)
+  snapshotCreate: 'snapshot:create',
+  snapshotList: 'snapshot:list',
+  snapshotRestore: 'snapshot:restore',
+  snapshotDelete: 'snapshot:delete'
 } as const
 
 // ---------------------------------------------------------------------------
@@ -174,4 +180,24 @@ export interface ProjectHealth {
   /** Bare imports with no matching dependency (best-effort; excludes builtins). */
   missingDependencies: string[]
   error?: string
+}
+
+// --- Safe Mode snapshots ---
+export interface SnapshotMeta {
+  id: string
+  createdAt: number
+  /** Absolute workspace path this snapshot belongs to. */
+  workspace: string
+  /** User-supplied label, or an automatic reason (e.g. "Before restore"). */
+  label: string
+  fileCount: number
+  /** True when Lumixa created it automatically (e.g. the pre-restore safety net). */
+  auto: boolean
+}
+
+export interface SnapshotResult {
+  ok: boolean
+  /** Beginner-friendly outcome message (never a raw stack trace). */
+  message: string
+  meta?: SnapshotMeta
 }

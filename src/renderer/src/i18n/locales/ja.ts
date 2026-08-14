@@ -193,5 +193,31 @@ export const ja: typeof en = {
   'next.commit.detail': 'まだコミットしていない変更が {n} 件あります。',
   'next.openFile.title': 'ファイルを開いて編集を始めましょう。',
   'next.allGood.title': 'すべて良好です。🎉',
-  'next.allGood.detail': 'エラーも未保存もありません。続けて作るのに良いタイミングです。'
+  'next.allGood.detail': 'エラーも未保存もありません。続けて作るのに良いタイミングです。',
+
+  // Error Explainer (問題パネル)
+  'problems.what': '何が起きた？',
+  'problems.why': 'なぜ？',
+  'problems.fix': '直し方',
+  'problems.technical': '技術的な詳細',
+  'problems.quickFix': 'クイックフィックス',
+  'problems.organizeImports': 'import を整理',
+  'problems.askClaude': 'Claude Code に聞く',
+
+  // セーフモード（スナップショット）
+  'ab.safe': 'セーフモード（スナップショット）',
+  'safe.title': 'セーフモード',
+  'safe.noWorkspace': 'セーフモードを使うにはフォルダを開いてください。',
+  'safe.note':
+    '一時的な安全網です（Gitの代わりではありません）。node_modules・.git・dist などは除外されます。',
+  'safe.labelPlaceholder': 'ラベル（任意）',
+  'safe.create': 'スナップショット作成',
+  'safe.empty': 'まだスナップショットはありません。',
+  'safe.untitled': '無題のスナップショット',
+  'safe.autoTag': '自動',
+  'safe.files': '{n} ファイル',
+  'safe.restore': '復元',
+  'safe.delete': '削除',
+  'safe.confirmRestore':
+    '「{label}」を復元しますか？現在のファイルは上書きされます。先に現在の状態のセーフティスナップショットを保存します。'
 }

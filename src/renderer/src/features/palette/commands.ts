@@ -89,6 +89,7 @@ export function buildCommands(): Command[] {
     { id: 'view.explorer', title: 'View: Explorer', category: 'View', run: () => ui().setLeftView('explorer') },
     { id: 'view.git', title: 'View: Source Control', category: 'View', run: () => ui().setLeftView('git') },
     { id: 'view.health', title: 'View: Project Health', category: 'View', run: () => ui().setLeftView('health') },
+    { id: 'view.safe', title: 'View: Safe Mode (Snapshots)', category: 'View', run: () => ui().setLeftView('safe') },
     { id: 'view.settings', title: 'View: Settings', category: 'View', run: () => ui().setLeftView('settings') },
     { id: 'terminal.toggle', title: 'Toggle Terminal', category: 'View', run: () => ui().toggleTerminal() },
     {
@@ -110,6 +111,18 @@ export function buildCommands(): Command[] {
     { id: 'editor.quickFix', title: 'Quick Fix…', category: 'Editor', run: () => runEditorAction('editor.action.quickFix') },
 
     { id: 'why.explain', title: 'Why? (explain cursor / errors)', category: 'Learn', run: () => ui().setWhy(explainAtCursor()) },
+
+    {
+      id: 'safe.snapshot',
+      title: 'Safe Mode: Create Snapshot',
+      category: 'Safe Mode',
+      run: () => {
+        const r = ws().root
+        if (!r) return
+        ui().setLeftView('safe')
+        void window.lumixa.snapshot.create(r, '')
+      }
+    },
 
     { id: 'git.refresh', title: 'Git: Refresh', category: 'Git', run: () => void git().refresh() },
     { id: 'git.push', title: 'Git: Push', category: 'Git', run: () => void git().push() },

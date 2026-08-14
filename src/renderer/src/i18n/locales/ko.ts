@@ -193,5 +193,31 @@ export const ko: typeof en = {
   'next.commit.detail': '아직 커밋하지 않은 변경이 {n}개 있습니다.',
   'next.openFile.title': '파일을 열어 편집을 시작하세요.',
   'next.allGood.title': '모두 정상입니다. 🎉',
-  'next.allGood.detail': '오류도 미저장도 없습니다. 계속 만들기 좋은 때입니다.'
+  'next.allGood.detail': '오류도 미저장도 없습니다. 계속 만들기 좋은 때입니다.',
+
+  // Error Explainer (문제 패널)
+  'problems.what': '무슨 일이 일어났나요?',
+  'problems.why': '왜?',
+  'problems.fix': '해결 방법',
+  'problems.technical': '기술적 세부 정보',
+  'problems.quickFix': '빠른 수정',
+  'problems.organizeImports': 'import 정리',
+  'problems.askClaude': 'Claude Code에게 묻기',
+
+  // 세이프 모드 (스냅샷)
+  'ab.safe': '세이프 모드 (스냅샷)',
+  'safe.title': '세이프 모드',
+  'safe.noWorkspace': '세이프 모드를 사용하려면 폴더를 여세요.',
+  'safe.note':
+    '임시 안전망입니다(Git 대체 아님). node_modules·.git·dist 등은 제외됩니다.',
+  'safe.labelPlaceholder': '라벨(선택)',
+  'safe.create': '스냅샷 생성',
+  'safe.empty': '아직 스냅샷이 없습니다.',
+  'safe.untitled': '제목 없는 스냅샷',
+  'safe.autoTag': '자동',
+  'safe.files': '{n}개 파일',
+  'safe.restore': '복원',
+  'safe.delete': '삭제',
+  'safe.confirmRestore':
+    '"{label}"을(를) 복원할까요? 현재 파일이 덮어써집니다. 먼저 현재 상태의 안전 스냅샷을 저장합니다.'
 }

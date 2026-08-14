@@ -7,6 +7,7 @@ import { GitPanel } from './features/git/GitPanel'
 import { SettingsPanel } from './features/settings/SettingsPanel'
 import { HealthPanel } from './features/project/HealthPanel'
 import { AgentPanel } from './features/agent/AgentPanel'
+import { SafeModePanel } from './features/safe/SafeModePanel'
 import { EditorArea } from './features/editor/EditorArea'
 import { BottomPanel } from './features/terminal/BottomPanel'
 import { BackgroundLayer } from './shell/BackgroundLayer'
@@ -49,6 +50,7 @@ export default function App(): JSX.Element {
         {leftView === 'git' && <GitPanel />}
         {leftView === 'health' && <HealthPanel />}
         {leftView === 'agent' && <AgentPanel />}
+        {leftView === 'safe' && <SafeModePanel />}
         {leftView === 'settings' && <SettingsPanel />}
         <div className="main">
           <EditorArea />

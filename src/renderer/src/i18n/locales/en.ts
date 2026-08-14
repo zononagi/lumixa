@@ -191,5 +191,30 @@ export const en = {
   'next.commit.detail': "{n} changed file(s) aren't committed yet.",
   'next.openFile.title': 'Open a file to start editing.',
   'next.allGood.title': 'Everything looks good. 🎉',
-  'next.allGood.detail': 'No errors, nothing unsaved. A good moment to keep building.'
+  'next.allGood.detail': 'No errors, nothing unsaved. A good moment to keep building.',
+
+  // Error Explainer (Problems panel)
+  'problems.what': 'What happened?',
+  'problems.why': 'Why?',
+  'problems.fix': 'How to fix',
+  'problems.technical': 'Technical details',
+  'problems.quickFix': 'Quick Fix',
+  'problems.organizeImports': 'Organize Imports',
+  'problems.askClaude': 'Ask Claude Code',
+
+  // Safe Mode (snapshots)
+  'ab.safe': 'Safe Mode (Snapshots)',
+  'safe.title': 'Safe Mode',
+  'safe.noWorkspace': 'Open a folder to use Safe Mode.',
+  'safe.note': 'A quick safety net — not a Git replacement. Snapshots exclude node_modules, .git, dist…',
+  'safe.labelPlaceholder': 'Label (optional)',
+  'safe.create': 'Create Snapshot',
+  'safe.empty': 'No snapshots yet.',
+  'safe.untitled': 'Untitled snapshot',
+  'safe.autoTag': 'auto',
+  'safe.files': '{n} files',
+  'safe.restore': 'Restore',
+  'safe.delete': 'Delete',
+  'safe.confirmRestore':
+    'Restore "{label}"? Your current files will be overwritten. A safety snapshot of the current state is saved first.'
 }
