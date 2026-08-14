@@ -17,6 +17,7 @@ import {
 } from './services/terminal'
 import * as git from './services/git'
 import { buildProjectHealth } from './services/projectHealth'
+import { checkEnvironment } from './services/environment'
 import { AgentRuntime } from './services/agent/runtime'
 import { getUsage, ingestUsageLine } from './services/agent/usage'
 
@@ -102,6 +103,9 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   // --- Project intelligence -------------------------------------------------
   ipcMain.handle(IPC.projectHealth, (_e, root: string) => buildProjectHealth(root))
+
+  // --- Environment Doctor ---------------------------------------------------
+  ipcMain.handle(IPC.envCheck, () => checkEnvironment())
 
   // --- AI agent runtime (external Claude Code CLI) --------------------------
   const send = (channel: string, payload: unknown): void => {

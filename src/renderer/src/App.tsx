@@ -8,11 +8,13 @@ import { SettingsPanel } from './features/settings/SettingsPanel'
 import { HealthPanel } from './features/project/HealthPanel'
 import { AgentPanel } from './features/agent/AgentPanel'
 import { SafeModePanel } from './features/safe/SafeModePanel'
+import { CodeBuilderPanel } from './features/builder/CodeBuilderPanel'
 import { EditorArea } from './features/editor/EditorArea'
 import { BottomPanel } from './features/terminal/BottomPanel'
 import { BackgroundLayer } from './shell/BackgroundLayer'
 import { CommandPalette } from './features/palette/CommandPalette'
 import { WhyOverlay } from './features/intelligence/WhyOverlay'
+import { Toasts } from './shell/Toasts'
 import { useAppearanceStore } from './stores/appearanceStore'
 import { useUiStore } from './stores/uiStore'
 
@@ -51,6 +53,7 @@ export default function App(): JSX.Element {
         {leftView === 'health' && <HealthPanel />}
         {leftView === 'agent' && <AgentPanel />}
         {leftView === 'safe' && <SafeModePanel />}
+        {leftView === 'builder' && <CodeBuilderPanel />}
         {leftView === 'settings' && <SettingsPanel />}
         <div className="main">
           <EditorArea />
@@ -60,6 +63,7 @@ export default function App(): JSX.Element {
       <StatusBar />
       <CommandPalette />
       <WhyOverlay />
+      <Toasts />
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useState, type JSX } from 'react'
 import type { GitFile } from '@shared/ipc'
 import { useGitStore } from '@renderer/stores/gitStore'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { suggestCommitMessage } from './commitMessage'
 import { useT } from '@renderer/i18n'
 
 /** Source Control panel: status, stage/unstage, commit, push/pull, branches. */
@@ -148,6 +149,13 @@ export function GitPanel(): JSX.Element {
             onChange={(e) => setMessage(e.target.value)}
           />
           <div className="git-commit-actions">
+            <button
+              disabled={files.length === 0}
+              title={t('git.suggestHint')}
+              onClick={() => setMessage(suggestCommitMessage(files))}
+            >
+              {t('git.suggest')}
+            </button>
             <button
               className="primary"
               disabled={busy || !message.trim() || !hasStaged}

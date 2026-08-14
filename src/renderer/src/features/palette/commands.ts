@@ -4,6 +4,8 @@ import { useEditorStore } from '@renderer/stores/editorStore'
 import { useGitStore } from '@renderer/stores/gitStore'
 import { useAppearanceStore } from '@renderer/stores/appearanceStore'
 import { useExperienceStore } from '@renderer/stores/experienceStore'
+import { useAgentStore } from '@renderer/stores/agentStore'
+import { notify } from '@renderer/stores/notifyStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainApi, explainError } from '@renderer/features/intelligence/knowledgeBase'
 import { useI18nStore } from '@renderer/i18n'
@@ -44,6 +46,39 @@ export function explainAtCursor(): string {
       : 'No static explanation available for this position.'
   }
   return out.join('\n\n')
+}
+
+/** Current editor selection text, or '' if nothing is selected. */
+function selectionText(): string {
+  const active = getActiveEditor()
+  const sel = active?.editor.getSelection()
+  if (!active || !sel) return ''
+  return active.editor.getModel()?.getValueInRange(sel) ?? ''
+}
+
+/** Selection action (spec §28, §79): hand the selected code to Claude Code as a
+ *  chat shortcut. Lumixa's own static help stays available without it. */
+async function askClaudeAboutSelection(): Promise<void> {
+  const code = selectionText().trim()
+  const path = useEditorStore.getState().activePath
+  const ja = useI18nStore.getState().locale === 'ja'
+  if (!code || !path) {
+    notify('info', ja ? 'まずコードを選択してください。' : 'Select some code first.')
+    return
+  }
+  const agent = useAgentStore.getState()
+  useUiStore.getState().setLeftView('agent')
+  await agent.refreshProviders()
+  const claude = agent.providers.find((p) => p.id === 'claude-code' && p.state === 'authenticated')
+  if (!claude) {
+    notify('warn', ja ? 'Claude Code が利用できません（未インストール/未ログイン）。' : 'Claude Code is not available (not installed / signed in).')
+    return
+  }
+  const id = await agent.createSession('claude-code')
+  if (!id) return
+  agent.setActive(id)
+  const fileName = path.split(/[\\/]/).pop()
+  await agent.send(id, `Explain this code from ${fileName}:\n\n\`\`\`\n${code}\n\`\`\``)
 }
 
 async function blameCurrentLine(): Promise<void> {
@@ -90,6 +125,7 @@ export function buildCommands(): Command[] {
     { id: 'view.git', title: 'View: Source Control', category: 'View', run: () => ui().setLeftView('git') },
     { id: 'view.health', title: 'View: Project Health', category: 'View', run: () => ui().setLeftView('health') },
     { id: 'view.safe', title: 'View: Safe Mode (Snapshots)', category: 'View', run: () => ui().setLeftView('safe') },
+    { id: 'view.builder', title: 'View: Code Builder', category: 'View', run: () => ui().setLeftView('builder') },
     { id: 'view.settings', title: 'View: Settings', category: 'View', run: () => ui().setLeftView('settings') },
     { id: 'terminal.toggle', title: 'Toggle Terminal', category: 'View', run: () => ui().toggleTerminal() },
     {
@@ -111,6 +147,8 @@ export function buildCommands(): Command[] {
     { id: 'editor.quickFix', title: 'Quick Fix…', category: 'Editor', run: () => runEditorAction('editor.action.quickFix') },
 
     { id: 'why.explain', title: 'Why? (explain cursor / errors)', category: 'Learn', run: () => ui().setWhy(explainAtCursor()) },
+    { id: 'sel.explain', title: 'Explain Selection', category: 'Learn', run: () => ui().setWhy(explainAtCursor()) },
+    { id: 'sel.askClaude', title: 'Ask Claude Code about Selection', category: 'Claude Code', run: () => void askClaudeAboutSelection() },
 
     {
       id: 'safe.snapshot',

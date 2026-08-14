@@ -7,6 +7,7 @@ import {
   type GitStatus,
   type OpenFolderResult,
   type ProjectHealth,
+  type EnvToolStatus,
   type PickFileFilter,
   type PickFileResult,
   type WindowEffect,
@@ -93,6 +94,9 @@ const api = {
   },
   project: {
     health: (root: string): Promise<ProjectHealth> => ipcRenderer.invoke(IPC.projectHealth, root)
+  },
+  env: {
+    check: (): Promise<EnvToolStatus[]> => ipcRenderer.invoke(IPC.envCheck)
   },
   agent: {
     listProviders: (): Promise<ProviderStatus[]> => ipcRenderer.invoke(IPC.agentListProviders),

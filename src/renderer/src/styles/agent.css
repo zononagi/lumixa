@@ -879,6 +879,228 @@
   border-color: var(--danger) !important;
   color: var(--danger);
 }
+
+/* ------------------------------ Toasts ------------------------------ */
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+  max-width: 360px;
+}
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.toast.info { border-left-color: var(--accent); }
+.toast.success { border-left-color: #2d9d5f; }
+.toast.warn { border-left-color: #b8860b; }
+.toast.error { border-left-color: var(--danger); }
+.toast.tip { border-left-color: #7aa2f7; }
+.toast-icon { flex-shrink: 0; }
+
+/* --------------------------- Code Builder --------------------------- */
+.builder-body {
+  padding: 8px 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.builder-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--fg-muted);
+}
+.builder-body > select {
+  background: #3c3c3c;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+.builder-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.builder-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+}
+.builder-field span {
+  color: var(--fg-muted);
+}
+.builder-field input,
+.builder-field textarea,
+.builder-field select {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-family: var(--font-ui);
+}
+.builder-field textarea {
+  font-family: var(--font-mono);
+  resize: vertical;
+}
+.builder-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.builder-check input {
+  width: auto;
+}
+.builder-preview {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0;
+}
+.builder-insert {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+.builder-insert:hover {
+  background: var(--accent-hover);
+}
+
+/* ------------------------- Environment Doctor ------------------------- */
+.onboarding {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.onboarding-type strong {
+  color: var(--accent);
+}
+.onboarding-start {
+  margin-top: 6px;
+  color: var(--fg-muted);
+  font-size: 11px;
+}
+.onboarding-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 3px;
+}
+.onboarding-entry {
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 1px 0;
+}
+.onboarding-entry:hover {
+  text-decoration: underline;
+}
+.env-doctor {
+  margin-bottom: 8px;
+}
+.env-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.env-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.env-mark {
+  width: 14px;
+  flex-shrink: 0;
+}
+.env-item.ok .env-mark { color: #2d9d5f; }
+.env-item.missing .env-mark { color: var(--danger); }
+.env-name {
+  font-weight: 600;
+  min-width: 60px;
+}
+.env-ver {
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+}
+.env-what {
+  color: var(--fg-muted);
+  flex: 1 1 100%;
+  padding-left: 22px;
+}
+.env-link {
+  color: var(--accent);
+  padding-left: 22px;
+}
+
+/* --------------------- Terminal command helper --------------------- */
+.cmd-helper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+.cmd-helper input {
+  flex-shrink: 0;
+  width: 220px;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.cmd-explain {
+  font-size: 12px;
+  color: var(--fg);
+}
+.cmd-explain.unknown {
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+/* Git commit-assistant button row */
+.git-commit-actions {
+  display: flex;
+  gap: 6px;
+}
 .settings-check {
   display: flex;
   align-items: center;

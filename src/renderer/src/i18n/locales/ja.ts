@@ -219,5 +219,49 @@ export const ja: typeof en = {
   'safe.restore': '復元',
   'safe.delete': '削除',
   'safe.confirmRestore':
-    '「{label}」を復元しますか？現在のファイルは上書きされます。先に現在の状態のセーフティスナップショットを保存します。'
+    '「{label}」を復元しますか？現在のファイルは上書きされます。先に現在の状態のセーフティスナップショットを保存します。',
+
+  // 環境ドクター
+  'env.title': '環境ドクター',
+  'env.checking': 'ツールを確認中…',
+  'env.learnMore': '詳しく',
+
+  // プロジェクト オンボーディング
+  'onboard.looksLike': 'このプロジェクトは:',
+  'onboard.startHere': 'ここから始めましょう:',
+
+  // コミットアシスタント / ターミナル
+  'git.suggest': '提案',
+  'git.suggestHint': '変更内容からコミットメッセージを提案します',
+  'terminal.explainPlaceholder': 'コマンドを入力して意味を確認…',
+  'terminal.explainUnknown': 'このコマンドの説明はありません。',
+
+  // コードビルダー
+  'ab.builder': 'コードビルダー',
+  'builder.title': 'コードビルダー',
+  'builder.what': '何を作りますか？',
+  'builder.name': '名前',
+  'builder.type': '型',
+  'builder.value': '値',
+  'builder.params': '引数',
+  'builder.returnType': '戻り値の型',
+  'builder.async': '非同期',
+  'builder.props': 'プロパティ（1行に name: type）',
+  'builder.loopStyle': 'ループの種類',
+  'builder.iterable': '対象',
+  'builder.item': '要素名',
+  'builder.condition': '条件',
+  'builder.operation': '処理',
+  'builder.preview': 'プレビュー',
+  'builder.insert': 'カーソル位置に挿入',
+  'builder.inserted': 'エディタに挿入しました。',
+  'builder.noEditor': '挿入するにはファイルを開いてください。',
+  'builder.kind.variable': '変数',
+  'builder.kind.function': '関数',
+  'builder.kind.interface': 'インターフェース',
+  'builder.kind.component': 'React コンポーネント',
+  'builder.kind.loop': 'ループ',
+  'builder.kind.condition': '条件 (if)',
+  'builder.kind.apiRequest': 'API リクエスト',
+  'builder.kind.tryCatch': 'エラー処理 (try/catch)'
 }

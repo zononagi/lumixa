@@ -219,5 +219,49 @@ export const ko: typeof en = {
   'safe.restore': '복원',
   'safe.delete': '삭제',
   'safe.confirmRestore':
-    '"{label}"을(를) 복원할까요? 현재 파일이 덮어써집니다. 먼저 현재 상태의 안전 스냅샷을 저장합니다.'
+    '"{label}"을(를) 복원할까요? 현재 파일이 덮어써집니다. 먼저 현재 상태의 안전 스냅샷을 저장합니다.',
+
+  // 환경 닥터
+  'env.title': '환경 닥터',
+  'env.checking': '도구 확인 중…',
+  'env.learnMore': '자세히',
+
+  // 프로젝트 온보딩
+  'onboard.looksLike': '이 프로젝트는:',
+  'onboard.startHere': '여기서 시작:',
+
+  // 커밋 도우미 / 터미널
+  'git.suggest': '제안',
+  'git.suggestHint': '변경 내용으로 커밋 메시지를 제안합니다',
+  'terminal.explainPlaceholder': '명령을 입력해 의미 확인…',
+  'terminal.explainUnknown': '이 명령에 대한 설명이 없습니다.',
+
+  // 코드 빌더
+  'ab.builder': '코드 빌더',
+  'builder.title': '코드 빌더',
+  'builder.what': '무엇을 만드나요?',
+  'builder.name': '이름',
+  'builder.type': '타입',
+  'builder.value': '값',
+  'builder.params': '매개변수',
+  'builder.returnType': '반환 타입',
+  'builder.async': '비동기',
+  'builder.props': '속성(줄당 name: type)',
+  'builder.loopStyle': '루프 종류',
+  'builder.iterable': '대상',
+  'builder.item': '항목 이름',
+  'builder.condition': '조건',
+  'builder.operation': '작업',
+  'builder.preview': '미리보기',
+  'builder.insert': '커서 위치에 삽입',
+  'builder.inserted': '에디터에 삽입했습니다.',
+  'builder.noEditor': '삽입하려면 파일을 여세요.',
+  'builder.kind.variable': '변수',
+  'builder.kind.function': '함수',
+  'builder.kind.interface': '인터페이스',
+  'builder.kind.component': 'React 컴포넌트',
+  'builder.kind.loop': '루프',
+  'builder.kind.condition': '조건 (if)',
+  'builder.kind.apiRequest': 'API 요청',
+  'builder.kind.tryCatch': '오류 처리 (try/catch)'
 }

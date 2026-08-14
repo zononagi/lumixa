@@ -54,6 +54,9 @@ export const IPC = {
   // Project intelligence (dependency + health scan)
   projectHealth: 'project:health',
 
+  // Environment Doctor (detect installed dev tools)
+  envCheck: 'env:check',
+
   // AI agent runtime (external Claude Code CLI wrapper)
   agentListProviders: 'agent:listProviders',
   agentStartSession: 'agent:startSession',
@@ -180,6 +183,17 @@ export interface ProjectHealth {
   /** Bare imports with no matching dependency (best-effort; excludes builtins). */
   missingDependencies: string[]
   error?: string
+}
+
+// --- Environment Doctor ---
+export interface EnvToolStatus {
+  id: string
+  name: string
+  installed: boolean
+  version?: string
+  /** Beginner explanation of what the tool is (bilingual; caller picks). */
+  whatJa: string
+  whatEn: string
 }
 
 // --- Safe Mode snapshots ---

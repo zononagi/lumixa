@@ -1,8 +1,10 @@
 import { useEffect, useState, type JSX } from 'react'
-import type { ProjectHealth } from '@shared/ipc'
+import type { EnvToolStatus, ProjectHealth } from '@shared/ipc'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { useEditorStore } from '@renderer/stores/editorStore'
 import { useMarkersStore } from '@renderer/features/problems/markersStore'
-import { useT } from '@renderer/i18n'
+import { detectProjectType, entryPointCandidates } from '@renderer/features/intelligence/projectInsight'
+import { useT, useI18nStore } from '@renderer/i18n'
 
 /**
  * Project Health + Dependency Explorer. Scans package.json and the source tree
@@ -54,6 +56,9 @@ export function HealthPanel(): JSX.Element {
         </button>
       </div>
       <div className="health">
+        <Onboarding health={health} />
+        <EnvironmentDoctor />
+
         {loading && <div className="empty-hint">{t('health.scanning')}</div>}
         {health && !health.isProject && <div className="empty-hint">{t('health.noPackage')}</div>}
         {health?.error && <div className="git-error">{health.error}</div>}
@@ -109,6 +114,119 @@ export function HealthPanel(): JSX.Element {
           </>
         )}
       </div>
+    </div>
+  )
+}
+
+/** Project Onboarding (spec §66, §67): infer the project type and offer the
+ *  entry-point files that actually exist as a "start here" list (§14). */
+function Onboarding({ health }: { health: ProjectHealth | null }): JSX.Element | null {
+  const t = useT()
+  const root = useWorkspaceStore((s) => s.root)
+  const openFile = useEditorStore((s) => s.openFile)
+  const [entries, setEntries] = useState<string[]>([])
+
+  useEffect(() => {
+    let cancelled = false
+    void (async () => {
+      if (!root) return
+      // Shallow-scan root + src to confirm which candidate entry points exist.
+      const existing = new Set<string>()
+      try {
+        for (const e of await window.lumixa.fs.readDir(root)) existing.add(e.name)
+        if (existing.has('src')) {
+          for (const e of await window.lumixa.fs.readDir(`${root}/src`)) existing.add(`src/${e.name}`)
+        }
+      } catch {
+        /* ignore */
+      }
+      const found = entryPointCandidates().filter((c) => existing.has(c))
+      if (!cancelled) setEntries(found)
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [root])
+
+  if (!health?.isProject) return null
+  const type = detectProjectType(health.dependencies.map((d) => d.name))
+
+  return (
+    <div className="onboarding">
+      <div className="onboarding-type">
+        {t('onboard.looksLike')} <strong>{type}</strong>
+      </div>
+      {entries.length > 0 && (
+        <>
+          <div className="onboarding-start">{t('onboard.startHere')}</div>
+          <div className="onboarding-entries">
+            {entries.map((rel) => (
+              <button
+                key={rel}
+                className="onboarding-entry"
+                onClick={() => void openFile(`${root}/${rel}`, rel.split('/').pop() ?? rel)}
+              >
+                {rel}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+const INSTALL_URLS: Record<string, string> = {
+  node: 'https://nodejs.org',
+  npm: 'https://nodejs.org',
+  git: 'https://git-scm.com/downloads',
+  python: 'https://www.python.org/downloads/',
+  pnpm: 'https://pnpm.io/installation',
+  yarn: 'https://yarnpkg.com/getting-started/install'
+}
+
+/** Environment Doctor (spec §9–§11): report installed tools + versions. Never
+ *  installs anything — only offers a Learn More link (§10). */
+function EnvironmentDoctor(): JSX.Element {
+  const t = useT()
+  const ja = useI18nStore((s) => s.locale) === 'ja'
+  const [tools, setTools] = useState<EnvToolStatus[] | null>(null)
+
+  const run = async (): Promise<void> => setTools(await window.lumixa.env.check())
+  useEffect(() => {
+    void run()
+  }, [])
+
+  return (
+    <div className="env-doctor">
+      <div className="health-section">
+        {t('env.title')}
+        <button onClick={() => void run()}>{t('health.rescan')}</button>
+      </div>
+      {!tools ? (
+        <div className="empty-hint">{t('env.checking')}</div>
+      ) : (
+        <div className="env-list">
+          {tools.map((tool) => (
+            <div key={tool.id} className={`env-item ${tool.installed ? 'ok' : 'missing'}`}>
+              <span className="env-mark">{tool.installed ? '✓' : '✕'}</span>
+              <span className="env-name">{tool.name}</span>
+              {tool.installed ? (
+                <span className="env-ver">{tool.version ?? ''}</span>
+              ) : (
+                <>
+                  <span className="env-what">{ja ? tool.whatJa : tool.whatEn}</span>
+                  {INSTALL_URLS[tool.id] && (
+                    <a className="env-link" href={INSTALL_URLS[tool.id]} target="_blank" rel="noreferrer">
+                      {t('env.learnMore')}
+                    </a>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

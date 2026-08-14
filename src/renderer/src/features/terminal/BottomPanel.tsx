@@ -4,7 +4,8 @@ import { useUiStore } from '@renderer/stores/uiStore'
 import { useMarkersStore } from '@renderer/features/problems/markersStore'
 import { ProblemsPanel } from '@renderer/features/problems/ProblemsPanel'
 import { WhatsNextPanel } from '@renderer/features/whatsnext/WhatsNextPanel'
-import { useT } from '@renderer/i18n'
+import { explainCommand } from '@renderer/lib/explainCommand'
+import { useT, useI18nStore } from '@renderer/i18n'
 import { TerminalView } from './TerminalView'
 
 /** Bottom dock with Terminal / Problems tabs. */
@@ -63,6 +64,7 @@ export function BottomPanel(): JSX.Element | null {
           ✕
         </button>
       </div>
+      {/* body + optional command helper rendered below */}
       <div className="bottom-body">
         {/* Keep the terminal mounted across tab switches; just hide it. */}
         <div style={{ height: '100%', display: tab === 'terminal' ? 'block' : 'none' }}>
@@ -71,6 +73,30 @@ export function BottomPanel(): JSX.Element | null {
         {tab === 'problems' && <ProblemsPanel />}
         {tab === 'whatsnext' && <WhatsNextPanel />}
       </div>
+      {tab === 'terminal' && <CommandHelper />}
+    </div>
+  )
+}
+
+/** Command Explanation (spec §50): type/paste a command to understand it before
+ *  running — so beginners don't have to leave the IDE to search for it. */
+function CommandHelper(): JSX.Element {
+  const t = useT()
+  const ja = useI18nStore((s) => s.locale) === 'ja'
+  const [cmd, setCmd] = useState('')
+  const explanation = explainCommand(cmd, ja ? 'ja' : 'en')
+  return (
+    <div className="cmd-helper">
+      <input
+        value={cmd}
+        placeholder={t('terminal.explainPlaceholder')}
+        onChange={(e) => setCmd(e.target.value)}
+      />
+      {cmd.trim() && (
+        <span className={`cmd-explain ${explanation ? '' : 'unknown'}`}>
+          {explanation ?? t('terminal.explainUnknown')}
+        </span>
+      )}
     </div>
   )
 }

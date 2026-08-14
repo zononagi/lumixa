@@ -216,5 +216,49 @@ export const en = {
   'safe.restore': 'Restore',
   'safe.delete': 'Delete',
   'safe.confirmRestore':
-    'Restore "{label}"? Your current files will be overwritten. A safety snapshot of the current state is saved first.'
+    'Restore "{label}"? Your current files will be overwritten. A safety snapshot of the current state is saved first.',
+
+  // Environment Doctor
+  'env.title': 'Environment Doctor',
+  'env.checking': 'Checking your tools…',
+  'env.learnMore': 'Learn More',
+
+  // Project Onboarding
+  'onboard.looksLike': 'This project looks like:',
+  'onboard.startHere': 'Start here:',
+
+  // Git Commit Assistant / Terminal
+  'git.suggest': 'Suggest',
+  'git.suggestHint': 'Suggest a commit message from your changes',
+  'terminal.explainPlaceholder': 'Type a command to understand it…',
+  'terminal.explainUnknown': 'No explanation available for this command.',
+
+  // Code Builder
+  'ab.builder': 'Code Builder',
+  'builder.title': 'Code Builder',
+  'builder.what': 'What are you creating?',
+  'builder.name': 'Name',
+  'builder.type': 'Type',
+  'builder.value': 'Value',
+  'builder.params': 'Parameters',
+  'builder.returnType': 'Return type',
+  'builder.async': 'Async',
+  'builder.props': 'Properties (name: type per line)',
+  'builder.loopStyle': 'Loop style',
+  'builder.iterable': 'Iterate over',
+  'builder.item': 'Item name',
+  'builder.condition': 'Condition',
+  'builder.operation': 'Operation',
+  'builder.preview': 'Preview',
+  'builder.insert': 'Insert at cursor',
+  'builder.inserted': 'Inserted into the editor.',
+  'builder.noEditor': 'Open a file first to insert code.',
+  'builder.kind.variable': 'Variable',
+  'builder.kind.function': 'Function',
+  'builder.kind.interface': 'Interface',
+  'builder.kind.component': 'React Component',
+  'builder.kind.loop': 'Loop',
+  'builder.kind.condition': 'Condition (if)',
+  'builder.kind.apiRequest': 'API Request',
+  'builder.kind.tryCatch': 'Error Handling (try/catch)'
 }
