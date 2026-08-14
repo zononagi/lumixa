@@ -110,6 +110,9 @@ export const ja: typeof en = {
   'agent.blocked': 'Claude Code が {tool} の使用許可を必要としましたが、操作はブロックされました。',
   'agent.completed': '✓ 完了',
   'agent.changes': '変更されたファイル ({n})',
+  'agent.copy': 'コピー',
+  'agent.copied': 'コピーしました',
+  'agent.copyMessage': 'メッセージをコピー',
 
   // 使用状況モニター
   'usage.title': '使用状況',

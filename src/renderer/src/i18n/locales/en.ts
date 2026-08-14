@@ -108,6 +108,9 @@ export const en = {
   'agent.blocked': 'Claude Code needed permission to use {tool} — the action was blocked.',
   'agent.completed': '✓ Completed',
   'agent.changes': 'Modified files ({n})',
+  'agent.copy': 'Copy',
+  'agent.copied': 'Copied',
+  'agent.copyMessage': 'Copy message',
 
   // Usage monitor
   'usage.title': 'Usage',

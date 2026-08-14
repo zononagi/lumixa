@@ -5,6 +5,7 @@ import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useUiStore } from '@renderer/stores/uiStore'
 import { UsagePanel } from './UsagePanel'
+import { Markdown, CopyButton } from './Markdown'
 import { useT } from '@renderer/i18n'
 
 /**
@@ -205,8 +206,13 @@ function ChatItemView({ item }: { item: ChatItem }): JSX.Element {
     case 'assistant':
       return (
         <div className="msg assistant">
-          <div className="msg-role">Claude Code</div>
-          <div className="msg-body">{item.text}</div>
+          <div className="msg-role">
+            <span>Claude Code</span>
+            <CopyButton text={item.text} />
+          </div>
+          <div className="msg-body">
+            <Markdown text={item.text} />
+          </div>
         </div>
       )
     case 'thinking':

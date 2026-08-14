@@ -14,9 +14,9 @@
 
 ## ⬇️ ダウンロード / Download
 
-### [**Windows インストーラー (.exe) — v0.2.0**](https://github.com/7g3n/lumixa/releases/download/v0.2.0/Lumixa-Setup-0.2.0.exe)
+### [**Windows インストーラー (.exe) — v0.2.1 beta**](https://github.com/zononagi/lumixa/releases/download/v0.2.1-beta/Lumixa-Setup-0.2.1-beta.exe)
 
-[すべてのリリース / All releases →](https://github.com/7g3n/lumixa/releases)
+[すべてのリリース / All releases →](https://github.com/zononagi/lumixa/releases)
 
 <sub>未署名ビルドのため Windows SmartScreen の警告が出る場合があります → 「詳細情報」→「実行」。<br/>Unsigned build — if SmartScreen warns, click **More info → Run anyway**.</sub>
 

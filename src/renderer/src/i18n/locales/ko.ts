@@ -110,6 +110,9 @@ export const ko: typeof en = {
   'agent.blocked': 'Claude Code가 {tool} 사용 권한이 필요했지만 작업이 차단되었습니다.',
   'agent.completed': '✓ 완료',
   'agent.changes': '변경된 파일 ({n})',
+  'agent.copy': '복사',
+  'agent.copied': '복사됨',
+  'agent.copyMessage': '메시지 복사',
 
   // 사용량 모니터
   'usage.title': '사용량',
