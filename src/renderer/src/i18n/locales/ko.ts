@@ -50,6 +50,23 @@ export const ko: typeof en = {
   'brain.affectedFiles': '영향받는 파일',
   'brain.runAffected': '영향받는 테스트를 Claude Code로 실행',
 
+  // Self-Healing Engine
+  'ab.heal': '셀프 힐링',
+  'heal.title': '셀프 힐링',
+  'heal.noWorkspace': '폴더를 열면 셀프 힐링을 실행할 수 있습니다.',
+  'heal.intro': '검사를 실행하고, 실패하면 Claude Code가 수정한 뒤 Lumixa가 다시 검증합니다.',
+  'heal.noClaude': 'Claude Code에 로그인되어 있지 않습니다. 검사는 되지만 수정에는 필요합니다.',
+  'heal.checks': '실행할 검사',
+  'heal.noScripts': 'package.json에 typecheck / test / build / lint 스크립트가 없습니다.',
+  'heal.run': '▶ 셀프 힐링 실행',
+  'heal.stop': '■ 중지',
+  'heal.attempt': '시도 {n} / {max}',
+  'heal.passed': '✓ 모든 검사를 통과했습니다.',
+  'heal.failed': '⚠ 완전히 해결하지 못했습니다. 아래를 확인하거나 Claude Code에 문의하세요.',
+  'heal.stopped': '중지됨.',
+  'heal.changed': '변경된 파일 ({n})',
+  'heal.undo': '↩ 모든 변경 되돌리기 (스냅샷 복원)',
+
   'problems.title': '문제',
 
   'health.title': '프로젝트 상태',

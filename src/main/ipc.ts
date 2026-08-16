@@ -25,6 +25,8 @@ import {
   updateFile as brainUpdateFile
 } from './services/brain/projectBrain'
 import { checkEnvironment } from './services/environment'
+import { listScripts, runScript } from './services/verify'
+import type { VerifyScript } from '@shared/engine'
 import { AgentRuntime } from './services/agent/runtime'
 import { getUsage, ingestUsageLine } from './services/agent/usage'
 
@@ -123,6 +125,10 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   // --- Environment Doctor ---------------------------------------------------
   ipcMain.handle(IPC.envCheck, () => checkEnvironment())
+
+  // --- Self-Healing verification runner ------------------------------------
+  ipcMain.handle(IPC.verifyScripts, (_e, root: string) => listScripts(root))
+  ipcMain.handle(IPC.verifyRun, (_e, root: string, script: VerifyScript) => runScript(root, script))
 
   // --- AI agent runtime (external Claude Code CLI) --------------------------
   const send = (channel: string, payload: unknown): void => {

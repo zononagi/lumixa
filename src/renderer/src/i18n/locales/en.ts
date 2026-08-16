@@ -50,6 +50,23 @@ export const en = {
   'brain.affectedFiles': 'Affected files',
   'brain.runAffected': 'Run affected tests with Claude Code',
 
+  // Self-Healing Engine
+  'ab.heal': 'Self-Healing',
+  'heal.title': 'Self-Healing',
+  'heal.noWorkspace': 'Open a folder to run Self-Healing.',
+  'heal.intro': 'Run your checks; if one fails, Claude Code fixes it and Lumixa re-verifies.',
+  'heal.noClaude': 'Claude Code is not signed in — checks still run, but fixes need it.',
+  'heal.checks': 'Checks to run',
+  'heal.noScripts': 'No typecheck / test / build / lint scripts found in package.json.',
+  'heal.run': '▶ Run Self-Healing',
+  'heal.stop': '■ Stop',
+  'heal.attempt': 'Attempt {n} / {max}',
+  'heal.passed': '✓ All checks pass.',
+  'heal.failed': '⚠ Could not fully resolve — review below or ask Claude Code.',
+  'heal.stopped': 'Stopped.',
+  'heal.changed': 'Changed files ({n})',
+  'heal.undo': '↩ Revert all changes (restore snapshot)',
+
   'health.title': 'Project Health',
   'health.noFolder': 'Open a folder to see project health.',
   'health.noPackage': 'No package.json found in this folder.',

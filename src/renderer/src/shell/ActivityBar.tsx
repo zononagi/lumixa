@@ -20,6 +20,7 @@ export function ActivityBar(): JSX.Element {
       {view('health', '📊', t('ab.health'))}
       {view('brain', '🧠', t('ab.brain'))}
       {view('agent', '✦', t('ab.agent'))}
+      {view('heal', '🩺', t('ab.heal'))}
       {view('builder', '🧩', t('ab.builder'))}
       {view('safe', '🛟', t('ab.safe'))}
       {view('settings', '⚙', t('ab.settings'))}

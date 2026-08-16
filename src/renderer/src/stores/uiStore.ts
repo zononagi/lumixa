@@ -6,6 +6,7 @@ export type LeftView =
   | 'health'
   | 'brain'
   | 'agent'
+  | 'heal'
   | 'safe'
   | 'builder'
   | 'settings'

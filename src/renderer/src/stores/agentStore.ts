@@ -89,6 +89,12 @@ interface AgentState {
   createSession: (providerId: string, model?: string) => Promise<string | null>
   setActive: (id: string) => void
   send: (id: string, text: string, contexts?: ContextKind[]) => Promise<void>
+  /** Send a message and resolve when the agent turn completes (for orchestration). */
+  sendAndWait: (
+    id: string,
+    text: string,
+    contexts?: ContextKind[]
+  ) => Promise<{ ok: boolean; result?: string }>
   stop: (id: string) => Promise<void>
   rename: (id: string, title: string) => Promise<void>
   closeSession: (id: string) => Promise<void>
@@ -113,6 +119,9 @@ interface AgentState {
 
 let subscribed = false
 const keyOf = (sessionId: string, path: string): string => `${sessionId}::${path}`
+
+/** Resolvers for sendAndWait(), keyed by session id — fired on turn completion. */
+const turnWaiters = new Map<string, (r: { ok: boolean; result?: string }) => void>()
 
 export const useAgentStore = create<AgentState>((set, get) => ({
   providers: [],
@@ -199,6 +208,19 @@ export const useAgentStore = create<AgentState>((set, get) => ({
 
   stop: async (id) => {
     await window.lumixa.agent.stop(id)
+    const w = turnWaiters.get(id)
+    if (w) {
+      turnWaiters.delete(id)
+      w({ ok: false })
+    }
+  },
+
+  sendAndWait: async (id, text, contexts) => {
+    const done = new Promise<{ ok: boolean; result?: string }>((resolve) => {
+      turnWaiters.set(id, resolve)
+    })
+    await get().send(id, text, contexts)
+    return done
   },
 
   rename: async (id, title) => {
@@ -378,15 +400,25 @@ function applyEvent(
     case 'error':
       appendItem(set, id, { type: 'error', friendly: event.friendly })
       maybeNotify(get, id, { error: true })
+      resolveTurn(id, { ok: false })
       break
     case 'completed':
       appendItem(set, id, { type: 'completed', result: event.result, costUsd: event.costUsd })
       if (typeof event.durationMs === 'number') useUsageStore.getState().addRuntime(event.durationMs)
       maybeNotify(get, id, { error: event.isError })
+      resolveTurn(id, { ok: !event.isError, result: event.result })
       break
     case 'session-init':
       // Nothing user-facing to add; status updates arrive separately.
       break
+  }
+}
+
+function resolveTurn(id: string, r: { ok: boolean; result?: string }): void {
+  const w = turnWaiters.get(id)
+  if (w) {
+    turnWaiters.delete(id)
+    w(r)
   }
 }
 

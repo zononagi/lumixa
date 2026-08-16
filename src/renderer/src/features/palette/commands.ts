@@ -6,6 +6,7 @@ import { useAppearanceStore } from '@renderer/stores/appearanceStore'
 import { useExperienceStore } from '@renderer/stores/experienceStore'
 import { useAgentStore } from '@renderer/stores/agentStore'
 import { useBrainStore } from '@renderer/stores/brainStore'
+import { useHealStore } from '@renderer/stores/healStore'
 import { notify } from '@renderer/stores/notifyStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainApi, explainError } from '@renderer/features/intelligence/knowledgeBase'
@@ -177,6 +178,21 @@ export function buildCommands(): Command[] {
     { id: 'why.explain', title: 'Why? (explain cursor / errors)', category: 'Learn', run: () => ui().setWhy(explainAtCursor()) },
     { id: 'sel.explain', title: 'Explain Selection', category: 'Learn', run: () => ui().setWhy(explainAtCursor()) },
     { id: 'sel.askClaude', title: 'Ask Claude Code about Selection', category: 'Claude Code', run: () => void askClaudeAboutSelection() },
+
+    { id: 'heal.view', title: 'View: Self-Healing', category: 'Self-Healing', run: () => ui().setLeftView('heal') },
+    {
+      id: 'heal.run',
+      title: 'Run Self-Healing',
+      category: 'Self-Healing',
+      run: () => {
+        if (!ws().root) {
+          notify('info', 'Open a folder first.')
+          return
+        }
+        ui().setLeftView('heal')
+        void useHealStore.getState().run()
+      }
+    },
 
     {
       id: 'safe.snapshot',

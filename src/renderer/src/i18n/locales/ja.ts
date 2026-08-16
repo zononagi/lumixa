@@ -50,6 +50,23 @@ export const ja: typeof en = {
   'brain.affectedFiles': '影響を受けるファイル',
   'brain.runAffected': '影響するテストを Claude Code で実行',
 
+  // Self-Healing Engine
+  'ab.heal': 'セルフヒーリング',
+  'heal.title': 'セルフヒーリング',
+  'heal.noWorkspace': 'フォルダを開くとセルフヒーリングを実行できます。',
+  'heal.intro': 'チェックを実行し、失敗すると Claude Code が修正、Lumixa が再検証します。',
+  'heal.noClaude': 'Claude Code に未ログインです。チェックは動きますが、修正には必要です。',
+  'heal.checks': '実行するチェック',
+  'heal.noScripts': 'package.json に typecheck / test / build / lint スクリプトがありません。',
+  'heal.run': '▶ セルフヒーリング実行',
+  'heal.stop': '■ 停止',
+  'heal.attempt': '試行 {n} / {max}',
+  'heal.passed': '✓ すべてのチェックに合格しました。',
+  'heal.failed': '⚠ 完全には解決できませんでした。下記を確認するか Claude Code に相談してください。',
+  'heal.stopped': '停止しました。',
+  'heal.changed': '変更されたファイル（{n}）',
+  'heal.undo': '↩ すべての変更を取り消す（スナップショットに復元）',
+
   'problems.title': '問題',
 
   'health.title': 'プロジェクト状態',

@@ -75,6 +75,10 @@ export const IPC = {
   agentEvent: 'agent:event', // main -> renderer (streaming AgentEvent)
   agentSessionUpdate: 'agent:sessionUpdate', // main -> renderer (session status changes)
 
+  // Self-Healing Engine — verification runner
+  verifyScripts: 'verify:scripts',
+  verifyRun: 'verify:run',
+
   // Usage monitor
   usageGet: 'usage:get',
 

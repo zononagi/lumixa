@@ -9,6 +9,7 @@ import { HealthPanel } from './features/project/HealthPanel'
 import { ProjectBrainPanel } from './features/brain/ProjectBrainPanel'
 import { AgentPanel } from './features/agent/AgentPanel'
 import { ClaudeCodeDiff } from './features/agent/ClaudeCodeDiff'
+import { SelfHealingPanel } from './features/heal/SelfHealingPanel'
 import { SafeModePanel } from './features/safe/SafeModePanel'
 import { CodeBuilderPanel } from './features/builder/CodeBuilderPanel'
 import { EditorArea } from './features/editor/EditorArea'
@@ -60,6 +61,7 @@ export default function App(): JSX.Element {
         {leftView === 'health' && <HealthPanel />}
         {leftView === 'brain' && <ProjectBrainPanel />}
         {leftView === 'agent' && <AgentPanel />}
+        {leftView === 'heal' && <SelfHealingPanel />}
         {leftView === 'safe' && <SafeModePanel />}
         {leftView === 'builder' && <CodeBuilderPanel />}
         {leftView === 'settings' && <SettingsPanel />}

@@ -27,6 +27,7 @@ import type {
 } from '@shared/agent'
 import type { UsageStatus } from '@shared/usage'
 import type { ImpactResult, ProjectBrain } from '@shared/brain'
+import type { AvailableScripts, VerifyResult, VerifyScript } from '@shared/engine'
 
 /**
  * contextBridge surface. This is the *only* thing the renderer can touch in the
@@ -129,6 +130,12 @@ const api = {
       ipcRenderer.on(IPC.agentSessionUpdate, handler)
       return () => ipcRenderer.removeListener(IPC.agentSessionUpdate, handler)
     }
+  },
+  verify: {
+    scripts: (root: string): Promise<AvailableScripts> =>
+      ipcRenderer.invoke(IPC.verifyScripts, root),
+    run: (root: string, script: VerifyScript): Promise<VerifyResult> =>
+      ipcRenderer.invoke(IPC.verifyRun, root, script)
   },
   usage: {
     get: (): Promise<UsageStatus> => ipcRenderer.invoke(IPC.usageGet)
