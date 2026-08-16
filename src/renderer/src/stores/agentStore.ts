@@ -10,6 +10,7 @@ import { useWorkspaceStore } from './workspaceStore'
 import { useEditorStore } from './editorStore'
 import { useUsageStore } from './usageStore'
 import { useUiStore } from './uiStore'
+import { useBrainStore } from './brainStore'
 import { notify } from './notifyStore'
 import {
   composeMessage,
@@ -364,6 +365,11 @@ function applyEvent(
       captureBefore(set, get, id, event.path)
       // If the file is open, reflect the on-disk change live.
       void reloadOpenTab(event.path)
+      // Keep the Project Brain current with AI-made changes (debounced).
+      {
+        const root = useWorkspaceStore.getState().root
+        if (root) useBrainStore.getState().touchFile(root, event.path)
+      }
       break
     }
     case 'permission-request':

@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { useWorkspaceStore } from './workspaceStore'
+import { useBrainStore } from './brainStore'
 
 /**
  * Editor state: open tabs and the active tab. Each tab tracks its on-disk path,
@@ -69,6 +71,9 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     set((s) => ({
       tabs: s.tabs.map((t) => (t.path === tab.path ? { ...t, dirty: false } : t))
     }))
+    // Keep the Project Brain current with the saved file (debounced).
+    const root = useWorkspaceStore.getState().root
+    if (root) useBrainStore.getState().touchFile(root, tab.path)
   },
 
   setSavedContent: (path, content) =>

@@ -5,6 +5,7 @@ import { useGitStore } from '@renderer/stores/gitStore'
 import { useAppearanceStore } from '@renderer/stores/appearanceStore'
 import { useExperienceStore } from '@renderer/stores/experienceStore'
 import { useAgentStore } from '@renderer/stores/agentStore'
+import { useBrainStore } from '@renderer/stores/brainStore'
 import { notify } from '@renderer/stores/notifyStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainApi, explainError } from '@renderer/features/intelligence/knowledgeBase'
@@ -124,6 +125,33 @@ export function buildCommands(): Command[] {
     { id: 'view.explorer', title: 'View: Explorer', category: 'View', run: () => ui().setLeftView('explorer') },
     { id: 'view.git', title: 'View: Source Control', category: 'View', run: () => ui().setLeftView('git') },
     { id: 'view.health', title: 'View: Project Health', category: 'View', run: () => ui().setLeftView('health') },
+    { id: 'view.brain', title: 'View: Project Brain', category: 'View', run: () => ui().setLeftView('brain') },
+    {
+      id: 'brain.analyze',
+      title: 'Analyze Project (rebuild Project Brain)',
+      category: 'Project Brain',
+      run: () => {
+        const r = ws().root
+        if (!r) return
+        ui().setLeftView('brain')
+        void useBrainStore.getState().index(r)
+      }
+    },
+    {
+      id: 'brain.impact',
+      title: 'Analyze Change Impact (current file)',
+      category: 'Project Brain',
+      run: () => {
+        const r = ws().root
+        const p = ed().activePath
+        if (!r || !p) {
+          notify('info', 'Open a file to analyze its change impact.')
+          return
+        }
+        ui().setLeftView('brain')
+        void useBrainStore.getState().analyzeImpact(r, p)
+      }
+    },
     { id: 'view.safe', title: 'View: Safe Mode (Snapshots)', category: 'View', run: () => ui().setLeftView('safe') },
     { id: 'view.builder', title: 'View: Code Builder', category: 'View', run: () => ui().setLeftView('builder') },
     { id: 'view.settings', title: 'View: Settings', category: 'View', run: () => ui().setLeftView('settings') },

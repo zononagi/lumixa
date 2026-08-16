@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { DirEntry } from '@shared/ipc'
+import { useBrainStore } from './brainStore'
 
 /**
  * Workspace state: the opened root folder and the lazily-loaded directory tree.
@@ -33,6 +34,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       expanded: new Set()
     })
     await get().loadChildren(result.root)
+    // Build the Project Brain for the new workspace (background; non-blocking).
+    useBrainStore.getState().clear()
+    void useBrainStore.getState().index(result.root)
   },
 
   loadChildren: async (path) => {

@@ -55,6 +55,13 @@ export const IPC = {
   // Project intelligence (dependency + health scan)
   projectHealth: 'project:health',
 
+  // Project Brain (Autonomous Development Engine — structural understanding)
+  brainIndex: 'brain:index',
+  brainGet: 'brain:get',
+  brainUpdateFile: 'brain:updateFile',
+  brainImpact: 'brain:impact',
+  brainDispose: 'brain:dispose',
+
   // Environment Doctor (detect installed dev tools)
   envCheck: 'env:check',
 

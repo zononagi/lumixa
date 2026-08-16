@@ -17,6 +17,13 @@ import {
 } from './services/terminal'
 import * as git from './services/git'
 import { buildProjectHealth } from './services/projectHealth'
+import {
+  analyzeImpact,
+  disposeBrain,
+  getBrain,
+  indexProject,
+  updateFile as brainUpdateFile
+} from './services/brain/projectBrain'
 import { checkEnvironment } from './services/environment'
 import { AgentRuntime } from './services/agent/runtime'
 import { getUsage, ingestUsageLine } from './services/agent/usage'
@@ -104,6 +111,15 @@ export function registerIpcHandlers(win: BrowserWindow): void {
 
   // --- Project intelligence -------------------------------------------------
   ipcMain.handle(IPC.projectHealth, (_e, root: string) => buildProjectHealth(root))
+
+  // --- Project Brain (Autonomous Development Engine) ------------------------
+  ipcMain.handle(IPC.brainIndex, (_e, root: string) => indexProject(root))
+  ipcMain.handle(IPC.brainGet, (_e, root: string) => getBrain(root))
+  ipcMain.handle(IPC.brainUpdateFile, (_e, root: string, path: string) =>
+    brainUpdateFile(root, path)
+  )
+  ipcMain.handle(IPC.brainImpact, (_e, root: string, path: string) => analyzeImpact(root, path))
+  ipcMain.handle(IPC.brainDispose, (_e, root: string) => disposeBrain(root))
 
   // --- Environment Doctor ---------------------------------------------------
   ipcMain.handle(IPC.envCheck, () => checkEnvironment())

@@ -1,6 +1,14 @@
 import { create } from 'zustand'
 
-export type LeftView = 'explorer' | 'git' | 'health' | 'agent' | 'safe' | 'builder' | 'settings'
+export type LeftView =
+  | 'explorer'
+  | 'git'
+  | 'health'
+  | 'brain'
+  | 'agent'
+  | 'safe'
+  | 'builder'
+  | 'settings'
 export type BottomTab = 'terminal' | 'problems' | 'whatsnext'
 
 /** Cross-cutting UI state: active panels, bottom tab, command palette. */

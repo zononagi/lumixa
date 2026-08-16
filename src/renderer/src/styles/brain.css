@@ -1,0 +1,226 @@
+/* ===================================================================== */
+/* Project Brain panel — Autonomous Development Engine                    */
+/* ===================================================================== */
+
+.sidebar.brain {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.brain-body {
+  overflow-y: auto;
+  padding: 8px 10px 16px;
+}
+
+.brain-indexing,
+.brain-error {
+  padding: 10px;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.brain-error {
+  color: var(--danger);
+}
+
+.brain-name {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.brain-section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  margin: 12px 0 6px;
+}
+
+/* Summary rows */
+.brain-summary {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: var(--bg-elevated);
+}
+.brain-summary .brain-section-title {
+  margin-top: 4px;
+}
+.brain-sum-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  padding: 2px 0;
+}
+.brain-sum-key {
+  color: var(--fg-muted);
+}
+.brain-sum-val {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* Stats grid */
+.brain-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+.brain-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+}
+.brain-stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--fg);
+}
+.brain-stat-label {
+  font-size: 10px;
+  color: var(--fg-muted);
+  margin-top: 2px;
+}
+
+.brain-indexed {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 8px;
+}
+.brain-secrets {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 4px;
+  cursor: help;
+}
+
+/* Change Impact Radar */
+.brain-impact {
+  margin-top: 4px;
+}
+.impact-target {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.impact-score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border-left: 4px solid var(--border);
+  background: var(--bg-elevated);
+}
+.impact-score.low {
+  border-left-color: #3fb950;
+}
+.impact-score.medium {
+  border-left-color: #d29922;
+}
+.impact-score.high {
+  border-left-color: var(--danger);
+}
+.impact-score-num {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+.impact-score-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.impact-badge {
+  font-size: 11px;
+  font-weight: 600;
+}
+.impact-badge.low {
+  color: #3fb950;
+}
+.impact-badge.medium {
+  color: #d29922;
+}
+.impact-badge.high {
+  color: var(--danger);
+}
+.impact-critical {
+  font-size: 11px;
+  color: var(--danger);
+}
+
+.impact-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+.impact-count {
+  color: var(--fg-muted);
+}
+
+.impact-reasons {
+  margin: 4px 0 8px;
+  padding-left: 16px;
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.impact-reasons li {
+  margin: 2px 0;
+}
+
+.impact-files {
+  font-size: 12px;
+}
+.impact-files summary {
+  cursor: pointer;
+  color: var(--fg-muted);
+  margin-bottom: 4px;
+}
+.impact-file {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.impact-file:hover {
+  color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+.impact-run-tests {
+  margin-top: 8px;
+  width: 100%;
+  font-size: 12px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+}
+.impact-run-tests:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

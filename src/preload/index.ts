@@ -26,6 +26,7 @@ import type {
   SessionOptions
 } from '@shared/agent'
 import type { UsageStatus } from '@shared/usage'
+import type { ImpactResult, ProjectBrain } from '@shared/brain'
 
 /**
  * contextBridge surface. This is the *only* thing the renderer can touch in the
@@ -95,6 +96,15 @@ const api = {
   },
   project: {
     health: (root: string): Promise<ProjectHealth> => ipcRenderer.invoke(IPC.projectHealth, root)
+  },
+  brain: {
+    index: (root: string): Promise<ProjectBrain> => ipcRenderer.invoke(IPC.brainIndex, root),
+    get: (root: string): Promise<ProjectBrain | null> => ipcRenderer.invoke(IPC.brainGet, root),
+    updateFile: (root: string, path: string): Promise<ProjectBrain | null> =>
+      ipcRenderer.invoke(IPC.brainUpdateFile, root, path),
+    impact: (root: string, path: string): Promise<ImpactResult | null> =>
+      ipcRenderer.invoke(IPC.brainImpact, root, path),
+    dispose: (root: string): Promise<void> => ipcRenderer.invoke(IPC.brainDispose, root)
   },
   env: {
     check: (): Promise<EnvToolStatus[]> => ipcRenderer.invoke(IPC.envCheck)
