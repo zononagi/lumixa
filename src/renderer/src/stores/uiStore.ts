@@ -5,6 +5,7 @@ export type LeftView =
   | 'git'
   | 'health'
   | 'brain'
+  | 'watcher'
   | 'agent'
   | 'heal'
   | 'safe'

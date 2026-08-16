@@ -127,6 +127,7 @@ export function buildCommands(): Command[] {
     { id: 'view.git', title: 'View: Source Control', category: 'View', run: () => ui().setLeftView('git') },
     { id: 'view.health', title: 'View: Project Health', category: 'View', run: () => ui().setLeftView('health') },
     { id: 'view.brain', title: 'View: Project Brain', category: 'View', run: () => ui().setLeftView('brain') },
+    { id: 'view.watcher', title: 'View: AI Code Watcher', category: 'View', run: () => ui().setLeftView('watcher') },
     {
       id: 'brain.analyze',
       title: 'Analyze Project (rebuild Project Brain)',

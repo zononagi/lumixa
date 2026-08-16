@@ -14,6 +14,8 @@ import {
 } from './analyze'
 import { detectSummary } from './summary'
 import { computeImpact } from './impact'
+import { scanContent } from '../watcher/rules'
+import type { WatcherFinding } from '@shared/brain'
 
 /**
  * ProjectBrainService — Lumixa's structural understanding of the open workspace
@@ -35,6 +37,8 @@ const MAX_READ_BYTES = 512 * 1024
 
 interface Store {
   brain: ProjectBrain
+  /** AI Code Watcher findings, keyed by rel path (updated in the same pass). */
+  findings: Map<string, WatcherFinding[]>
 }
 
 /** In-memory Brain per workspace root. */
@@ -81,7 +85,12 @@ async function readSafe(path: string): Promise<string | null> {
 async function analyzeFile(
   root: string,
   abs: string
-): Promise<{ node: BrainFileNode; relSpecs: string[]; secret: boolean } | null> {
+): Promise<{
+  node: BrainFileNode
+  relSpecs: string[]
+  secret: boolean
+  findings: WatcherFinding[]
+} | null> {
   const rel = toPosix(relative(root, abs))
   const secret = isSecretPath(rel)
   const content = secret ? '' : await readSafe(abs)
@@ -98,7 +107,11 @@ async function analyzeFile(
     exports: code ? parseExports(content) : [],
     kind: classifyKind(rel, content)
   }
-  return { node, relSpecs: parsed.relative, secret }
+  // AI Code Watcher: reuse this single read pass to scan for issues (spec §48).
+  const findings: WatcherFinding[] = secret
+    ? []
+    : scanContent(rel, content).map((f) => ({ ...f, path: abs }))
+  return { node, relSpecs: parsed.relative, secret, findings }
 }
 
 function recomputeStats(brain: ProjectBrain): void {
@@ -168,12 +181,14 @@ export async function indexProject(root: string): Promise<ProjectBrain> {
 
   const nodes: BrainFileNode[] = []
   const specsByRel = new Map<string, string[]>()
+  const findings = new Map<string, WatcherFinding[]>()
   const skippedSecrets: string[] = []
   for (const a of abs) {
     const res = await analyzeFile(root, a)
     if (!res) continue
     nodes.push(res.node)
     specsByRel.set(res.node.rel, res.relSpecs)
+    if (res.findings.length) findings.set(res.node.rel, res.findings)
     if (res.secret) skippedSecrets.push(res.node.rel)
   }
 
@@ -200,7 +215,7 @@ export async function indexProject(root: string): Promise<ProjectBrain> {
     skippedSecrets
   }
   recomputeStats(brain)
-  stores.set(root, { brain })
+  stores.set(root, { brain, findings })
   return brain
 }
 
@@ -239,6 +254,7 @@ export async function updateFile(root: string, absPath: string): Promise<Project
     // File is gone — remove it.
     if (idx >= 0) brain.files.splice(idx, 1)
     brain.skippedSecrets = brain.skippedSecrets.filter((s) => s !== rel)
+    store.findings.delete(rel)
     recomputeStats(brain)
     return brain
   }
@@ -249,8 +265,19 @@ export async function updateFile(root: string, absPath: string): Promise<Project
   if (idx >= 0) brain.files[idx] = res.node
   else brain.files.push(res.node)
   if (res.secret && !brain.skippedSecrets.includes(rel)) brain.skippedSecrets.push(rel)
+  if (res.findings.length) store.findings.set(rel, res.findings)
+  else store.findings.delete(rel)
   recomputeStats(brain)
   return brain
+}
+
+/** All current Code Watcher findings for a workspace (spec §13). */
+export function getFindings(root: string): WatcherFinding[] {
+  const store = stores.get(root)
+  if (!store) return []
+  const all: WatcherFinding[] = []
+  for (const list of store.findings.values()) all.push(...list)
+  return all
 }
 
 /** Change Impact Radar for one file. Full-indexes on demand if needed. */

@@ -26,7 +26,7 @@ import type {
   SessionOptions
 } from '@shared/agent'
 import type { UsageStatus } from '@shared/usage'
-import type { ImpactResult, ProjectBrain } from '@shared/brain'
+import type { ImpactResult, ProjectBrain, WatcherFinding } from '@shared/brain'
 import type { AvailableScripts, VerifyResult, VerifyScript } from '@shared/engine'
 
 /**
@@ -105,6 +105,8 @@ const api = {
       ipcRenderer.invoke(IPC.brainUpdateFile, root, path),
     impact: (root: string, path: string): Promise<ImpactResult | null> =>
       ipcRenderer.invoke(IPC.brainImpact, root, path),
+    findings: (root: string): Promise<WatcherFinding[]> =>
+      ipcRenderer.invoke(IPC.brainFindings, root),
     dispose: (root: string): Promise<void> => ipcRenderer.invoke(IPC.brainDispose, root)
   },
   env: {

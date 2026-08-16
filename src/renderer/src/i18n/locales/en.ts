@@ -8,6 +8,22 @@ export const en = {
   'ab.palette': 'Command Palette (Ctrl+Shift+P)',
   'ab.agent': 'AI Agent',
   'ab.brain': 'Project Brain',
+  'ab.watcher': 'AI Code Watcher',
+
+  // AI Code Watcher
+  'watch.title': 'AI Code Watcher',
+  'watch.noWorkspace': 'Open a folder — Lumixa watches your code as it indexes.',
+  'watch.clean': 'No issues detected. 🎉',
+  'watch.count': '{n} potential issue(s)',
+  'watch.showLow': 'Show low',
+  'watch.showLowHint': 'Also show low-confidence findings',
+  'watch.high': 'High',
+  'watch.medium': 'Medium',
+  'watch.low': 'Low',
+  'watch.explain': 'Explain',
+  'watch.fix': 'Fix',
+  'watch.ignore': 'Ignore',
+  'watch.resetIgnored': 'Reset {n} ignored',
 
   'problems.title': 'Problems',
 

@@ -414,3 +414,126 @@
   border-color: var(--danger);
   color: var(--danger);
 }
+
+/* ===================================================================== */
+/* AI Code Watcher panel                                                 */
+/* ===================================================================== */
+
+.sidebar.watcher {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.watch-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.watch-toggle input {
+  width: auto;
+}
+.watch-body {
+  overflow-y: auto;
+  padding: 8px 10px 16px;
+}
+.watch-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-bottom: 8px;
+}
+.watch-clear-ignored {
+  font-size: 11px;
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+.watch-card {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-bottom: 6px;
+  background: var(--bg-elevated);
+}
+.watch-card.high {
+  border-left-color: var(--danger);
+}
+.watch-card.medium {
+  border-left-color: #d29922;
+}
+.watch-card.low {
+  border-left-color: var(--fg-muted);
+}
+.watch-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+.watch-conf {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+.watch-conf.high {
+  color: var(--danger);
+}
+.watch-conf.medium {
+  color: #d29922;
+}
+.watch-conf.low {
+  color: var(--fg-muted);
+}
+.watch-loc {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 55%;
+}
+.watch-loc:hover {
+  color: var(--accent);
+}
+.watch-msg {
+  font-size: 12px;
+  color: var(--fg);
+  margin: 4px 0 6px;
+}
+.watch-actions {
+  display: flex;
+  gap: 6px;
+}
+.watch-actions button {
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.watch-actions button:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+.watch-actions button.primary {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+.watch-actions .watch-ignore {
+  margin-left: auto;
+}

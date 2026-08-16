@@ -60,6 +60,7 @@ export const IPC = {
   brainGet: 'brain:get',
   brainUpdateFile: 'brain:updateFile',
   brainImpact: 'brain:impact',
+  brainFindings: 'brain:findings',
   brainDispose: 'brain:dispose',
 
   // Environment Doctor (detect installed dev tools)

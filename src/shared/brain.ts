@@ -68,6 +68,37 @@ export interface ProjectBrain {
 
 export type RiskLevel = 'low' | 'medium' | 'high'
 
+// ---------------------------------------------------------------------------
+// AI Code Watcher (spec §13-§14)
+// ---------------------------------------------------------------------------
+
+export type Confidence = 'high' | 'medium' | 'low'
+
+export type WatcherCategory =
+  | 'error-handling'
+  | 'unsafe'
+  | 'race'
+  | 'dead-code'
+  | 'suspicious'
+  | 'types'
+  | 'security'
+
+/** A single issue surfaced by the static Code Watcher. No AI involved to find it. */
+export interface WatcherFinding {
+  /** Stable id: `${rel}:${ruleId}:${line}` — used for dismiss/ignore. */
+  id: string
+  rel: string
+  /** Absolute path (for opening / revealing). */
+  path: string
+  line: number
+  ruleId: string
+  category: WatcherCategory
+  /** Beginner-readable one-liner. */
+  message: string
+  confidence: Confidence
+  severity: 'warn' | 'info'
+}
+
 /** Change Impact Radar result for a single target file. */
 export interface ImpactResult {
   /** Target rel path. */

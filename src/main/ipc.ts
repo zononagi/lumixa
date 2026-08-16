@@ -21,6 +21,7 @@ import {
   analyzeImpact,
   disposeBrain,
   getBrain,
+  getFindings,
   indexProject,
   updateFile as brainUpdateFile
 } from './services/brain/projectBrain'
@@ -121,6 +122,7 @@ export function registerIpcHandlers(win: BrowserWindow): void {
     brainUpdateFile(root, path)
   )
   ipcMain.handle(IPC.brainImpact, (_e, root: string, path: string) => analyzeImpact(root, path))
+  ipcMain.handle(IPC.brainFindings, (_e, root: string) => getFindings(root))
   ipcMain.handle(IPC.brainDispose, (_e, root: string) => disposeBrain(root))
 
   // --- Environment Doctor ---------------------------------------------------

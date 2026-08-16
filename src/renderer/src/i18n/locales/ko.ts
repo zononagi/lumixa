@@ -10,6 +10,22 @@ export const ko: typeof en = {
   'ab.palette': '명령 팔레트 (Ctrl+Shift+P)',
   'ab.agent': 'AI 에이전트',
   'ab.brain': '프로젝트 브레인',
+  'ab.watcher': 'AI 코드 워처',
+
+  // AI Code Watcher
+  'watch.title': 'AI 코드 워처',
+  'watch.noWorkspace': '폴더를 열면 색인과 동시에 코드를 감시합니다.',
+  'watch.clean': '문제가 발견되지 않았습니다. 🎉',
+  'watch.count': '잠재적 문제 {n}건',
+  'watch.showLow': '낮은 신뢰도 표시',
+  'watch.showLowHint': '낮은 신뢰도 항목도 표시',
+  'watch.high': '높음',
+  'watch.medium': '중간',
+  'watch.low': '낮음',
+  'watch.explain': '설명',
+  'watch.fix': '수정',
+  'watch.ignore': '무시',
+  'watch.resetIgnored': '무시 {n}건 되돌리기',
 
   // Project Brain
   'brain.title': '프로젝트 브레인',

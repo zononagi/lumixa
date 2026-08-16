@@ -10,6 +10,22 @@ export const ja: typeof en = {
   'ab.palette': 'コマンドパレット (Ctrl+Shift+P)',
   'ab.agent': 'AIエージェント',
   'ab.brain': 'プロジェクトブレイン',
+  'ab.watcher': 'AIコードウォッチャー',
+
+  // AI Code Watcher
+  'watch.title': 'AIコードウォッチャー',
+  'watch.noWorkspace': 'フォルダを開くと、索引と同時にコードを監視します。',
+  'watch.clean': '問題は検出されませんでした。🎉',
+  'watch.count': '潜在的な問題 {n} 件',
+  'watch.showLow': '低信頼も表示',
+  'watch.showLowHint': '低信頼の指摘も表示する',
+  'watch.high': '高',
+  'watch.medium': '中',
+  'watch.low': '低',
+  'watch.explain': '説明',
+  'watch.fix': '修正',
+  'watch.ignore': '無視',
+  'watch.resetIgnored': '無視 {n} 件を戻す',
 
   // Project Brain
   'brain.title': 'プロジェクトブレイン',
