@@ -27,6 +27,25 @@ export const ko: typeof en = {
   'watch.ignore': '무시',
   'watch.resetIgnored': '무시 {n}건 되돌리기',
 
+  // Bug Detective
+  'ab.bug': '버그 탐정',
+  'bug.title': '버그 탐정',
+  'bug.noWorkspace': '폴더를 열면 버그를 조사할 수 있습니다.',
+  'bug.intro': '버그를 직접 설명하세요. Lumixa가 증거를 모으고 Claude Code가 조사합니다.',
+  'bug.placeholder': '예: 로그인하면 가끔 화면이 하얗게 됩니다',
+  'bug.gather': '증거 수집',
+  'bug.investigate': '🔎 조사하기',
+  'bug.gathering': '증거 수집 중…',
+  'bug.noClaude': '분석에는 Claude Code가 필요합니다. 증거는 계속 수집됩니다.',
+  'bug.evidence': 'Lumixa가 수집한 증거',
+  'bug.relatedFiles': '관련 파일',
+  'bug.problems': '문제',
+  'bug.commits': '최근 커밋',
+  'bug.uncommitted': '커밋되지 않은 변경',
+  'bug.yes': '있음',
+  'bug.no': '없음',
+  'bug.handoffHint': '"조사하기"로 Claude Code에 넘깁니다. 가설과 신뢰도는 AI 에이전트 패널에 표시됩니다.',
+
   // Project Brain
   'brain.title': '프로젝트 브레인',
   'brain.noWorkspace': '폴더를 열면 Lumixa가 프로젝트를 이해합니다.',

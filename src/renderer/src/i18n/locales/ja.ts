@@ -27,6 +27,25 @@ export const ja: typeof en = {
   'watch.ignore': '無視',
   'watch.resetIgnored': '無視 {n} 件を戻す',
 
+  // Bug Detective
+  'ab.bug': 'バグ探偵',
+  'bug.title': 'バグ探偵',
+  'bug.noWorkspace': 'フォルダを開くとバグを調査できます。',
+  'bug.intro': 'バグを自分の言葉で説明してください。Lumixaが証拠を集め、Claude Codeが調査します。',
+  'bug.placeholder': '例：ログインすると、たまに画面が真っ白になる',
+  'bug.gather': '証拠を集める',
+  'bug.investigate': '🔎 調査する',
+  'bug.gathering': '証拠を収集中…',
+  'bug.noClaude': '分析には Claude Code が必要です。証拠の収集は行われます。',
+  'bug.evidence': 'Lumixaが集めた証拠',
+  'bug.relatedFiles': '関連ファイル',
+  'bug.problems': '問題',
+  'bug.commits': '最近のコミット',
+  'bug.uncommitted': '未コミットの変更',
+  'bug.yes': 'あり',
+  'bug.no': 'なし',
+  'bug.handoffHint': '「調査する」で Claude Code に引き継ぎます。仮説と確信度は AIエージェント パネルに表示されます。',
+
   // Project Brain
   'brain.title': 'プロジェクトブレイン',
   'brain.noWorkspace': 'フォルダを開くと、Lumixaがプロジェクトを理解します。',

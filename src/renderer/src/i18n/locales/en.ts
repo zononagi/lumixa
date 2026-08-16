@@ -25,6 +25,25 @@ export const en = {
   'watch.ignore': 'Ignore',
   'watch.resetIgnored': 'Reset {n} ignored',
 
+  // Bug Detective
+  'ab.bug': 'Bug Detective',
+  'bug.title': 'Bug Detective',
+  'bug.noWorkspace': 'Open a folder to investigate a bug.',
+  'bug.intro': 'Describe the bug in your own words — Lumixa gathers evidence, then Claude Code investigates.',
+  'bug.placeholder': 'e.g. Sometimes the screen goes blank after I log in',
+  'bug.gather': 'Gather evidence',
+  'bug.investigate': '🔎 Investigate',
+  'bug.gathering': 'Gathering evidence…',
+  'bug.noClaude': 'Claude Code is needed for the analysis; the evidence is still collected.',
+  'bug.evidence': 'Evidence Lumixa collected',
+  'bug.relatedFiles': 'Related files',
+  'bug.problems': 'Problems',
+  'bug.commits': 'Recent commits',
+  'bug.uncommitted': 'Uncommitted changes',
+  'bug.yes': 'yes',
+  'bug.no': 'no',
+  'bug.handoffHint': 'Investigate hands this to Claude Code — hypotheses & confidence appear in the AI Agent panel.',
+
   'problems.title': 'Problems',
 
   // Project Brain (Autonomous Development Engine)

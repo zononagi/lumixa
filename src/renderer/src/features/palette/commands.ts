@@ -128,6 +128,7 @@ export function buildCommands(): Command[] {
     { id: 'view.health', title: 'View: Project Health', category: 'View', run: () => ui().setLeftView('health') },
     { id: 'view.brain', title: 'View: Project Brain', category: 'View', run: () => ui().setLeftView('brain') },
     { id: 'view.watcher', title: 'View: AI Code Watcher', category: 'View', run: () => ui().setLeftView('watcher') },
+    { id: 'view.bug', title: 'Find Bug (Bug Detective)', category: 'View', run: () => ui().setLeftView('bug') },
     {
       id: 'brain.analyze',
       title: 'Analyze Project (rebuild Project Brain)',

@@ -8,6 +8,7 @@ import { SettingsPanel } from './features/settings/SettingsPanel'
 import { HealthPanel } from './features/project/HealthPanel'
 import { ProjectBrainPanel } from './features/brain/ProjectBrainPanel'
 import { WatcherPanel } from './features/watcher/WatcherPanel'
+import { BugDetectivePanel } from './features/bug/BugDetectivePanel'
 import { AgentPanel } from './features/agent/AgentPanel'
 import { ClaudeCodeDiff } from './features/agent/ClaudeCodeDiff'
 import { SelfHealingPanel } from './features/heal/SelfHealingPanel'
@@ -62,6 +63,7 @@ export default function App(): JSX.Element {
         {leftView === 'health' && <HealthPanel />}
         {leftView === 'brain' && <ProjectBrainPanel />}
         {leftView === 'watcher' && <WatcherPanel />}
+        {leftView === 'bug' && <BugDetectivePanel />}
         {leftView === 'agent' && <AgentPanel />}
         {leftView === 'heal' && <SelfHealingPanel />}
         {leftView === 'safe' && <SafeModePanel />}
