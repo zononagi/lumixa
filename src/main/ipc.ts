@@ -111,6 +111,11 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   ipcMain.handle(IPC.gitBlame, (_e, cwd: string, file: string, line: number) =>
     git.blame(cwd, file, line)
   )
+  ipcMain.handle(IPC.gitBlameInfo, (_e, cwd: string, file: string, line: number) =>
+    git.blameInfo(cwd, file, line)
+  )
+  ipcMain.handle(IPC.gitCommitShow, (_e, cwd: string, hash: string) => git.commitShow(cwd, hash))
+  ipcMain.handle(IPC.gitFileLog, (_e, cwd: string, file: string) => git.fileLog(cwd, file))
 
   // --- Project intelligence -------------------------------------------------
   ipcMain.handle(IPC.projectHealth, (_e, root: string) => buildProjectHealth(root))

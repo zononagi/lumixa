@@ -10,6 +10,7 @@ export type LeftView =
   | 'agent'
   | 'heal'
   | 'tests'
+  | 'timemachine'
   | 'safe'
   | 'builder'
   | 'settings'

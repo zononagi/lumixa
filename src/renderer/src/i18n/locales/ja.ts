@@ -63,6 +63,19 @@ export const ja: typeof en = {
   'tg.generate': 'テスト生成',
   'tg.hint': '',
 
+  // Git Time Machine
+  'ab.timemachine': 'Git タイムマシン',
+  'tm.title': 'Git タイムマシン',
+  'tm.noWorkspace': 'Git リポジトリのフォルダを開いてください。',
+  'tm.intro': '行にカーソルを置き、誰がいつ・なぜ書いたかを調べます。',
+  'tm.inspect': '⌛ 現在の行を調べる',
+  'tm.inspecting': 'Git履歴を読み込み中…',
+  'tm.openFile': 'ファイルを開いて行にカーソルを置いてください。',
+  'tm.introduced': '導入コミット',
+  'tm.refs': '参照',
+  'tm.explain': 'なぜ存在するか説明',
+  'tm.history': 'ファイル履歴',
+
   // Project Brain
   'brain.title': 'プロジェクトブレイン',
   'brain.noWorkspace': 'フォルダを開くと、Lumixaがプロジェクトを理解します。',

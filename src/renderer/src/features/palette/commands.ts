@@ -8,6 +8,7 @@ import { useAgentStore } from '@renderer/stores/agentStore'
 import { useBrainStore } from '@renderer/stores/brainStore'
 import { useHealStore } from '@renderer/stores/healStore'
 import { useTestGuardianStore } from '@renderer/stores/testGuardianStore'
+import { useTimeMachineStore } from '@renderer/stores/timeMachineStore'
 import { notify } from '@renderer/stores/notifyStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainApi, explainError } from '@renderer/features/intelligence/knowledgeBase'
@@ -218,6 +219,15 @@ export function buildCommands(): Command[] {
     { id: 'git.stashPop', title: 'Git: Stash Pop', category: 'Git', run: () => void git().stashPop() },
     { id: 'git.history', title: 'Git: Show History', category: 'Git', run: () => { ui().setLeftView('git'); void git().loadHistory() } },
     { id: 'git.blame', title: 'Git: Blame Current Line', category: 'Git', run: () => void blameCurrentLine() },
+    {
+      id: 'git.timeMachine',
+      title: 'Git Time Machine: Why does this line exist?',
+      category: 'Git',
+      run: () => {
+        ui().setLeftView('timemachine')
+        void useTimeMachineStore.getState().inspect()
+      }
+    },
 
     { id: 'theme.dark', title: 'Theme: Dark', category: 'Appearance', run: () => appearance().setMode('dark') },
     { id: 'theme.light', title: 'Theme: Light', category: 'Appearance', run: () => appearance().setMode('light') }

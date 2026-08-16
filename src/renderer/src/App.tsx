@@ -13,6 +13,7 @@ import { AgentPanel } from './features/agent/AgentPanel'
 import { ClaudeCodeDiff } from './features/agent/ClaudeCodeDiff'
 import { SelfHealingPanel } from './features/heal/SelfHealingPanel'
 import { TestGuardianPanel } from './features/testguardian/TestGuardianPanel'
+import { TimeMachinePanel } from './features/timemachine/TimeMachinePanel'
 import { SafeModePanel } from './features/safe/SafeModePanel'
 import { CodeBuilderPanel } from './features/builder/CodeBuilderPanel'
 import { EditorArea } from './features/editor/EditorArea'
@@ -68,6 +69,7 @@ export default function App(): JSX.Element {
         {leftView === 'agent' && <AgentPanel />}
         {leftView === 'heal' && <SelfHealingPanel />}
         {leftView === 'tests' && <TestGuardianPanel />}
+        {leftView === 'timemachine' && <TimeMachinePanel />}
         {leftView === 'safe' && <SafeModePanel />}
         {leftView === 'builder' && <CodeBuilderPanel />}
         {leftView === 'settings' && <SettingsPanel />}

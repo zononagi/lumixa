@@ -1,6 +1,6 @@
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import type { GitBranches, GitResult, GitStatus, GitFile } from '@shared/ipc'
+import type { GitBranches, GitResult, GitStatus, GitFile, BlameInfo, CommitInfo } from '@shared/ipc'
 
 /**
  * Git service. Shells out to the system `git` (zero extra dependencies). All
@@ -197,4 +197,65 @@ export async function blame(cwd: string, file: string, line: number): Promise<st
   const author = get('author')
   const summary = get('summary')
   return `${hash} · ${author} · ${summary}`
+}
+
+/** Structured blame for a single line (Git Time Machine). null if unavailable. */
+export async function blameInfo(
+  cwd: string,
+  file: string,
+  line: number
+): Promise<BlameInfo | null> {
+  const r = await git(cwd, ['blame', '-L', `${line},${line}`, '--porcelain', '--', file])
+  if (!r.ok) return null
+  const lines = r.stdout.split('\n')
+  const hash = lines[0]?.split(' ')[0] ?? ''
+  if (!hash || /^0+$/.test(hash)) return null // uncommitted line
+  const get = (k: string): string =>
+    lines.find((l) => l.startsWith(k + ' '))?.slice(k.length + 1) ?? ''
+  const epoch = Number(get('author-time'))
+  const date = Number.isFinite(epoch) && epoch > 0 ? new Date(epoch * 1000).toISOString().slice(0, 10) : ''
+  return { hash, shortHash: hash.slice(0, 8), author: get('author'), date, summary: get('summary') }
+}
+
+/** Full metadata for one commit. null when the hash is unknown. */
+export async function commitShow(cwd: string, hash: string): Promise<CommitInfo | null> {
+  const r = await git(cwd, [
+    'show',
+    '-s',
+    '--date=short',
+    '--pretty=format:%H\x1f%an\x1f%ad\x1f%s\x1f%b',
+    hash
+  ])
+  if (!r.ok) return null
+  const [full, author, date, subject, body] = r.stdout.split('\x1f')
+  if (!full) return null
+  return {
+    hash: full.trim(),
+    shortHash: full.trim().slice(0, 8),
+    author: author ?? '',
+    date: date ?? '',
+    subject: subject ?? '',
+    body: (body ?? '').trim()
+  }
+}
+
+/** Recent commits that touched a file (follows renames). */
+export async function fileLog(cwd: string, file: string, limit = 15): Promise<string[]> {
+  const r = await git(cwd, [
+    'log',
+    '--follow',
+    `-n${limit}`,
+    '--date=short',
+    '--pretty=format:%h\x1f%ad\x1f%s\x1f%an',
+    '--',
+    file
+  ])
+  if (!r.ok) return []
+  return r.stdout
+    .split('\n')
+    .filter(Boolean)
+    .map((l) => {
+      const [hash, date, subject, author] = l.split('\x1f')
+      return `${hash}  ${date}  ${subject}  — ${author}`
+    })
 }

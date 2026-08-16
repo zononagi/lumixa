@@ -61,6 +61,19 @@ export const en = {
   'tg.generate': 'Generate Tests',
   'tg.hint': '',
 
+  // Git Time Machine
+  'ab.timemachine': 'Git Time Machine',
+  'tm.title': 'Git Time Machine',
+  'tm.noWorkspace': 'Open a folder in a Git repository.',
+  'tm.intro': 'Put your cursor on a line, then inspect who wrote it, when, and why.',
+  'tm.inspect': '⌛ Inspect current line',
+  'tm.inspecting': 'Reading git history…',
+  'tm.openFile': 'Open a file and place the cursor on a line.',
+  'tm.introduced': 'Introduced by',
+  'tm.refs': 'References',
+  'tm.explain': 'Explain why this exists',
+  'tm.history': 'File history',
+
   'problems.title': 'Problems',
 
   // Project Brain (Autonomous Development Engine)

@@ -63,6 +63,19 @@ export const ko: typeof en = {
   'tg.generate': '테스트 생성',
   'tg.hint': '',
 
+  // Git Time Machine
+  'ab.timemachine': 'Git 타임머신',
+  'tm.title': 'Git 타임머신',
+  'tm.noWorkspace': 'Git 저장소 폴더를 여세요.',
+  'tm.intro': '줄에 커서를 두고 누가·언제·왜 작성했는지 조사합니다.',
+  'tm.inspect': '⌛ 현재 줄 조사',
+  'tm.inspecting': 'Git 기록 읽는 중…',
+  'tm.openFile': '파일을 열고 줄에 커서를 두세요.',
+  'tm.introduced': '도입 커밋',
+  'tm.refs': '참조',
+  'tm.explain': '왜 존재하는지 설명',
+  'tm.history': '파일 기록',
+
   // Project Brain
   'brain.title': '프로젝트 브레인',
   'brain.noWorkspace': '폴더를 열면 Lumixa가 프로젝트를 이해합니다.',

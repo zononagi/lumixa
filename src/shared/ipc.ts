@@ -51,6 +51,9 @@ export const IPC = {
   gitStashPop: 'git:stashPop',
   gitLog: 'git:log',
   gitBlame: 'git:blame',
+  gitBlameInfo: 'git:blameInfo',
+  gitCommitShow: 'git:commitShow',
+  gitFileLog: 'git:fileLog',
 
   // Project intelligence (dependency + health scan)
   projectHealth: 'project:health',
@@ -176,6 +179,25 @@ export interface GitBranches {
 export interface GitResult {
   ok: boolean
   output: string
+}
+
+/** Structured blame for a single line (Git Time Machine). */
+export interface BlameInfo {
+  hash: string
+  shortHash: string
+  author: string
+  date: string
+  summary: string
+}
+
+/** Full metadata for one commit. */
+export interface CommitInfo {
+  hash: string
+  shortHash: string
+  author: string
+  date: string
+  subject: string
+  body: string
 }
 
 // --- Project intelligence ---

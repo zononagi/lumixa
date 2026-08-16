@@ -1,6 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import {
   IPC,
+  type BlameInfo,
+  type CommitInfo,
   type DirEntry,
   type GitBranches,
   type GitResult,
@@ -93,7 +95,13 @@ const api = {
     stashPop: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitStashPop, cwd),
     log: (cwd: string): Promise<string[]> => ipcRenderer.invoke(IPC.gitLog, cwd),
     blame: (cwd: string, file: string, line: number): Promise<string> =>
-      ipcRenderer.invoke(IPC.gitBlame, cwd, file, line)
+      ipcRenderer.invoke(IPC.gitBlame, cwd, file, line),
+    blameInfo: (cwd: string, file: string, line: number): Promise<BlameInfo | null> =>
+      ipcRenderer.invoke(IPC.gitBlameInfo, cwd, file, line),
+    commitShow: (cwd: string, hash: string): Promise<CommitInfo | null> =>
+      ipcRenderer.invoke(IPC.gitCommitShow, cwd, hash),
+    fileLog: (cwd: string, file: string): Promise<string[]> =>
+      ipcRenderer.invoke(IPC.gitFileLog, cwd, file)
   },
   project: {
     health: (root: string): Promise<ProjectHealth> => ipcRenderer.invoke(IPC.projectHealth, root)
