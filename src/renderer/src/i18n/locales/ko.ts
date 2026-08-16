@@ -46,6 +46,23 @@ export const ko: typeof en = {
   'bug.no': '없음',
   'bug.handoffHint': '"조사하기"로 Claude Code에 넘깁니다. 가설과 신뢰도는 AI 에이전트 패널에 표시됩니다.',
 
+  // Test Guardian
+  'ab.tests': '테스트 가디언',
+  'tg.title': '테스트 가디언',
+  'tg.noWorkspace': '폴더를 열면 테스트 커버리지를 표시합니다.',
+  'tg.covered': '{c}/{n} 파일 커버됨',
+  'tg.testFiles': '테스트 파일 {n}',
+  'tg.run': '▶ 테스트 실행',
+  'tg.running': '테스트 실행 중…',
+  'tg.pass': '✓ 통과',
+  'tg.fail': '✕ 실패',
+  'tg.noScript': 'package.json에 "test" 스크립트가 없습니다.',
+  'tg.affected': '{file} 변경으로 영향받는 테스트',
+  'tg.uncovered': '테스트가 없는 파일 ({n})',
+  'tg.allCovered': '모든 소스가 테스트에서 참조됩니다. 🎉',
+  'tg.generate': '테스트 생성',
+  'tg.hint': '',
+
   // Project Brain
   'brain.title': '프로젝트 브레인',
   'brain.noWorkspace': '폴더를 열면 Lumixa가 프로젝트를 이해합니다.',

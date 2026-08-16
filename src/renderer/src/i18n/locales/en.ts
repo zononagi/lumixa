@@ -44,6 +44,23 @@ export const en = {
   'bug.no': 'no',
   'bug.handoffHint': 'Investigate hands this to Claude Code — hypotheses & confidence appear in the AI Agent panel.',
 
+  // Test Guardian
+  'ab.tests': 'Test Guardian',
+  'tg.title': 'Test Guardian',
+  'tg.noWorkspace': 'Open a folder to see test coverage.',
+  'tg.covered': '{c}/{n} files covered',
+  'tg.testFiles': '{n} test files',
+  'tg.run': '▶ Run tests',
+  'tg.running': 'Running tests…',
+  'tg.pass': '✓ passed',
+  'tg.fail': '✕ failed',
+  'tg.noScript': 'No "test" script in package.json.',
+  'tg.affected': 'Tests affected by {file}',
+  'tg.uncovered': 'Files with no tests ({n})',
+  'tg.allCovered': 'Every source file is touched by a test. 🎉',
+  'tg.generate': 'Generate Tests',
+  'tg.hint': '',
+
   'problems.title': 'Problems',
 
   // Project Brain (Autonomous Development Engine)

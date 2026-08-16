@@ -666,3 +666,127 @@
   border-top: 1px solid var(--border);
   padding-top: 8px;
 }
+
+/* ===================================================================== */
+/* Test Guardian panel                                                   */
+/* ===================================================================== */
+
+.sidebar.tests {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tg-body {
+  overflow-y: auto;
+  padding: 8px 10px 16px;
+}
+.tg-coverage {
+  margin-bottom: 10px;
+}
+.tg-cov-top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.tg-cov-pct {
+  font-size: 22px;
+  font-weight: 800;
+}
+.tg-cov-meta {
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.tg-cov-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+  margin-top: 6px;
+}
+.tg-cov-fill {
+  height: 100%;
+  background: #3fb950;
+}
+.tg-run {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+.tg-run-btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+.tg-run-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.tg-run-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.tg-result.ok {
+  color: #3fb950;
+  font-size: 12px;
+}
+.tg-result.fail {
+  color: var(--danger);
+  font-size: 12px;
+}
+.tg-hint {
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.tg-section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  margin: 12px 0 6px;
+}
+.tg-file {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tg-file:hover {
+  color: var(--accent);
+}
+.tg-affected .tg-file {
+  display: block;
+  width: 100%;
+}
+.tg-uncov-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tg-gen {
+  font-size: 10px;
+  padding: 1px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.tg-gen:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}

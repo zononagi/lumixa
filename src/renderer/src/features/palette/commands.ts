@@ -7,6 +7,7 @@ import { useExperienceStore } from '@renderer/stores/experienceStore'
 import { useAgentStore } from '@renderer/stores/agentStore'
 import { useBrainStore } from '@renderer/stores/brainStore'
 import { useHealStore } from '@renderer/stores/healStore'
+import { useTestGuardianStore } from '@renderer/stores/testGuardianStore'
 import { notify } from '@renderer/stores/notifyStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainApi, explainError } from '@renderer/features/intelligence/knowledgeBase'
@@ -129,6 +130,8 @@ export function buildCommands(): Command[] {
     { id: 'view.brain', title: 'View: Project Brain', category: 'View', run: () => ui().setLeftView('brain') },
     { id: 'view.watcher', title: 'View: AI Code Watcher', category: 'View', run: () => ui().setLeftView('watcher') },
     { id: 'view.bug', title: 'Find Bug (Bug Detective)', category: 'View', run: () => ui().setLeftView('bug') },
+    { id: 'view.tests', title: 'View: Test Guardian', category: 'View', run: () => ui().setLeftView('tests') },
+    { id: 'tests.run', title: 'Run Tests', category: 'Self-Healing', run: () => { ui().setLeftView('tests'); void useTestGuardianStore.getState().runTests() } },
     {
       id: 'brain.analyze',
       title: 'Analyze Project (rebuild Project Brain)',

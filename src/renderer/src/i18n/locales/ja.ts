@@ -46,6 +46,23 @@ export const ja: typeof en = {
   'bug.no': 'なし',
   'bug.handoffHint': '「調査する」で Claude Code に引き継ぎます。仮説と確信度は AIエージェント パネルに表示されます。',
 
+  // Test Guardian
+  'ab.tests': 'テストガーディアン',
+  'tg.title': 'テストガーディアン',
+  'tg.noWorkspace': 'フォルダを開くとテストカバレッジを表示します。',
+  'tg.covered': '{c}/{n} ファイルにテストあり',
+  'tg.testFiles': 'テストファイル {n}',
+  'tg.run': '▶ テスト実行',
+  'tg.running': 'テスト実行中…',
+  'tg.pass': '✓ 合格',
+  'tg.fail': '✕ 失敗',
+  'tg.noScript': 'package.json に "test" スクリプトがありません。',
+  'tg.affected': '{file} の変更で影響するテスト',
+  'tg.uncovered': 'テストが無いファイル（{n}）',
+  'tg.allCovered': 'すべてのソースが何らかのテストで参照されています。🎉',
+  'tg.generate': 'テスト生成',
+  'tg.hint': '',
+
   // Project Brain
   'brain.title': 'プロジェクトブレイン',
   'brain.noWorkspace': 'フォルダを開くと、Lumixaがプロジェクトを理解します。',
