@@ -11,6 +11,7 @@ import { useEditorStore } from './editorStore'
 import { useUsageStore } from './usageStore'
 import { useUiStore } from './uiStore'
 import { useBrainStore } from './brainStore'
+import { logActivity } from './activityStore'
 import { notify } from './notifyStore'
 import {
   composeMessage,
@@ -196,6 +197,7 @@ export const useAgentStore = create<AgentState>((set, get) => ({
       contexts: blocks.map((b) => b.kind)
     })
     useUsageStore.getState().bumpMessages()
+    logActivity('claude', 'running', 'act.claude.working')
 
     // Give a brand-new session a clean title from the user's own words (not the
     // context-prefixed payload) before the runtime auto-titles from the message.
@@ -400,12 +402,16 @@ function applyEvent(
     case 'error':
       appendItem(set, id, { type: 'error', friendly: event.friendly })
       maybeNotify(get, id, { error: true })
+      logActivity('claude', 'error', 'act.claude.error')
       resolveTurn(id, { ok: false })
       break
     case 'completed':
       appendItem(set, id, { type: 'completed', result: event.result, costUsd: event.costUsd })
       if (typeof event.durationMs === 'number') useUsageStore.getState().addRuntime(event.durationMs)
       maybeNotify(get, id, { error: event.isError })
+      logActivity('claude', event.isError ? 'error' : 'done', event.isError ? 'act.claude.error' : 'act.claude.done', {
+        n: view.fileChanges.length
+      })
       resolveTurn(id, { ok: !event.isError, result: event.result })
       break
     case 'session-init':

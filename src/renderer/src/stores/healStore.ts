@@ -3,6 +3,7 @@ import type { VerifyResult, VerifyScript } from '@shared/engine'
 import { MAX_HEAL_ATTEMPTS, VERIFY_SCRIPTS } from '@shared/engine'
 import { useWorkspaceStore } from './workspaceStore'
 import { useAgentStore } from './agentStore'
+import { logActivity } from './activityStore'
 import { notify } from './notifyStore'
 
 /**
@@ -101,6 +102,7 @@ export const useHealStore = create<HealState>((set, get) => ({
     }
 
     set({ running: true, cancelRequested: false, attempts: 0, steps: [], outcome: 'idle' })
+    logActivity('heal', 'running', 'act.heal.start')
 
     // 1) Safety checkpoint for undo (spec §59).
     const cp = addStep(set, 'Creating a safety snapshot', 'running')
@@ -171,6 +173,11 @@ export const useHealStore = create<HealState>((set, get) => ({
     }
 
     set({ running: false, outcome })
+    logActivity(
+      'heal',
+      outcome === 'passed' ? 'done' : outcome === 'failed' ? 'error' : 'info',
+      outcome === 'passed' ? 'act.heal.passed' : outcome === 'failed' ? 'act.heal.failed' : 'act.heal.stopped'
+    )
     if (outcome === 'passed') notify('success', '✓ Self-Healing: all checks pass')
     else if (outcome === 'failed') notify('warn', 'Self-Healing could not fully resolve the problem')
   },

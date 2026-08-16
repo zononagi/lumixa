@@ -133,6 +133,7 @@ export function buildCommands(): Command[] {
     { id: 'view.arch', title: 'View Architecture Map', category: 'View', run: () => ui().setLeftView('arch') },
     { id: 'view.bug', title: 'Find Bug (Bug Detective)', category: 'View', run: () => ui().setLeftView('bug') },
     { id: 'view.goal', title: 'Create Goal (Goal Mode)', category: 'View', run: () => ui().setLeftView('goal') },
+    { id: 'view.activity', title: 'Show AI Activity', category: 'View', run: () => ui().setLeftView('activity') },
     { id: 'view.tests', title: 'View: Test Guardian', category: 'View', run: () => ui().setLeftView('tests') },
     { id: 'view.memory', title: 'View: Skill Memory', category: 'View', run: () => ui().setLeftView('memory') },
     { id: 'view.risk', title: 'View: Risk Detector', category: 'View', run: () => ui().setLeftView('risk') },

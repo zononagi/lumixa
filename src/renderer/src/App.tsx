@@ -11,6 +11,7 @@ import { ArchitectureMapPanel } from './features/architecture/ArchitectureMapPan
 import { WatcherPanel } from './features/watcher/WatcherPanel'
 import { BugDetectivePanel } from './features/bug/BugDetectivePanel'
 import { GoalModePanel } from './features/goal/GoalModePanel'
+import { AIActivityPanel } from './features/activity/AIActivityPanel'
 import { AgentPanel } from './features/agent/AgentPanel'
 import { ClaudeCodeDiff } from './features/agent/ClaudeCodeDiff'
 import { SelfHealingPanel } from './features/heal/SelfHealingPanel'
@@ -73,6 +74,7 @@ export default function App(): JSX.Element {
         {leftView === 'watcher' && <WatcherPanel />}
         {leftView === 'bug' && <BugDetectivePanel />}
         {leftView === 'goal' && <GoalModePanel />}
+        {leftView === 'activity' && <AIActivityPanel />}
         {leftView === 'agent' && <AgentPanel />}
         {leftView === 'heal' && <SelfHealingPanel />}
         {leftView === 'tests' && <TestGuardianPanel />}

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { ImpactResult, ProjectBrain } from '@shared/brain'
+import { logActivity } from './activityStore'
 
 /**
  * Renderer-side Project Brain state. Holds the structural index built by the
@@ -35,11 +36,14 @@ export const useBrainStore = create<BrainState>((set, get) => ({
 
   index: async (root) => {
     set({ indexing: true, error: null })
+    logActivity('brain', 'running', 'act.brain.indexing')
     try {
       const brain = await window.lumixa.brain.index(root)
       set({ brain, indexing: false })
+      logActivity('brain', 'done', 'act.brain.indexed', { n: brain.stats.files })
     } catch (e) {
       set({ indexing: false, error: e instanceof Error ? e.message : 'Indexing failed' })
+      logActivity('brain', 'error', 'act.brain.error')
     }
   },
 

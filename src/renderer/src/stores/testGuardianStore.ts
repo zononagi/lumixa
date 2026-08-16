@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { VerifyResult } from '@shared/engine'
 import { useWorkspaceStore } from './workspaceStore'
+import { logActivity } from './activityStore'
 import { notify } from './notifyStore'
 
 /**
@@ -36,9 +37,11 @@ export const useTestGuardianStore = create<TestGuardianState>((set, get) => ({
     const root = useWorkspaceStore.getState().root
     if (!root) return
     set({ running: true, result: null })
+    logActivity('tests', 'running', 'act.tests.running')
     try {
       const result = await window.lumixa.verify.run(root, 'test')
       set({ result, running: false })
+      logActivity('tests', result.ok ? 'done' : 'error', result.ok ? 'act.tests.passed' : 'act.tests.failed')
       notify(result.ok ? 'success' : 'warn', result.ok ? '✓ Tests passed' : '⚠ Tests failed')
     } catch {
       set({ running: false })

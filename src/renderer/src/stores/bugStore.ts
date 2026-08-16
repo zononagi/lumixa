@@ -4,6 +4,7 @@ import { useBrainStore } from './brainStore'
 import { useAgentStore } from './agentStore'
 import { useUiStore } from './uiStore'
 import { useMarkersStore } from '@renderer/features/problems/markersStore'
+import { logActivity } from './activityStore'
 import { notify } from './notifyStore'
 import {
   buildInvestigationPrompt,
@@ -102,6 +103,7 @@ export const useBugStore = create<BugState>((set, get) => ({
     const id = await agent.createSession('claude-code')
     if (!id) return
     void agent.rename(id, `Bug: ${desc.slice(0, 40)}`)
+    logActivity('bug', 'running', 'act.bug.investigating', { q: desc.slice(0, 40) })
     useUiStore.getState().setLeftView('agent')
     await agent.send(id, buildInvestigationPrompt(desc, evidence))
   },
