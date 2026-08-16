@@ -1,6 +1,6 @@
 {
   "name": "lumixa",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Lumixa — a fast desktop code editor / IDE that can drive your local Claude Code CLI.",
   "type": "module",
   "main": "./out/main/index.js",
