@@ -28,6 +28,7 @@ export function ActivityBar(): JSX.Element {
       {view('tests', '🧪', t('ab.tests'))}
       {view('timemachine', '⌛', t('ab.timemachine'))}
       {view('memory', '📓', t('ab.memory'))}
+      {view('risk', '⚠', t('ab.risk'))}
       {view('builder', '🧩', t('ab.builder'))}
       {view('safe', '🛟', t('ab.safe'))}
       {view('settings', '⚙', t('ab.settings'))}
