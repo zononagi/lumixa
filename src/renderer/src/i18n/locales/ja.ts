@@ -80,6 +80,28 @@ export const ja: typeof en = {
   'goal.cx.medium': '中',
   'goal.cx.high': '高',
 
+  // Skill Memory
+  'ab.memory': 'スキルメモリ',
+  'mem.title': 'スキルメモリ',
+  'mem.noWorkspace': 'フォルダを開くとプロジェクト知識を表示します。',
+  'mem.intro': 'Lumixa がこのプロジェクトについて把握している内容 — 出典と確信度付き。',
+  'mem.derived': '自動検出',
+  'mem.deriving': 'プロジェクトを索引中…',
+  'mem.yourRules': 'あなたのルール',
+  'mem.addPlaceholder': 'ルールを追加（例：Reduxは使わない）',
+  'mem.add': '追加',
+  'mem.remove': '削除',
+  'mem.share': '📓 知識を Claude Code に渡す',
+  'mem.sharePrompt': 'これはこのプロジェクトの規約と知識です。作業時はこれに従ってください。',
+  'mem.src.pkg': 'package.json',
+  'mem.src.config': '設定',
+  'mem.src.pattern': 'コードパターン',
+  'mem.src.user': 'あなた',
+  'mem.src.doc': 'ドキュメント',
+  'mem.conf.high': '高',
+  'mem.conf.medium': '中',
+  'mem.conf.low': '低',
+
   // Test Guardian
   'ab.tests': 'テストガーディアン',
   'tg.title': 'テストガーディアン',
@@ -289,6 +311,7 @@ export const ja: typeof en = {
   'ctx.workspace': 'ワークスペース',
   'ctx.problems': '問題',
   'ctx.gitDiff': 'Git 差分',
+  'ctx.knowledge': 'プロジェクト知識',
 
   // Quick Actions
   'qa.explain': '説明',

@@ -14,13 +14,21 @@ import { UsagePanel } from './UsagePanel'
 import { Markdown, CopyButton } from './Markdown'
 import { useT, type TKey } from '@renderer/i18n'
 
-const CONTEXT_ORDER: ContextKind[] = ['file', 'selection', 'workspace', 'problems', 'gitDiff']
+const CONTEXT_ORDER: ContextKind[] = [
+  'file',
+  'selection',
+  'workspace',
+  'problems',
+  'gitDiff',
+  'knowledge'
+]
 const CONTEXT_LABEL: Record<ContextKind, TKey> = {
   file: 'ctx.file',
   selection: 'ctx.selection',
   workspace: 'ctx.workspace',
   problems: 'ctx.problems',
-  gitDiff: 'ctx.gitDiff'
+  gitDiff: 'ctx.gitDiff',
+  knowledge: 'ctx.knowledge'
 }
 const PERMISSION_MODES: PermissionMode[] = ['default', 'acceptEdits', 'plan', 'bypassPermissions']
 const PERMISSION_LABEL: Record<PermissionMode, TKey> = {

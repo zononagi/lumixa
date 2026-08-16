@@ -13,6 +13,7 @@ export type LeftView =
   | 'heal'
   | 'tests'
   | 'timemachine'
+  | 'memory'
   | 'safe'
   | 'builder'
   | 'settings'

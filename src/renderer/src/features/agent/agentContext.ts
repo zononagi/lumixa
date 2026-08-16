@@ -1,6 +1,9 @@
 import { getActiveEditor } from '@renderer/lib/editorBridge'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
+import { useBrainStore } from '@renderer/stores/brainStore'
+import { readUserFacts } from '@renderer/stores/skillMemoryStore'
+import { allFacts, deriveFacts, formatFacts } from '@renderer/features/memory/skillMemory'
 import { useMarkersStore, type Problem } from '@renderer/features/problems/markersStore'
 
 /**
@@ -12,7 +15,7 @@ import { useMarkersStore, type Problem } from '@renderer/features/problems/marke
  * toggled. The pure formatting helpers (`formatBlock`, `composeMessage`) are
  * unit-tested; the store-reading gatherers are thin and side-effect free.
  */
-export type ContextKind = 'file' | 'selection' | 'workspace' | 'problems' | 'gitDiff'
+export type ContextKind = 'file' | 'selection' | 'workspace' | 'problems' | 'gitDiff' | 'knowledge'
 
 export interface ContextBlock {
   kind: ContextKind
@@ -64,6 +67,7 @@ export interface ContextAvailability {
   workspace: boolean
   problems: boolean
   gitDiff: boolean
+  knowledge: boolean
 }
 
 /** True when the active editor has a non-empty text selection. */
@@ -82,7 +86,8 @@ export function contextAvailability(): ContextAvailability {
     selection: hasSelection(),
     workspace: root != null,
     problems: problems.length > 0,
-    gitDiff: root != null
+    gitDiff: root != null,
+    knowledge: root != null
   }
 }
 
@@ -163,6 +168,15 @@ function buildProblems(): ContextBlock | null {
   }
 }
 
+function buildKnowledge(): ContextBlock | null {
+  const root = useWorkspaceStore.getState().root
+  if (!root) return null
+  const brain = useBrainStore.getState().brain
+  const facts = allFacts(deriveFacts(brain?.summary ?? null, brain?.files ?? []), readUserFacts(root))
+  if (facts.length === 0) return null
+  return { kind: 'knowledge', label: `Project knowledge (${facts.length})`, text: formatFacts(facts) }
+}
+
 async function buildGitDiff(): Promise<ContextBlock | null> {
   const root = useWorkspaceStore.getState().root
   if (!root) return null
@@ -186,6 +200,7 @@ export async function gatherContext(kinds: ContextKind[]): Promise<ContextBlock[
     else if (kind === 'workspace') block = buildWorkspace()
     else if (kind === 'problems') block = buildProblems()
     else if (kind === 'gitDiff') block = await buildGitDiff()
+    else if (kind === 'knowledge') block = buildKnowledge()
     if (block) blocks.push(block)
   }
   return blocks
@@ -197,5 +212,6 @@ export const CONTEXT_META: Record<ContextKind, { icon: string; mention: string }
   selection: { icon: '✂', mention: '@selection' },
   workspace: { icon: '🗂', mention: '@workspace' },
   problems: { icon: '⚠', mention: '@problems' },
-  gitDiff: { icon: '⑂', mention: '@git' }
+  gitDiff: { icon: '⑂', mention: '@git' },
+  knowledge: { icon: '📓', mention: '@knowledge' }
 }

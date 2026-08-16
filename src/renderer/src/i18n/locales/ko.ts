@@ -80,6 +80,28 @@ export const ko: typeof en = {
   'goal.cx.medium': '중간',
   'goal.cx.high': '높음',
 
+  // Skill Memory
+  'ab.memory': '스킬 메모리',
+  'mem.title': '스킬 메모리',
+  'mem.noWorkspace': '폴더를 열면 프로젝트 지식을 표시합니다.',
+  'mem.intro': 'Lumixa가 이 프로젝트에 대해 아는 것 — 출처와 신뢰도 포함.',
+  'mem.derived': '자동 감지',
+  'mem.deriving': '프로젝트 색인 중…',
+  'mem.yourRules': '내 규칙',
+  'mem.addPlaceholder': '규칙 추가 (예: Redux 사용 금지)',
+  'mem.add': '추가',
+  'mem.remove': '삭제',
+  'mem.share': '📓 지식을 Claude Code에 전달',
+  'mem.sharePrompt': '이것은 이 프로젝트의 규칙과 지식입니다. 작업 시 이를 따르세요.',
+  'mem.src.pkg': 'package.json',
+  'mem.src.config': '설정',
+  'mem.src.pattern': '코드 패턴',
+  'mem.src.user': '사용자',
+  'mem.src.doc': '문서',
+  'mem.conf.high': '높음',
+  'mem.conf.medium': '중간',
+  'mem.conf.low': '낮음',
+
   // Test Guardian
   'ab.tests': '테스트 가디언',
   'tg.title': '테스트 가디언',
@@ -289,6 +311,7 @@ export const ko: typeof en = {
   'ctx.workspace': '워크스페이스',
   'ctx.problems': '문제',
   'ctx.gitDiff': 'Git 차이',
+  'ctx.knowledge': '프로젝트 지식',
 
   // Quick Actions
   'qa.explain': '설명',

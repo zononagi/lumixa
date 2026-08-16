@@ -78,6 +78,28 @@ export const en = {
   'goal.cx.medium': 'medium',
   'goal.cx.high': 'high',
 
+  // Skill Memory
+  'ab.memory': 'Skill Memory',
+  'mem.title': 'Skill Memory',
+  'mem.noWorkspace': 'Open a folder to see project knowledge.',
+  'mem.intro': 'What Lumixa knows about this project — with sources and confidence.',
+  'mem.derived': 'Detected automatically',
+  'mem.deriving': 'Indexing the project…',
+  'mem.yourRules': 'Your rules',
+  'mem.addPlaceholder': 'Add a rule, e.g. "Do not use Redux"',
+  'mem.add': 'Add',
+  'mem.remove': 'Remove',
+  'mem.share': '📓 Share knowledge with Claude Code',
+  'mem.sharePrompt': "Here is this project's conventions and knowledge. Keep to them in your work.",
+  'mem.src.pkg': 'package.json',
+  'mem.src.config': 'config',
+  'mem.src.pattern': 'code pattern',
+  'mem.src.user': 'you',
+  'mem.src.doc': 'docs',
+  'mem.conf.high': 'high',
+  'mem.conf.medium': 'medium',
+  'mem.conf.low': 'low',
+
   // Test Guardian
   'ab.tests': 'Test Guardian',
   'tg.title': 'Test Guardian',
@@ -287,6 +309,7 @@ export const en = {
   'ctx.workspace': 'Workspace',
   'ctx.problems': 'Problems',
   'ctx.gitDiff': 'Git Diff',
+  'ctx.knowledge': 'Project Knowledge',
 
   // Quick Actions
   'qa.explain': 'Explain',
