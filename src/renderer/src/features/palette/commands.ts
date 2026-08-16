@@ -122,6 +122,7 @@ export function buildCommands(): Command[] {
     { id: 'mode.developer', title: 'Experience Mode: Developer', category: 'Mode', run: () => xp().setMode('developer') },
     { id: 'mode.expert', title: 'Experience Mode: Expert', category: 'Mode', run: () => xp().setMode('expert') },
 
+    { id: 'workspace.newProject', title: 'New Project…', category: 'File', run: () => ui().setNewProject(true) },
     { id: 'workspace.openFolder', title: 'Open Folder…', category: 'File', run: () => void ws().openFolder() },
     { id: 'file.save', title: 'Save File', category: 'File', run: () => void ed().saveActive() },
 

@@ -30,6 +30,7 @@ import type {
 import type { UsageStatus } from '@shared/usage'
 import type { ImpactResult, ProjectBrain, WatcherFinding } from '@shared/brain'
 import type { AvailableScripts, VerifyResult, VerifyScript } from '@shared/engine'
+import type { ScaffoldPlan, ScaffoldResult } from '@shared/create'
 
 /**
  * contextBridge surface. This is the *only* thing the renderer can touch in the
@@ -146,6 +147,10 @@ const api = {
       ipcRenderer.invoke(IPC.verifyScripts, root),
     run: (root: string, script: VerifyScript): Promise<VerifyResult> =>
       ipcRenderer.invoke(IPC.verifyRun, root, script)
+  },
+  create: {
+    scaffold: (plan: ScaffoldPlan): Promise<ScaffoldResult> =>
+      ipcRenderer.invoke(IPC.scaffoldCreate, plan)
   },
   usage: {
     get: (): Promise<UsageStatus> => ipcRenderer.invoke(IPC.usageGet)

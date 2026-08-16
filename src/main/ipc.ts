@@ -28,6 +28,8 @@ import {
 import { checkEnvironment } from './services/environment'
 import { listScripts, runScript } from './services/verify'
 import type { VerifyScript } from '@shared/engine'
+import { scaffold } from './services/scaffold'
+import type { ScaffoldPlan } from '@shared/create'
 import { AgentRuntime } from './services/agent/runtime'
 import { getUsage, ingestUsageLine } from './services/agent/usage'
 
@@ -136,6 +138,9 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   // --- Self-Healing verification runner ------------------------------------
   ipcMain.handle(IPC.verifyScripts, (_e, root: string) => listScripts(root))
   ipcMain.handle(IPC.verifyRun, (_e, root: string, script: VerifyScript) => runScript(root, script))
+
+  // --- Project Creation Engine ---------------------------------------------
+  ipcMain.handle(IPC.scaffoldCreate, (_e, plan: ScaffoldPlan) => scaffold(plan))
 
   // --- AI agent runtime (external Claude Code CLI) --------------------------
   const send = (channel: string, payload: unknown): void => {

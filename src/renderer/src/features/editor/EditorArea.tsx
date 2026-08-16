@@ -3,6 +3,7 @@ import Editor, { type OnMount } from '@monaco-editor/react'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useAppearanceStore } from '@renderer/stores/appearanceStore'
 import { useAgentStore } from '@renderer/stores/agentStore'
+import { useUiStore } from '@renderer/stores/uiStore'
 import { setActiveEditor } from '@renderer/lib/editorBridge'
 import { useT, useI18nStore } from '@renderer/i18n'
 import { languageForFile } from './monacoSetup'
@@ -97,6 +98,9 @@ export function EditorArea(): JSX.Element {
         <div className="editor-empty">
           <div style={{ fontSize: 28 }}>Lumixa</div>
           <div>{t('editor.empty')}</div>
+          <button className="editor-new-project" onClick={() => useUiStore.getState().setNewProject(true)}>
+            ✨ {t('create.newProject')}
+          </button>
         </div>
       )}
     </div>

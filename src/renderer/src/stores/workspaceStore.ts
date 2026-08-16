@@ -14,6 +14,8 @@ interface WorkspaceState {
   expanded: Set<string>
 
   openFolder: () => Promise<void>
+  /** Open a folder by absolute path (e.g. a just-created project). */
+  openPath: (root: string, name?: string) => Promise<void>
   toggleDir: (path: string) => Promise<void>
   loadChildren: (path: string) => Promise<void>
 }
@@ -37,6 +39,18 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     // Build the Project Brain for the new workspace (background; non-blocking).
     useBrainStore.getState().clear()
     void useBrainStore.getState().index(result.root)
+  },
+
+  openPath: async (root, name) => {
+    set({
+      root,
+      rootName: name ?? (root.split(/[\\/]/).pop() ?? root),
+      childrenByPath: {},
+      expanded: new Set()
+    })
+    await get().loadChildren(root)
+    useBrainStore.getState().clear()
+    void useBrainStore.getState().index(root)
   },
 
   loadChildren: async (path) => {

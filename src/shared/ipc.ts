@@ -83,6 +83,9 @@ export const IPC = {
   verifyScripts: 'verify:scripts',
   verifyRun: 'verify:run',
 
+  // Project Creation Engine — scaffolder
+  scaffoldCreate: 'scaffold:create',
+
   // Usage monitor
   usageGet: 'usage:get',
 

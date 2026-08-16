@@ -14,6 +14,7 @@ import { GoalModePanel } from './features/goal/GoalModePanel'
 import { AIActivityPanel } from './features/activity/AIActivityPanel'
 import { AgentPanel } from './features/agent/AgentPanel'
 import { ClaudeCodeDiff } from './features/agent/ClaudeCodeDiff'
+import { NewProjectWizard } from './features/create/NewProjectWizard'
 import { SelfHealingPanel } from './features/heal/SelfHealingPanel'
 import { TestGuardianPanel } from './features/testguardian/TestGuardianPanel'
 import { TimeMachinePanel } from './features/timemachine/TimeMachinePanel'
@@ -94,6 +95,7 @@ export default function App(): JSX.Element {
       <CommandPalette />
       <WhyOverlay />
       <ClaudeCodeDiff />
+      <NewProjectWizard />
       <Toasts />
     </div>
   )

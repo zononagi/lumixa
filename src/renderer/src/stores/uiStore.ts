@@ -38,6 +38,10 @@ interface UiState {
   setPalette: (open: boolean) => void
   togglePalette: () => void
 
+  /** New Project wizard modal. */
+  newProjectOpen: boolean
+  setNewProject: (open: boolean) => void
+
   /** "Why?" explanation overlay text (null = hidden). */
   whyText: string | null
   setWhy: (text: string | null) => void
@@ -57,6 +61,9 @@ export const useUiStore = create<UiState>((set) => ({
   paletteOpen: false,
   setPalette: (open) => set({ paletteOpen: open }),
   togglePalette: () => set((s) => ({ paletteOpen: !s.paletteOpen })),
+
+  newProjectOpen: false,
+  setNewProject: (newProjectOpen) => set({ newProjectOpen }),
 
   whyText: null,
   setWhy: (whyText) => set({ whyText })
