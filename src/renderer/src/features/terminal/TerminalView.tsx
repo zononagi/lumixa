@@ -3,6 +3,7 @@ import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
 import { checkDanger } from '@renderer/lib/danger'
+import { setTerminalRunner } from '@renderer/lib/terminalBridge'
 import { useWorkspaceStore } from '@renderer/stores/workspaceStore'
 import { useT } from '@renderer/i18n'
 
@@ -91,6 +92,15 @@ export function TerminalView({
       }
     })
 
+    // Let other features (Beginner Assistant) run a command here. Echoes it
+    // locally for visibility, then sends it through the same shell pipe.
+    setTerminalRunner((cmd) => {
+      term.focus()
+      term.write(`\r\n${cmd}`)
+      term.write('\b \b'.repeat(cmd.length))
+      send(cmd + '\n')
+    })
+
     const offData = window.lumixa.terminal.onData((e) => {
       if (e.id === id) term.write(e.data)
     })
@@ -113,6 +123,7 @@ export function TerminalView({
       onData.dispose()
       offData()
       offExit()
+      setTerminalRunner(null)
       window.removeEventListener('resize', onResize)
       void window.lumixa.terminal.kill(id)
       term.dispose()

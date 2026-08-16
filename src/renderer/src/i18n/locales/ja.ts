@@ -115,6 +115,21 @@ export const ja: typeof en = {
   'risk.rec.infra': '慎重にレビュー · まず非本番環境でテスト。',
   'risk.rec.deploy': '慎重にレビュー · 本番前にステージングで検証。',
 
+  // Beginner Assistant
+  'ab.beginner': '初心者アシスタント',
+  'beginner.title': '初心者アシスタント',
+  'beginner.cmdTitle': 'このコマンドは何をする？',
+  'beginner.cmdPlaceholder': 'コマンドを入力（例：npm install）',
+  'beginner.cmdUnknown': 'Lumixa に組み込みの説明がありません。詳しくは Claude Code に聞いてください。',
+  'beginner.safe': 'このプロジェクトで安全に実行できます。',
+  'beginner.run': '▶ 実行',
+  'beginner.copy': 'コピー',
+  'beginner.openTerminalFirst': 'ターミナルを一度開いてから、もう一度「実行」を押してください。',
+  'beginner.errTitle': 'エラーをやさしく説明',
+  'beginner.noErrors': '今はエラーはありません。🎉',
+  'beginner.fixInstall': '自動で修正（パッケージを導入）',
+  'beginner.explainFix': 'Claude Code で説明＆修正',
+
   // Skill Memory
   'ab.memory': 'スキルメモリ',
   'mem.title': 'スキルメモリ',

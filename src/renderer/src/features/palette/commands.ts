@@ -136,6 +136,7 @@ export function buildCommands(): Command[] {
     { id: 'view.tests', title: 'View: Test Guardian', category: 'View', run: () => ui().setLeftView('tests') },
     { id: 'view.memory', title: 'View: Skill Memory', category: 'View', run: () => ui().setLeftView('memory') },
     { id: 'view.risk', title: 'View: Risk Detector', category: 'View', run: () => ui().setLeftView('risk') },
+    { id: 'view.beginner', title: 'View: Beginner Assistant', category: 'View', run: () => ui().setLeftView('beginner') },
     { id: 'tests.run', title: 'Run Tests', category: 'Self-Healing', run: () => { ui().setLeftView('tests'); void useTestGuardianStore.getState().runTests() } },
     {
       id: 'brain.analyze',

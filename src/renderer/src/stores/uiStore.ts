@@ -15,6 +15,7 @@ export type LeftView =
   | 'timemachine'
   | 'memory'
   | 'risk'
+  | 'beginner'
   | 'safe'
   | 'builder'
   | 'settings'

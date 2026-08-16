@@ -113,6 +113,21 @@ export const en = {
   'risk.rec.infra': 'Review carefully · test in a non-production environment first.',
   'risk.rec.deploy': 'Review carefully · verify on a staging pipeline before production.',
 
+  // Beginner Assistant
+  'ab.beginner': 'Beginner Assistant',
+  'beginner.title': 'Beginner Assistant',
+  'beginner.cmdTitle': 'What does this command do?',
+  'beginner.cmdPlaceholder': 'Type a command, e.g. npm install',
+  'beginner.cmdUnknown': "Lumixa doesn't have a built-in explanation — ask Claude Code for details.",
+  'beginner.safe': 'Safe to run in this project.',
+  'beginner.run': '▶ Run',
+  'beginner.copy': 'Copy',
+  'beginner.openTerminalFirst': 'Open the Terminal once, then press Run again.',
+  'beginner.errTitle': 'Errors, in plain language',
+  'beginner.noErrors': 'No errors right now. 🎉',
+  'beginner.fixInstall': 'Fix automatically (install packages)',
+  'beginner.explainFix': 'Explain & fix with Claude Code',
+
   // Skill Memory
   'ab.memory': 'Skill Memory',
   'mem.title': 'Skill Memory',

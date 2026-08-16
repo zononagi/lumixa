@@ -115,6 +115,21 @@ export const ko: typeof en = {
   'risk.rec.infra': '신중히 검토 · 먼저 비프로덕션 환경에서 테스트.',
   'risk.rec.deploy': '신중히 검토 · 프로덕션 전 스테이징에서 검증.',
 
+  // Beginner Assistant
+  'ab.beginner': '초보자 도우미',
+  'beginner.title': '초보자 도우미',
+  'beginner.cmdTitle': '이 명령은 무엇을 하나요?',
+  'beginner.cmdPlaceholder': '명령 입력 (예: npm install)',
+  'beginner.cmdUnknown': 'Lumixa에 내장 설명이 없습니다. 자세한 내용은 Claude Code에 물어보세요.',
+  'beginner.safe': '이 프로젝트에서 안전하게 실행할 수 있습니다.',
+  'beginner.run': '▶ 실행',
+  'beginner.copy': '복사',
+  'beginner.openTerminalFirst': '터미널을 한 번 연 뒤 다시 "실행"을 누르세요.',
+  'beginner.errTitle': '에러를 쉬운 말로',
+  'beginner.noErrors': '지금은 에러가 없습니다. 🎉',
+  'beginner.fixInstall': '자동 수정 (패키지 설치)',
+  'beginner.explainFix': 'Claude Code로 설명 & 수정',
+
   // Skill Memory
   'ab.memory': '스킬 메모리',
   'mem.title': '스킬 메모리',

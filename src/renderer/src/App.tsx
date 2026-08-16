@@ -18,6 +18,7 @@ import { TestGuardianPanel } from './features/testguardian/TestGuardianPanel'
 import { TimeMachinePanel } from './features/timemachine/TimeMachinePanel'
 import { SkillMemoryPanel } from './features/memory/SkillMemoryPanel'
 import { RiskDetectorPanel } from './features/risk/RiskDetectorPanel'
+import { BeginnerAssistantPanel } from './features/beginner/BeginnerAssistantPanel'
 import { SafeModePanel } from './features/safe/SafeModePanel'
 import { CodeBuilderPanel } from './features/builder/CodeBuilderPanel'
 import { EditorArea } from './features/editor/EditorArea'
@@ -78,6 +79,7 @@ export default function App(): JSX.Element {
         {leftView === 'timemachine' && <TimeMachinePanel />}
         {leftView === 'memory' && <SkillMemoryPanel />}
         {leftView === 'risk' && <RiskDetectorPanel />}
+        {leftView === 'beginner' && <BeginnerAssistantPanel />}
         {leftView === 'safe' && <SafeModePanel />}
         {leftView === 'builder' && <CodeBuilderPanel />}
         {leftView === 'settings' && <SettingsPanel />}

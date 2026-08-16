@@ -1443,3 +1443,131 @@
 .risk-zone-file.changed {
   color: var(--danger);
 }
+
+/* ===================================================================== */
+/* Beginner Assistant panel                                              */
+/* ===================================================================== */
+
+.sidebar.beginner {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.beginner-body {
+  overflow-y: auto;
+  padding: 8px 10px 16px;
+}
+.bg-section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
+  margin: 12px 0 6px;
+}
+.bg-section-title:first-child {
+  margin-top: 2px;
+}
+.bg-cmd-input {
+  width: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 8px;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.bg-cmd-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.bg-cmd-help {
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--bg-elevated);
+}
+.bg-cmd-explain {
+  font-size: 12px;
+  color: var(--fg);
+}
+.bg-safety {
+  font-size: 11px;
+  margin-top: 4px;
+}
+.bg-safety.safe {
+  color: #3fb950;
+}
+.bg-safety.danger {
+  color: var(--danger);
+}
+.bg-cmd-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.bg-run,
+.bg-copy,
+.bg-ask {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+}
+.bg-run {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.bg-run:hover {
+  background: var(--accent-hover);
+}
+.bg-copy:hover,
+.bg-ask:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.bg-err {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--danger);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 6px;
+  background: var(--bg-elevated);
+}
+.bg-err-cat {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--danger);
+  font-weight: 600;
+}
+.bg-err-what {
+  font-size: 12px;
+  color: var(--fg);
+  margin: 4px 0;
+}
+.bg-err-fix {
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.bg-err-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.bg-err-tech {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.bg-err-tech code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  word-break: break-word;
+}
