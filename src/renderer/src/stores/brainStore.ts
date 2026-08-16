@@ -35,6 +35,7 @@ export const useBrainStore = create<BrainState>((set, get) => ({
   impactPath: null,
 
   index: async (root) => {
+    if (get().indexing) return // coalesce overlapping full re-indexes (§48)
     set({ indexing: true, error: null })
     logActivity('brain', 'running', 'act.brain.indexing')
     try {

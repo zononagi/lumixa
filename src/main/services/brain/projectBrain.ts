@@ -15,6 +15,7 @@ import {
 import { detectSummary } from './summary'
 import { computeImpact } from './impact'
 import { scanContent } from '../watcher/rules'
+import { mapLimit } from './concurrency'
 import type { WatcherFinding } from '@shared/brain'
 
 /**
@@ -183,8 +184,9 @@ export async function indexProject(root: string): Promise<ProjectBrain> {
   const specsByRel = new Map<string, string[]>()
   const findings = new Map<string, WatcherFinding[]>()
   const skippedSecrets: string[] = []
-  for (const a of abs) {
-    const res = await analyzeFile(root, a)
+  // Read + parse files with bounded concurrency (fast on large projects, §48).
+  const analyzed = await mapLimit(abs, 16, (a) => analyzeFile(root, a))
+  for (const res of analyzed) {
     if (!res) continue
     nodes.push(res.node)
     specsByRel.set(res.node.rel, res.relSpecs)

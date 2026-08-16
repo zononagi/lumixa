@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
 import { useActivityStore } from '@renderer/stores/activityStore'
-import { useUiStore } from '@renderer/stores/uiStore'
+import { useUiStore, type LeftView } from '@renderer/stores/uiStore'
 import { useT, type TKey } from '@renderer/i18n'
 import {
   currentBySource,
@@ -15,7 +15,7 @@ import {
  * subsystem + Claude Code is doing right now (live), and a timestamped audit
  * trail of everything that happened this session.
  */
-const SOURCE_META: Record<ActivitySource, { icon: string; label: TKey; view: string }> = {
+const SOURCE_META: Record<ActivitySource, { icon: string; label: TKey; view: LeftView }> = {
   claude: { icon: '✦', label: 'act.src.claude', view: 'agent' },
   brain: { icon: '🧠', label: 'act.src.brain', view: 'brain' },
   heal: { icon: '🩺', label: 'act.src.heal', view: 'heal' },
@@ -66,7 +66,7 @@ function LiveRow({ activity }: { activity: Activity }): JSX.Element {
   const setLeftView = useUiStore((s) => s.setLeftView)
   const meta = SOURCE_META[activity.source]
   return (
-    <button className="act-live" onClick={() => setLeftView(meta.view as never)}>
+    <button className="act-live" onClick={() => setLeftView(meta.view)}>
       <span className="act-spinner">⟳</span>
       <span className="act-live-src">
         {meta.icon} {t(meta.label)}
