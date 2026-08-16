@@ -8,7 +8,20 @@ export const en = {
   'ab.palette': 'Command Palette (Ctrl+Shift+P)',
   'ab.agent': 'AI Agent',
   'ab.brain': 'Project Brain',
+  'ab.arch': 'Architecture Map',
   'ab.watcher': 'AI Code Watcher',
+
+  // Architecture Map
+  'arch.title': 'Architecture Map',
+  'arch.noWorkspace': 'Open a folder to see the architecture.',
+  'arch.pickFile': 'Indexing… or open a file to focus the map.',
+  'arch.usedBy': 'used by {n}',
+  'arch.dependsOn': 'depends on {n}',
+  'arch.usedByLegend': 'used by (importers)',
+  'arch.dependsLegend': 'depends on (imports)',
+  'arch.moreUsedBy': '+{n} more importers',
+  'arch.moreDeps': '+{n} more deps',
+  'arch.isolated': 'This file has no internal dependencies either way.',
 
   // AI Code Watcher
   'watch.title': 'AI Code Watcher',

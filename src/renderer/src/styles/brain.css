@@ -914,3 +914,85 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ===================================================================== */
+/* Architecture Map panel                                                */
+/* ===================================================================== */
+
+.sidebar.arch {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.arch-body {
+  overflow-y: auto;
+  padding: 8px 10px 16px;
+}
+.arch-focus {
+  font-weight: 600;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.arch-counts {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-bottom: 4px;
+}
+.arch-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.arch-edge {
+  stroke: var(--border);
+  stroke-width: 1.2;
+}
+.arch-arrow-head {
+  fill: var(--fg-muted);
+}
+.arch-node {
+  cursor: pointer;
+}
+.arch-node rect {
+  fill: var(--bg-elevated);
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.arch-node text {
+  fill: var(--fg);
+  font-size: 10px;
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+.arch-node:hover rect {
+  stroke: var(--accent);
+}
+.arch-node.center rect {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.arch-node.center text {
+  fill: #fff;
+  font-weight: 700;
+}
+.arch-node.component rect {
+  border-color: var(--accent);
+}
+.arch-node.test rect {
+  stroke-dasharray: 3 2;
+}
+.arch-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--fg-muted);
+  margin-top: 4px;
+}
+.arch-more {
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-top: 6px;
+  text-align: center;
+}

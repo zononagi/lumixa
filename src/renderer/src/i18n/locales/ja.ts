@@ -10,7 +10,20 @@ export const ja: typeof en = {
   'ab.palette': 'コマンドパレット (Ctrl+Shift+P)',
   'ab.agent': 'AIエージェント',
   'ab.brain': 'プロジェクトブレイン',
+  'ab.arch': 'アーキテクチャマップ',
   'ab.watcher': 'AIコードウォッチャー',
+
+  // Architecture Map
+  'arch.title': 'アーキテクチャマップ',
+  'arch.noWorkspace': 'フォルダを開くと構造を表示します。',
+  'arch.pickFile': '索引中… またはファイルを開くと中心に表示します。',
+  'arch.usedBy': '被参照 {n}',
+  'arch.dependsOn': '依存 {n}',
+  'arch.usedByLegend': '使っている側（importers）',
+  'arch.dependsLegend': '依存先（imports）',
+  'arch.moreUsedBy': '+{n} 件の被参照',
+  'arch.moreDeps': '+{n} 件の依存',
+  'arch.isolated': 'このファイルは内部依存を持ちません。',
 
   // AI Code Watcher
   'watch.title': 'AIコードウォッチャー',

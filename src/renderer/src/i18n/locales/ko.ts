@@ -10,7 +10,20 @@ export const ko: typeof en = {
   'ab.palette': '명령 팔레트 (Ctrl+Shift+P)',
   'ab.agent': 'AI 에이전트',
   'ab.brain': '프로젝트 브레인',
+  'ab.arch': '아키텍처 맵',
   'ab.watcher': 'AI 코드 워처',
+
+  // Architecture Map
+  'arch.title': '아키텍처 맵',
+  'arch.noWorkspace': '폴더를 열면 구조를 표시합니다.',
+  'arch.pickFile': '색인 중… 또는 파일을 열면 중심에 표시합니다.',
+  'arch.usedBy': '피참조 {n}',
+  'arch.dependsOn': '의존 {n}',
+  'arch.usedByLegend': '사용하는 쪽 (importers)',
+  'arch.dependsLegend': '의존 대상 (imports)',
+  'arch.moreUsedBy': '+{n} 피참조 더보기',
+  'arch.moreDeps': '+{n} 의존 더보기',
+  'arch.isolated': '이 파일은 내부 의존이 없습니다.',
 
   // AI Code Watcher
   'watch.title': 'AI 코드 워처',

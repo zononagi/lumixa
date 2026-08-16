@@ -7,6 +7,7 @@ import { GitPanel } from './features/git/GitPanel'
 import { SettingsPanel } from './features/settings/SettingsPanel'
 import { HealthPanel } from './features/project/HealthPanel'
 import { ProjectBrainPanel } from './features/brain/ProjectBrainPanel'
+import { ArchitectureMapPanel } from './features/architecture/ArchitectureMapPanel'
 import { WatcherPanel } from './features/watcher/WatcherPanel'
 import { BugDetectivePanel } from './features/bug/BugDetectivePanel'
 import { AgentPanel } from './features/agent/AgentPanel'
@@ -64,6 +65,7 @@ export default function App(): JSX.Element {
         {leftView === 'git' && <GitPanel />}
         {leftView === 'health' && <HealthPanel />}
         {leftView === 'brain' && <ProjectBrainPanel />}
+        {leftView === 'arch' && <ArchitectureMapPanel />}
         {leftView === 'watcher' && <WatcherPanel />}
         {leftView === 'bug' && <BugDetectivePanel />}
         {leftView === 'agent' && <AgentPanel />}
