@@ -7,6 +7,7 @@ import { GitPanel } from './features/git/GitPanel'
 import { SettingsPanel } from './features/settings/SettingsPanel'
 import { HealthPanel } from './features/project/HealthPanel'
 import { AgentPanel } from './features/agent/AgentPanel'
+import { ClaudeCodeDiff } from './features/agent/ClaudeCodeDiff'
 import { SafeModePanel } from './features/safe/SafeModePanel'
 import { CodeBuilderPanel } from './features/builder/CodeBuilderPanel'
 import { EditorArea } from './features/editor/EditorArea'
@@ -20,6 +21,7 @@ import { useUiStore } from './stores/uiStore'
 
 export default function App(): JSX.Element {
   const leftView = useUiStore((s) => s.leftView)
+  const setLeftView = useUiStore((s) => s.setLeftView)
   const toggleTerminal = useUiStore((s) => s.toggleTerminal)
   const togglePalette = useUiStore((s) => s.togglePalette)
   const initAppearance = useAppearanceStore((s) => s.init)
@@ -28,7 +30,8 @@ export default function App(): JSX.Element {
     initAppearance()
   }, [initAppearance])
 
-  // Global shortcuts: Ctrl/Cmd+` terminal, Ctrl/Cmd+Shift+P command palette.
+  // Global shortcuts: Ctrl/Cmd+` terminal, Ctrl/Cmd+Shift+P palette,
+  // Ctrl/Cmd+Shift+L toggles the Claude Code (AI Agent) panel.
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
       if ((e.ctrlKey || e.metaKey) && e.key === '`') {
@@ -37,11 +40,14 @@ export default function App(): JSX.Element {
       } else if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'p') {
         e.preventDefault()
         togglePalette()
+      } else if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
+        e.preventDefault()
+        setLeftView(useUiStore.getState().leftView === 'agent' ? 'explorer' : 'agent')
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [toggleTerminal, togglePalette])
+  }, [toggleTerminal, togglePalette, setLeftView])
 
   return (
     <div className="shell">
@@ -63,6 +69,7 @@ export default function App(): JSX.Element {
       <StatusBar />
       <CommandPalette />
       <WhyOverlay />
+      <ClaudeCodeDiff />
       <Toasts />
     </div>
   )

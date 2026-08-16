@@ -113,6 +113,41 @@ export const ja: typeof en = {
   'agent.copy': 'コピー',
   'agent.copied': 'コピーしました',
   'agent.copyMessage': 'メッセージをコピー',
+  'agent.settings': 'セッション設定',
+  'agent.context': 'コンテキスト',
+  'agent.viewDiff': '差分を表示',
+  'agent.installHint': 'claude.com/claude-code から Claude Code を導入し、↻ を押してください。',
+  'agent.permissionMode': '権限モード',
+  'agent.permissionHint':
+    'Claude Code 自身が承認を管理します。ここでは起動モードを選ぶだけです。',
+
+  // Permission modes
+  'perm.default': '毎回確認（既定）',
+  'perm.acceptEdits': '編集を自動承認',
+  'perm.plan': '計画のみ',
+  'perm.bypass': 'バイパス（上級者向け）',
+
+  // Context attachments
+  'ctx.file': '現在のファイル',
+  'ctx.selection': '選択範囲',
+  'ctx.workspace': 'ワークスペース',
+  'ctx.problems': '問題',
+  'ctx.gitDiff': 'Git 差分',
+
+  // Quick Actions
+  'qa.explain': '説明',
+  'qa.fix': '修正',
+  'qa.refactor': 'リファクタ',
+  'qa.optimize': '最適化',
+  'qa.tests': 'テスト追加',
+  'qa.docs': 'ドキュメント生成',
+  'qa.findBug': 'バグ発見',
+  'qa.review': 'コードレビュー',
+
+  // Diff viewer
+  'diff.keep': '維持',
+  'diff.revert': '元に戻す',
+  'diff.loading': '差分を読み込み中…',
 
   // 使用状況モニター
   'usage.title': '使用状況',
@@ -203,6 +238,8 @@ export const ja: typeof en = {
   'problems.quickFix': 'クイックフィックス',
   'problems.organizeImports': 'import を整理',
   'problems.askClaude': 'Claude Code に聞く',
+  'problems.fixAllClaude': '{n} 件の問題を Claude Code で修正',
+  'problems.fixAllPrompt': 'Lumixa が検出したこのプロジェクトの問題を修正してください。',
 
   // セーフモード（スナップショット）
   'ab.safe': 'セーフモード（スナップショット）',

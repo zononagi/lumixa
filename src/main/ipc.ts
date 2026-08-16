@@ -82,6 +82,7 @@ export function registerIpcHandlers(win: BrowserWindow): void {
   ipcMain.handle(IPC.gitUnstage, (_e, cwd: string, path: string) => git.unstage(cwd, path))
   ipcMain.handle(IPC.gitStageAll, (_e, cwd: string) => git.stageAll(cwd))
   ipcMain.handle(IPC.gitStagedDiff, (_e, cwd: string) => git.stagedDiff(cwd))
+  ipcMain.handle(IPC.gitWorkingDiff, (_e, cwd: string) => git.workingDiff(cwd))
   ipcMain.handle(IPC.gitCommit, (_e, cwd: string, message: string) => git.commit(cwd, message))
   ipcMain.handle(IPC.gitPush, (_e, cwd: string) => git.push(cwd))
   ipcMain.handle(IPC.gitPull, (_e, cwd: string) => git.pull(cwd))
@@ -126,6 +127,9 @@ export function registerIpcHandlers(win: BrowserWindow): void {
     runtime!.sendMessage(sessionId, message)
   )
   ipcMain.handle(IPC.agentStop, (_e, sessionId: string) => runtime!.stop(sessionId))
+  ipcMain.handle(IPC.agentRename, (_e, sessionId: string, title: string) =>
+    runtime!.rename(sessionId, title)
+  )
   ipcMain.handle(IPC.agentDispose, (_e, sessionId: string) => runtime!.dispose(sessionId))
 
   // --- Usage monitor --------------------------------------------------------

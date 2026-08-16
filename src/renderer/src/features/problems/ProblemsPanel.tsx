@@ -3,7 +3,6 @@ import { useMarkersStore, type Problem } from './markersStore'
 import { getActiveEditor, runEditorAction } from '@renderer/lib/editorBridge'
 import { explainDiagnostic } from '@renderer/features/intelligence/errorExplainer'
 import { useAgentStore } from '@renderer/stores/agentStore'
-import { useUiStore } from '@renderer/stores/uiStore'
 import { useT, useI18nStore } from '@renderer/i18n'
 
 /**
@@ -24,12 +23,30 @@ export function ProblemsPanel(): JSX.Element {
     active.editor.focus()
   }
 
+  const claudeAvailable = useAgentStore((s) =>
+    s.providers.some((p) => p.id === 'claude-code' && p.state === 'authenticated')
+  )
+  const requestPrefill = useAgentStore((s) => s.requestPrefill)
+  const t = useT()
+
   if (problems.length === 0) {
     return <div className="problems-empty">No problems detected.</div>
   }
 
   return (
     <div className="problems">
+      {claudeAvailable && (
+        <div className="problems-toolbar">
+          <button
+            className="pe-btn primary"
+            onClick={() =>
+              void requestPrefill(t('problems.fixAllPrompt'), ['problems', 'file'])
+            }
+          >
+            {t('problems.fixAllClaude', { n: problems.length })}
+          </button>
+        </div>
+      )}
       {problems.map((p, i) => (
         <div key={`${p.resource}:${p.line}:${p.column}:${i}`} className="problem-item">
           <div
@@ -62,7 +79,7 @@ function ProblemExplanation({ problem }: { problem: Problem }): JSX.Element {
   const claudeAvailable = useAgentStore((s) =>
     s.providers.some((p) => p.id === 'claude-code' && p.state === 'authenticated')
   )
-  const setLeftView = useUiStore((s) => s.setLeftView)
+  const requestPrefill = useAgentStore((s) => s.requestPrefill)
 
   const ex = explainDiagnostic(
     { message: problem.message, code: problem.code, severity: problem.severity },
@@ -93,7 +110,15 @@ function ProblemExplanation({ problem }: { problem: Problem }): JSX.Element {
           </button>
         )}
         {claudeAvailable && (
-          <button className="pe-btn" onClick={() => setLeftView('agent')}>
+          <button
+            className="pe-btn"
+            onClick={() =>
+              void requestPrefill(
+                `Fix this problem: ${problem.message}${problem.code ? ` (${problem.code})` : ''}`,
+                ['problems', 'file']
+              )
+            }
+          >
             {t('problems.askClaude')}
           </button>
         )}

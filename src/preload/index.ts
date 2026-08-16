@@ -71,6 +71,7 @@ const api = {
       ipcRenderer.invoke(IPC.gitUnstage, cwd, path),
     stageAll: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitStageAll, cwd),
     stagedDiff: (cwd: string): Promise<string> => ipcRenderer.invoke(IPC.gitStagedDiff, cwd),
+    workingDiff: (cwd: string): Promise<string> => ipcRenderer.invoke(IPC.gitWorkingDiff, cwd),
     commit: (cwd: string, message: string): Promise<GitResult> =>
       ipcRenderer.invoke(IPC.gitCommit, cwd, message),
     push: (cwd: string): Promise<GitResult> => ipcRenderer.invoke(IPC.gitPush, cwd),
@@ -105,6 +106,8 @@ const api = {
     sendMessage: (sessionId: string, message: string): Promise<void> =>
       ipcRenderer.invoke(IPC.agentSendMessage, sessionId, message),
     stop: (sessionId: string): Promise<void> => ipcRenderer.invoke(IPC.agentStop, sessionId),
+    rename: (sessionId: string, title: string): Promise<void> =>
+      ipcRenderer.invoke(IPC.agentRename, sessionId, title),
     dispose: (sessionId: string): Promise<void> => ipcRenderer.invoke(IPC.agentDispose, sessionId),
     onEvent: (cb: (e: AgentEventEnvelope) => void): (() => void) => {
       const handler = (_: unknown, payload: AgentEventEnvelope): void => cb(payload)

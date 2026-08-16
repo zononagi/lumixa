@@ -94,6 +94,16 @@ export async function stagedDiff(cwd: string): Promise<string> {
   return r.stdout
 }
 
+/**
+ * All uncommitted changes vs HEAD (staged + unstaged tracked files). Used to
+ * hand the current working diff to Claude Code as context. Returns '' when the
+ * folder is not a repo or there is nothing to diff — never throws.
+ */
+export async function workingDiff(cwd: string): Promise<string> {
+  const r = await git(cwd, ['diff', 'HEAD'])
+  return r.ok ? r.stdout : ''
+}
+
 export async function commit(cwd: string, message: string): Promise<GitResult> {
   const r = await git(cwd, ['commit', '-m', message])
   return { ok: r.ok, output: r.stderr || r.stdout }

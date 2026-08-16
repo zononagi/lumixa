@@ -113,6 +113,41 @@ export const ko: typeof en = {
   'agent.copy': '복사',
   'agent.copied': '복사됨',
   'agent.copyMessage': '메시지 복사',
+  'agent.settings': '세션 설정',
+  'agent.context': '컨텍스트',
+  'agent.viewDiff': '차이 보기',
+  'agent.installHint': 'claude.com/claude-code 에서 Claude Code를 설치한 뒤 ↻ 를 누르세요.',
+  'agent.permissionMode': '권한 모드',
+  'agent.permissionHint':
+    'Claude Code가 자체적으로 승인을 관리합니다. 여기서는 실행 모드만 선택합니다.',
+
+  // Permission modes
+  'perm.default': '항상 확인 (기본)',
+  'perm.acceptEdits': '편집 자동 승인',
+  'perm.plan': '계획만',
+  'perm.bypass': '우회 (고급)',
+
+  // Context attachments
+  'ctx.file': '현재 파일',
+  'ctx.selection': '선택 영역',
+  'ctx.workspace': '워크스페이스',
+  'ctx.problems': '문제',
+  'ctx.gitDiff': 'Git 차이',
+
+  // Quick Actions
+  'qa.explain': '설명',
+  'qa.fix': '수정',
+  'qa.refactor': '리팩터',
+  'qa.optimize': '최적화',
+  'qa.tests': '테스트 추가',
+  'qa.docs': '문서 생성',
+  'qa.findBug': '버그 찾기',
+  'qa.review': '코드 리뷰',
+
+  // Diff viewer
+  'diff.keep': '유지',
+  'diff.revert': '되돌리기',
+  'diff.loading': '차이 불러오는 중…',
 
   // 사용량 모니터
   'usage.title': '사용량',
@@ -203,6 +238,8 @@ export const ko: typeof en = {
   'problems.quickFix': '빠른 수정',
   'problems.organizeImports': 'import 정리',
   'problems.askClaude': 'Claude Code에게 묻기',
+  'problems.fixAllClaude': '{n}개의 문제를 Claude Code로 수정',
+  'problems.fixAllPrompt': 'Lumixa가 이 프로젝트에서 발견한 문제를 수정해 주세요.',
 
   // 세이프 모드 (스냅샷)
   'ab.safe': '세이프 모드 (스냅샷)',

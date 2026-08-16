@@ -2,8 +2,9 @@ import { useEffect, type JSX } from 'react'
 import Editor, { type OnMount } from '@monaco-editor/react'
 import { useEditorStore } from '@renderer/stores/editorStore'
 import { useAppearanceStore } from '@renderer/stores/appearanceStore'
+import { useAgentStore } from '@renderer/stores/agentStore'
 import { setActiveEditor } from '@renderer/lib/editorBridge'
-import { useT } from '@renderer/i18n'
+import { useT, useI18nStore } from '@renderer/i18n'
 import { languageForFile } from './monacoSetup'
 
 /** Tabbed Monaco editor with Ctrl/Cmd+S save. */
@@ -24,7 +25,26 @@ export function EditorArea(): JSX.Element {
     return () => window.removeEventListener('keydown', onKey)
   }, [saveActive])
 
-  const onMount: OnMount = (editor, monaco) => setActiveEditor(editor, monaco)
+  const onMount: OnMount = (editor, monaco) => {
+    setActiveEditor(editor, monaco)
+    // Right-click → Ask Claude Code. Attaches the current selection (or the
+    // whole file when nothing is selected) and opens the Agent panel.
+    editor.addAction({
+      id: 'lumixa.askClaude',
+      label: useI18nStore.getState().locale === 'ja' ? 'Claude Code に質問' : 'Ask Claude Code',
+      contextMenuGroupId: 'navigation',
+      contextMenuOrder: 1.5,
+      run: (ed) => {
+        const sel = ed.getSelection()
+        const hasSel = !!sel && !sel.isEmpty()
+        void useAgentStore
+          .getState()
+          .requestPrefill(hasSel ? 'Explain this code:' : 'Explain this file:', [
+            hasSel ? 'selection' : 'file'
+          ])
+      }
+    })
+  }
 
   return (
     <div className="editor-pane">

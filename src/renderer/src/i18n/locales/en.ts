@@ -111,6 +111,41 @@ export const en = {
   'agent.copy': 'Copy',
   'agent.copied': 'Copied',
   'agent.copyMessage': 'Copy message',
+  'agent.settings': 'Session settings',
+  'agent.context': 'Context',
+  'agent.viewDiff': 'View Diff',
+  'agent.installHint': 'Install Claude Code from claude.com/claude-code, then click ↻.',
+  'agent.permissionMode': 'Permission mode',
+  'agent.permissionHint':
+    "Claude Code enforces its own approvals. This only picks which built-in mode it runs in.",
+
+  // Permission modes
+  'perm.default': 'Ask (default)',
+  'perm.acceptEdits': 'Auto-accept edits',
+  'perm.plan': 'Plan only',
+  'perm.bypass': 'Bypass (advanced)',
+
+  // Context attachments
+  'ctx.file': 'Current File',
+  'ctx.selection': 'Selection',
+  'ctx.workspace': 'Workspace',
+  'ctx.problems': 'Problems',
+  'ctx.gitDiff': 'Git Diff',
+
+  // Quick Actions
+  'qa.explain': 'Explain',
+  'qa.fix': 'Fix',
+  'qa.refactor': 'Refactor',
+  'qa.optimize': 'Optimize',
+  'qa.tests': 'Add Tests',
+  'qa.docs': 'Generate Docs',
+  'qa.findBug': 'Find Bug',
+  'qa.review': 'Review Code',
+
+  // Diff viewer
+  'diff.keep': 'Keep',
+  'diff.revert': 'Revert',
+  'diff.loading': 'Loading diff…',
 
   // Usage monitor
   'usage.title': 'Usage',
@@ -201,6 +236,8 @@ export const en = {
   'problems.quickFix': 'Quick Fix',
   'problems.organizeImports': 'Organize Imports',
   'problems.askClaude': 'Ask Claude Code',
+  'problems.fixAllClaude': 'Fix {n} problem(s) with Claude Code',
+  'problems.fixAllPrompt': 'Fix the problems Lumixa has detected in this project.',
 
   // Safe Mode (snapshots)
   'ab.safe': 'Safe Mode (Snapshots)',

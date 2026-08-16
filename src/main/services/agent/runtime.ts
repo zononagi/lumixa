@@ -131,6 +131,15 @@ export class AgentRuntime {
     rec?.proc?.kill()
   }
 
+  /** Give a session a user-chosen title. Purely cosmetic; never touches the CLI. */
+  rename(sessionId: string, title: string): void {
+    const rec = this.sessions.get(sessionId)
+    if (!rec) return
+    rec.session.title = title.trim().slice(0, 80) || rec.session.title
+    rec.session.updatedAt = Date.now()
+    this.emit.sessionUpdate({ ...rec.session })
+  }
+
   dispose(sessionId: string): void {
     const rec = this.sessions.get(sessionId)
     if (!rec) return

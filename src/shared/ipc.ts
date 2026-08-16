@@ -36,6 +36,7 @@ export const IPC = {
   gitUnstage: 'git:unstage',
   gitStageAll: 'git:stageAll',
   gitStagedDiff: 'git:stagedDiff',
+  gitWorkingDiff: 'git:workingDiff',
   gitCommit: 'git:commit',
   gitPush: 'git:push',
   gitPull: 'git:pull',
@@ -62,6 +63,7 @@ export const IPC = {
   agentStartSession: 'agent:startSession',
   agentSendMessage: 'agent:sendMessage',
   agentStop: 'agent:stop',
+  agentRename: 'agent:rename',
   agentDispose: 'agent:dispose',
   agentEvent: 'agent:event', // main -> renderer (streaming AgentEvent)
   agentSessionUpdate: 'agent:sessionUpdate', // main -> renderer (session status changes)

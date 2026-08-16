@@ -1110,3 +1110,323 @@
 .settings-check input {
   width: auto;
 }
+
+/* ===================================================================== */
+/* Claude Code — context-aware composer, quick actions, diff viewer       */
+/* ===================================================================== */
+
+.agent-header-btns {
+  display: flex;
+  gap: 4px;
+}
+
+/* Session settings (permission mode) */
+.agent-settings {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 0 8px 8px;
+  background: var(--bg-elevated);
+}
+.agent-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+.agent-setting-row select {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+.agent-setting-hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+
+/* Inline session rename */
+.agent-session-edit {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  font: inherit;
+  padding: 0 4px;
+}
+
+/* Quick Actions row */
+.agent-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 8px 0;
+}
+.agent-quick button {
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.agent-quick button:hover:not(:disabled) {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+.agent-quick button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Context bar */
+.agent-context {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 8px 0;
+}
+.agent-context-add {
+  position: relative;
+}
+.ctx-add-btn {
+  font-size: 11px;
+  padding: 2px 8px;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.ctx-add-btn:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+.ctx-menu {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  min-width: 170px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+.ctx-menu button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+.ctx-menu button:hover:not(:disabled) {
+  background: var(--selection);
+}
+.ctx-menu button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.ctx-menu .ctx-check {
+  width: 12px;
+  color: var(--accent);
+}
+.ctx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.ctx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--selection);
+  color: var(--fg);
+}
+.ctx-chip.small {
+  font-size: 10px;
+  background: var(--bg-elevated);
+  color: var(--fg-muted);
+}
+.ctx-chip-x {
+  cursor: pointer;
+  color: var(--fg-muted);
+}
+.ctx-chip-x:hover {
+  color: var(--danger);
+}
+.msg-ctx {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* @mention popup */
+.agent-input {
+  position: relative;
+}
+.mention-menu {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 8px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+.mention-menu button {
+  text-align: left;
+  font-size: 12px;
+  padding: 4px 6px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+}
+.mention-menu button:hover {
+  background: var(--selection);
+}
+
+/* File-change diff button */
+.agent-change {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.agent-change .change-path {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.agent-change .change-path:hover {
+  color: var(--accent);
+}
+.change-diff {
+  font-size: 10px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.change-diff:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+
+/* Problems → Fix with Claude Code toolbar */
+.problems-toolbar {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Diff viewer modal */
+.diff-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+.diff-modal {
+  width: 86vw;
+  height: 82vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+.diff-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+.diff-title {
+  font-weight: 600;
+}
+.diff-path {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.diff-actions {
+  display: flex;
+  gap: 6px;
+}
+.diff-keep,
+.diff-revert {
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.diff-keep {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.diff-keep:hover {
+  background: var(--accent-hover);
+}
+.diff-revert {
+  background: transparent;
+  color: var(--fg);
+}
+.diff-revert:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.diff-body {
+  flex: 1;
+  min-height: 0;
+}
+.diff-loading {
+  padding: 20px;
+  color: var(--fg-muted);
+}
