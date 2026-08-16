@@ -59,6 +59,27 @@ export const ko: typeof en = {
   'bug.no': '없음',
   'bug.handoffHint': '"조사하기"로 Claude Code에 넘깁니다. 가설과 신뢰도는 AI 에이전트 패널에 표시됩니다.',
 
+  // Goal Mode
+  'ab.goal': '목표 모드',
+  'goal.title': '목표 모드',
+  'goal.noWorkspace': '폴더를 열면 목표를 설정할 수 있습니다.',
+  'goal.intro': '만들고 싶은 것을 설명하세요. Claude Code가 작업으로 나누고, 진행률은 실제 코드에서 측정합니다.',
+  'goal.placeholder': '예: 장바구니와 결제가 있는 이커머스 사이트',
+  'goal.generate': '✨ 작업으로 분해',
+  'goal.generating': '계획 중…',
+  'goal.startManual': '빈 상태로 시작',
+  'goal.reset': '이 목표 지우기',
+  'goal.done': '{d}/{n} 작업 완료',
+  'goal.noTasks': '작업이 없습니다. 분해를 생성하세요.',
+  'goal.nextAction': '다음 권장 작업',
+  'goal.build': 'Claude에게 만들게 하기',
+  'goal.tasks': '작업',
+  'goal.toggleManual': '완료/미완료 전환',
+  'goal.autoChecked': '프로젝트에서 자동 감지',
+  'goal.cx.low': '낮음',
+  'goal.cx.medium': '중간',
+  'goal.cx.high': '높음',
+
   // Test Guardian
   'ab.tests': '테스트 가디언',
   'tg.title': '테스트 가디언',

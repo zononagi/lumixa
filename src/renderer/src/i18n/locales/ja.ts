@@ -59,6 +59,27 @@ export const ja: typeof en = {
   'bug.no': 'なし',
   'bug.handoffHint': '「調査する」で Claude Code に引き継ぎます。仮説と確信度は AIエージェント パネルに表示されます。',
 
+  // Goal Mode
+  'ab.goal': 'ゴールモード',
+  'goal.title': 'ゴールモード',
+  'goal.noWorkspace': 'フォルダを開くと目標を設定できます。',
+  'goal.intro': '作りたいものを説明してください。Claude Code がタスクに分解し、進捗は実際のコードから測定します。',
+  'goal.placeholder': '例：カートと決済のあるECサイトを作りたい',
+  'goal.generate': '✨ タスクに分解',
+  'goal.generating': '計画中…',
+  'goal.startManual': '空で開始',
+  'goal.reset': 'この目標を消す',
+  'goal.done': '{d}/{n} タスク完了',
+  'goal.noTasks': 'タスクがありません。分解を生成してください。',
+  'goal.nextAction': '次に推奨されるアクション',
+  'goal.build': 'Claude に作らせる',
+  'goal.tasks': 'タスク',
+  'goal.toggleManual': '完了/未完了を切替',
+  'goal.autoChecked': 'プロジェクトから自動検出',
+  'goal.cx.low': '低',
+  'goal.cx.medium': '中',
+  'goal.cx.high': '高',
+
   // Test Guardian
   'ab.tests': 'テストガーディアン',
   'tg.title': 'テストガーディアン',

@@ -57,6 +57,27 @@ export const en = {
   'bug.no': 'no',
   'bug.handoffHint': 'Investigate hands this to Claude Code — hypotheses & confidence appear in the AI Agent panel.',
 
+  // Goal Mode
+  'ab.goal': 'Goal Mode',
+  'goal.title': 'Goal Mode',
+  'goal.noWorkspace': 'Open a folder to set a goal.',
+  'goal.intro': 'Describe what you want to build. Claude Code breaks it into tasks; progress is measured from your real code.',
+  'goal.placeholder': 'e.g. Build an e-commerce site with cart and checkout',
+  'goal.generate': '✨ Break into tasks',
+  'goal.generating': 'Planning…',
+  'goal.startManual': 'Start empty',
+  'goal.reset': 'Clear this goal',
+  'goal.done': '{d}/{n} tasks done',
+  'goal.noTasks': 'No tasks yet — generate a breakdown.',
+  'goal.nextAction': 'Next recommended action',
+  'goal.build': 'Let Claude build this',
+  'goal.tasks': 'Tasks',
+  'goal.toggleManual': 'Mark done / not done',
+  'goal.autoChecked': 'Detected automatically from your project',
+  'goal.cx.low': 'low',
+  'goal.cx.medium': 'medium',
+  'goal.cx.high': 'high',
+
   // Test Guardian
   'ab.tests': 'Test Guardian',
   'tg.title': 'Test Guardian',

@@ -9,6 +9,7 @@ export type LeftView =
   | 'watcher'
   | 'bug'
   | 'agent'
+  | 'goal'
   | 'heal'
   | 'tests'
   | 'timemachine'

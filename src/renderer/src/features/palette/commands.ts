@@ -132,6 +132,7 @@ export function buildCommands(): Command[] {
     { id: 'view.watcher', title: 'View: AI Code Watcher', category: 'View', run: () => ui().setLeftView('watcher') },
     { id: 'view.arch', title: 'View Architecture Map', category: 'View', run: () => ui().setLeftView('arch') },
     { id: 'view.bug', title: 'Find Bug (Bug Detective)', category: 'View', run: () => ui().setLeftView('bug') },
+    { id: 'view.goal', title: 'Create Goal (Goal Mode)', category: 'View', run: () => ui().setLeftView('goal') },
     { id: 'view.tests', title: 'View: Test Guardian', category: 'View', run: () => ui().setLeftView('tests') },
     { id: 'tests.run', title: 'Run Tests', category: 'Self-Healing', run: () => { ui().setLeftView('tests'); void useTestGuardianStore.getState().runTests() } },
     {
